@@ -1,0 +1,82 @@
+{
+  "name": "avenue-express",
+  "version": "1.0.0",
+  "description": "Express MVC application starter for getting shit done.",
+  "main": "index.js",
+  "bin": "avenue.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon .",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "keywords": [
+    "express",
+    "mvc",
+    "starter"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/borisding/avenue-express.git"
+  },
+  "author": "Boris Ding Poh Hing",
+  "license": "MIT",
+  "dependencies": {
+    "@std/esm": "^0.25.4",
+    "app-root-path": "^2.0.1",
+    "body-parser": "^1.18.2",
+    "chalk": "^2.3.2",
+    "compress": "^0.99.0",
+    "consolidate": "^0.15.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "cross-env": "^5.1.4",
+    "dotenv": "^5.0.1",
+    "ejs": "^2.5.7",
+    "errorhandler": "^1.5.0",
+    "express": "^4.16.3",
+    "getenv": "^0.7.0",
+    "helmet": "^3.12.0",
+    "hpp": "^0.2.2",
+    "make-promises-safe": "^1.1.0",
+    "module-alias": "^2.0.6",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.5.3",
+    "rimraf": "^2.6.2",
+    "sade": "^1.4.0",
+    "sequelize": "^4.37.3",
+    "serve-favicon": "^2.4.5"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "jest": "^22.4.3",
+    "node-sass": "^4.7.2",
+    "nodemon": "^1.17.2",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.11.1",
+    "webpack": "^4.2.0",
+    "webpack-cli": "^2.0.12"
+  },
+  "@std/esm": "cjs",
+  "_moduleAliases": {
+    "@root": ".",
+    "@bin": "bin",
+    "@dist": "dist",
+    "@src": "src",
+    "@app": "src/app",
+    "@controllers": "src/app/controllers",
+    "@models": "src/app/models",
+    "@views": "src/app/views",
+    "@assets": "src/assets",
+    "@utils": "src/utils"
+  },
+  "jest": {
+    "collectCoverageFrom": ["src/**/*.js"],
+    "moduleFileExtensions": ["js"],
+    "testEnvironment": "node",
+    "testRegex": ".*.spec\\.js$",
+    "testPathIgnorePatterns": ["<rootDir>/node_modules/"]
+  }
+}
