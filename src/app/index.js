@@ -3,7 +3,6 @@ import isDev from 'isdev';
 import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';
-import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import ejsLayouts from 'express-ejs-layouts';
@@ -21,8 +20,8 @@ app
   .use(cors())
   .use(helmet())
   .use(compression())
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true, limit: '10mb' }))
+  .use(express.json())
+  .use(express.urlencoded({ extended: true, limit: '10mb' }))
   .use(hpp())
   .use(cookieParser())
   .use(express.static(syspath.dist));

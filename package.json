@@ -24,7 +24,6 @@
   "dependencies": {
     "@std/esm": "^0.25.4",
     "app-root-path": "^2.0.1",
-    "body-parser": "^1.18.2",
     "chalk": "^2.3.2",
     "compression": "^1.7.2",
     "cookie-parser": "^1.4.3",
