@@ -13,7 +13,7 @@ import { logger } from '@middlewares';
 const app = express();
 
 app
-  .set('view engine', 'ejs')
+  .set('view engine', env['VIEW_ENGINE'])
   .set('views', [syspath.views, `${syspath.views}/partials`])
   .use(ejsLayouts)
   .use(logger())
@@ -23,14 +23,14 @@ app
   .use(express.json())
   .use(express.urlencoded({ extended: true, limit: '10mb' }))
   .use(hpp())
-  .use(cookieParser())
+  .use(cookieParser(env['SECRET_KEY']))
   .use(express.static(syspath.dist));
 
 if (isDev) {
   app.use(errorHandler());
 }
 
-app.get('/', (req, res, next) => {
+app.get('/', (req, res) => {
   res.render('index');
 });
 
