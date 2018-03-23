@@ -1,2 +1,2 @@
-export { default as env } from './env';
+export { default as sysenv } from './sysenv';
 export { default as syspath } from './syspath';

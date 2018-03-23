@@ -7,13 +7,13 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import ejsLayouts from 'express-ejs-layouts';
 import errorHandler from 'errorhandler';
-import { env, syspath } from '@config';
+import { sysenv, syspath } from '@config';
 import { logger } from '@middlewares';
 
 const app = express();
 
 app
-  .set('view engine', env['VIEW_ENGINE'])
+  .set('view engine', sysenv['VIEW_ENGINE'])
   .set('views', [syspath.views, `${syspath.views}/partials`])
   .use(ejsLayouts)
   .use(logger())
@@ -23,7 +23,7 @@ app
   .use(express.json())
   .use(express.urlencoded({ extended: true, limit: '10mb' }))
   .use(hpp())
-  .use(cookieParser(env['SECRET_KEY']))
+  .use(cookieParser(sysenv['SECRET_KEY']))
   .use(express.static(syspath.dist));
 
 if (isDev) {
