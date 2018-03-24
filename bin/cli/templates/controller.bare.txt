@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-function indexAction(req, res, next) {
+export function indexAction(req, res, next) {
   // GET method, list all records
   next();
 }

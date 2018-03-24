@@ -1,36 +1,36 @@
 import { Router } from 'express';
 
-function indexAction(req, res, next) {
+export function indexAction(req, res, next) {
   // GET method, list all records
   next();
 }
 
-function createAction(req, res, next) {
+export function createAction(req, res, next) {
   // GET method, create new record
   next();
 }
 
-function storeAction(req, res, next) {
+export function storeAction(req, res, next) {
   // POST method, store new record
   next();
 }
 
-function showAction(req, res, next) {
+export function showAction(req, res, next) {
   // GET method, show particular record
   next();
 }
 
-function editAction(req, res, next) {
+export function editAction(req, res, next) {
   // GET method, edit particular record
   next();
 }
 
-function updateAction(req, res, next) {
+export function updateAction(req, res, next) {
   // PUT method, update particular record
   next();
 }
 
-function deleteAction(req, res, next) {
+export function deleteAction(req, res, next) {
   // DELETE method, remove particular record
   next();
 }
