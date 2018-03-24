@@ -44,6 +44,7 @@
     "morgan": "^1.9.0",
     "mysql2": "^1.5.3",
     "pluralize": "^7.0.0",
+    "random-key": "^0.3.2",
     "rimraf": "^2.6.2",
     "sade": "^1.4.0",
     "sequelize": "^4.37.3",

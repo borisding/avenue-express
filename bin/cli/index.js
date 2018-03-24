@@ -2,7 +2,7 @@
 
 import sade from 'sade';
 import pkg from '@root/package';
-import { createController, createModel } from './lib';
+import { createController, createModel, createKey } from './lib';
 
 const program = sade('avenue');
 
@@ -32,5 +32,11 @@ program
   .command('new:model <model>')
   .describe('Create new model class in `models` folder.')
   .action(createModel);
+
+program
+  .command('new:key')
+  .describe('Generate new random key for application.')
+  .option('-l, --length', 'Specify maximum length of generated random key.', 32)
+  .action(createKey);
 
 program.parse(process.argv);
