@@ -1,0 +1,51 @@
+import { Router } from 'express';
+
+function indexAction(req, res, next) {
+  // GET method, list all records
+  next();
+}
+
+function createAction(req, res, next) {
+  // GET method, create new record
+  next();
+}
+
+function storeAction(req, res, next) {
+  // POST method, store new record
+  next();
+}
+
+function showAction(req, res, next) {
+  // GET method, show particular record
+  next();
+}
+
+function editAction(req, res, next) {
+  // GET method, edit particular record
+  next();
+}
+
+function updateAction(req, res, next) {
+  // PUT method, update particular record
+  next();
+}
+
+function deleteAction(req, res, next) {
+  // DELETE method, remove particular record
+  next();
+}
+
+// respective routes based on the http verbs
+// match the actions of generated resource controller, respectively
+const router = Router();
+
+router
+  .get('/<path>', indexAction)
+  .get('/<path>/create', createAction)
+  .get('/<path>/:id', showAction)
+  .get('/<path>/:id/edit', editAction)
+  .post('/<path>', storeAction)
+  .put('/<path>/:id', updateAction)
+  .delete('/<path>/:id', deleteAction);
+
+export default router;

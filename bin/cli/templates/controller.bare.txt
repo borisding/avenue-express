@@ -1,0 +1,13 @@
+import { Router } from 'express';
+
+function indexAction(req, res, next) {
+  // GET method, list all records
+  next();
+}
+
+// simple route for bare controller
+const router = Router();
+
+router.get('/', indexAction);
+
+export default router;

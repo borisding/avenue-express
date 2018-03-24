@@ -1,4 +1,3 @@
-import isDev from 'isdev';
 import getenv from 'getenv';
 import syspath from './syspath';
 
@@ -13,12 +12,5 @@ const sysenv = getenv.multi({
   REQUEST_TIMEOUT: ['REQUEST_TIMEOUT', 5000, 'int'],
   SECRET_KEY: ['SECRET_KEY', 'this.is.default.secret.key', 'string']
 });
-
-// display logs for development mode
-if (isDev) {
-  console.log('Environment Variables:');
-  console.log(JSON.stringify(sysenv, null, 2));
-  console.log();
-}
 
 export default sysenv;
