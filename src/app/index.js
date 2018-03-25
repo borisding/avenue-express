@@ -8,7 +8,7 @@ import compression from 'compression';
 import ejsLayouts from 'express-ejs-layouts';
 import errorHandler from 'errorhandler';
 import { sysenv, syspath } from '@config';
-import { logger } from '@middlewares';
+import { csrf, logger } from '@middlewares';
 
 const app = express();
 
@@ -22,8 +22,10 @@ app
   .use(compression())
   .use(express.json())
   .use(express.urlencoded({ extended: true, limit: '10mb' }))
+  .use(cookieParser())
   .use(hpp())
-  .use(cookieParser(sysenv['SECRET_KEY']))
+  .use(csrf())
+  .use(csrf.signed(app))
   .use(express.static(syspath.dist));
 
 if (isDev) {
