@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import pluralize from 'pluralize';
 import mkdirp from 'mkdirp-promise';
+import slash from 'slash';
 import { print } from '@utils';
 import { syspath } from '@config';
 
@@ -10,7 +11,9 @@ const CONTROLLER_SUFFIX = 'Controller';
 
 export default async function createController(controller, options) {
   try {
-    const pathToControllers = path.join(syspath.controllers, options.module);
+    const pathToControllers = slash(
+      path.join(syspath.controllers, options.module)
+    );
     const routerName = (controller = controller.toLowerCase());
     const routerPath = !options.path ? pluralize(routerName) : options.path;
     const controllerFile = `${pathToControllers}/${controller}${CONTROLLER_SUFFIX}.js`;

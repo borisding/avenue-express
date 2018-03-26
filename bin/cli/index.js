@@ -23,14 +23,30 @@ program
   )
   .option(
     '-m, --module',
-    'Name of sub-folder that controller resides in `controllers` folder. Default is empty string.',
-    ''
+    "Name of sub-folder that controller resides in `controllers` folder. Default is controller's base folder.",
+    '.'
   )
   .action(createController);
 
 program
   .command('new:model <model>')
   .describe('Create new model class in `models` folder.')
+  .option('-i, --id', 'Specify column identifier.', 'id')
+  .option(
+    '-f, --force',
+    'Force writing new model file. This will replace existing model file.',
+    false
+  )
+  .option(
+    '-t, --table',
+    'Name of `table` for the model. Default is using model class name (lowercase and pluralized).',
+    null
+  )
+  .option(
+    '-m, --module',
+    "Name of sub-folder that model resides in `models` folder. Default is model's base folder.",
+    '.'
+  )
   .action(createModel);
 
 program

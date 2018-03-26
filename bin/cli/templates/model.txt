@@ -1,0 +1,23 @@
+import { Model } from 'objection';
+
+export default class <model> extends Model {
+  static get tableName() {
+    return '<table>';
+  }
+
+  static get idColumn() {
+    return '<id>';
+  }
+
+  static get jsonSchema() {
+    return {
+      // define json schema for model class validation
+    };
+  }
+
+  static get relationMappings() {
+    return {
+      // define model relatioship(s) here
+    };
+  }
+}
