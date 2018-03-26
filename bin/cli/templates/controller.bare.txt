@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-export function indexAction(req, res, next) {
+export function index(req, res, next) {
   // GET method, list all records
   next();
 }
@@ -8,6 +8,6 @@ export function indexAction(req, res, next) {
 // simple route for bare controller
 const router = Router();
 
-router.get('/', indexAction);
+router.get('/', index);
 
 export default router;

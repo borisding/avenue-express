@@ -1,36 +1,36 @@
 import { Router } from 'express';
 
-export function indexAction(req, res, next) {
+export function index(req, res, next) {
   // GET method, list all records
   next();
 }
 
-export function createAction(req, res, next) {
+export function create(req, res, next) {
   // GET method, create new record
   next();
 }
 
-export function storeAction(req, res, next) {
+export function store(req, res, next) {
   // POST method, store new record
   next();
 }
 
-export function showAction(req, res, next) {
+export function show(req, res, next) {
   // GET method, show particular record
   next();
 }
 
-export function editAction(req, res, next) {
+export function edit(req, res, next) {
   // GET method, edit particular record
   next();
 }
 
-export function updateAction(req, res, next) {
+export function update(req, res, next) {
   // PUT method, update particular record
   next();
 }
 
-export function deleteAction(req, res, next) {
+export function destroy(req, res, next) {
   // DELETE method, remove particular record
   next();
 }
@@ -40,12 +40,12 @@ export function deleteAction(req, res, next) {
 const router = Router();
 
 router
-  .get('/<path>', indexAction)
-  .get('/<path>/create', createAction)
-  .get('/<path>/:id', showAction)
-  .get('/<path>/:id/edit', editAction)
-  .post('/<path>', storeAction)
-  .put('/<path>/:id', updateAction)
-  .delete('/<path>/:id', deleteAction);
+  .get('/<path>', index)
+  .get('/<path>/create', create)
+  .get('/<path>/:id', show)
+  .get('/<path>/:id/edit', edit)
+  .post('/<path>', store)
+  .put('/<path>/:id', update)
+  .delete('/<path>/:id', destroy);
 
 export default router;

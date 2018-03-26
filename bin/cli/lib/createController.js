@@ -7,7 +7,6 @@ import { print } from '@utils';
 import { syspath } from '@config';
 
 const fileExist = target => fs.existsSync(target);
-const CONTROLLER_SUFFIX = 'Controller';
 
 export default async function createController(controller, options) {
   try {
@@ -16,7 +15,7 @@ export default async function createController(controller, options) {
     );
     const routerName = (controller = controller.toLowerCase());
     const routerPath = !options.path ? pluralize(routerName) : options.path;
-    const controllerFile = `${pathToControllers}/${controller}${CONTROLLER_SUFFIX}.js`;
+    const controllerFile = `${pathToControllers}/${controller}.js`;
 
     await mkdirp(pathToControllers);
 
@@ -27,8 +26,8 @@ export default async function createController(controller, options) {
     }
 
     const fileData = fs.readFileSync(
-      `${syspath.bin}/cli/templates/controller${
-        options.bare ? '.bare' : '.resource'
+      `${syspath.bin}/cli/templates/controller.${
+        options.bare ? 'bare' : 'resource'
       }.txt`,
       'utf8'
     );
