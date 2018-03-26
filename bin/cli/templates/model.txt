@@ -11,13 +11,14 @@ export default class <model> extends Model {
 
   static get jsonSchema() {
     return {
-      // define json schema for model class validation
+      // define JSON schema (optional) for model class validation
+      // http://json-schema.org/
     };
   }
 
   static get relationMappings() {
     return {
-      // define model relatioship(s) here
+      // define model relation mappings here
     };
   }
 }
