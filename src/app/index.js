@@ -6,9 +6,8 @@ import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import ejsLayouts from 'express-ejs-layouts';
-import errorHandler from 'errorhandler';
 import { sysenv, syspath } from '@config';
-import { csrf, logger } from '@middlewares';
+import { csrf, logger, errorHandler } from '@middlewares';
 
 const app = express();
 
@@ -25,15 +24,13 @@ app
   .use(cookieParser())
   .use(hpp())
   .use(csrf())
-  .use(csrf.signed(app))
+  .use(csrf.toLocal())
   .use(express.static(syspath.dist));
-
-if (isDev) {
-  app.use(errorHandler());
-}
 
 app.get('/', (req, res) => {
   res.render('index');
 });
+
+app.use(errorHandler());
 
 export default app;

@@ -4,8 +4,8 @@ import csurf from 'csurf';
 const csrf = () => csurf({ cookie: true });
 
 // make `csrfToken` accessible in view templates, conveniently
-csrf.signed = app => (req, res, next) => {
-  app.locals.csrfToken = req.csrfToken();
+csrf.toLocal = () => (req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
   return next();
 };
 
