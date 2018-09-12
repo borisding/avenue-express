@@ -39,7 +39,7 @@ export default async function createModel(model, options) {
         .replace(/<id>/gi, options.id)
     );
 
-    print.info('Generated model: %s', 0, [modelFile]);
+    print.info(`Generated model: ${modelFile}`, 0);
   } catch (err) {
     print.error(err);
   }

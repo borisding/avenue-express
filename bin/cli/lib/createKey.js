@@ -1,5 +1,5 @@
 import random from 'random-key';
-import chalk from 'chalk';
+import { print } from '@utils';
 
 export default function createKey(options) {
   // fallback to 32 (default) if lesser than 8
@@ -7,9 +7,6 @@ export default function createKey(options) {
     options.length = 32;
   }
 
-  console.log(
-    'Generated new key (%s): %s',
-    options.length,
-    chalk.cyanBright(random.generate(options.length))
-  );
+  print.info(`Generated new key (${options.length}):`);
+  print.success(random.generate(options.length));
 }

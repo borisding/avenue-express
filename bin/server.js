@@ -12,11 +12,7 @@ const PORT = sysenv['PORT'];
 server.listen(PORT);
 
 server.on('listening', () => {
-  const address = server.address();
-
-  print.info('App Server is up! Listening: %s', 0, [
-    'port' in address ? address.port : address
-  ]);
+  print.info(`App Server is up! Listening: ${PORT}`);
 });
 
 server.on('error', err => {
@@ -25,9 +21,13 @@ server.on('error', err => {
       print.error('Not enough privileges to run application server.', -1);
       break;
     case 'EADDRINUSE':
-      print.error('%s is already in use.', -1, [PORT]);
+      print.error(`${PORT} is already in use.`, -1);
       break;
     default:
       throw err;
   }
+});
+
+process.on('SIGINT', () => {
+  process.exit(0);
 });

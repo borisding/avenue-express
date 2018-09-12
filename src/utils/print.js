@@ -1,20 +1,23 @@
-import chalk from 'chalk';
+import colors from 'colors';
 
-export default {
-  error: (message, code, substitution = []) => {
-    console.error(chalk.red(`${message}\n`), ...substitution);
-    code && process.exit(code);
+// simple print colorful consoles util for universal usage
+const print = {
+  error(message, code) {
+    console.error(colors.red(`${message}\n`));
+    code && process && process.exit(code);
   },
-  info: (message, code, substitution = []) => {
-    console.info(chalk.cyanBright(`${message}\n`), ...substitution);
-    code && process.exit(code);
+  info(message, code) {
+    console.info(colors.cyan(`${message}\n`));
+    code && process && process.exit(code);
   },
-  warn: (message, code, substitution = []) => {
-    console.warn(chalk.yellow(`${message}\n`), ...substitution);
-    code && process.exit(code);
+  warn(message, code) {
+    console.warn(colors.yellow(`${message}\n`));
+    code && process && process.exit(code);
   },
-  success: (message, code, substitution = []) => {
-    console.log(chalk.green(`${message}\n`), ...substitution);
-    code && process.exit(code);
+  success(message, code) {
+    console.log(colors.green(`${message}\n`));
+    code && process && process.exit(code);
   }
 };
+
+export default print;

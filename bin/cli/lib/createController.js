@@ -33,7 +33,7 @@ export default async function createController(controller, options) {
     );
 
     fs.writeFileSync(controllerFile, fileData.replace(/<path>/gi, routerPath));
-    print.info('Generated controller: %s', 0, [controllerFile]);
+    print.info(`Generated controller: ${controllerFile}`, 0);
   } catch (err) {
     print.error(err);
   }
