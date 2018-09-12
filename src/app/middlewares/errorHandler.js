@@ -3,6 +3,7 @@ import isDev from 'isdev';
 // handling error from `createError` factory, by default
 // if using, say `Error` constructor directly, `err.statusCode` should be specified
 // or else, `500` status code will be used
+// eslint-disable-next-line no-unused-vars
 const errorHandler = () => (err, req, res, next) => {
   isDev && console.error(err.stack);
 

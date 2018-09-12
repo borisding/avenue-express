@@ -1,5 +1,4 @@
 import express from 'express';
-import isDev from 'isdev';
 import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';

@@ -1,5 +1,4 @@
 import getenv from 'getenv';
-import syspath from './syspath';
 
 // read environment variables, default values will be read if not available in `.env`
 // format: ['defined value', 'default value', 'value data type']
