@@ -5,14 +5,16 @@ import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import ejsLayouts from 'express-ejs-layouts';
-import { sysenv, syspath } from '@config';
+import { ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler } from '@middlewares';
 
 const app = express();
 
 app
-  .set('view engine', sysenv['VIEW_ENGINE'])
-  .set('views', [syspath.views, `${syspath.views}/partials`])
+  .set('view engine', ENV['VIEW_ENGINE'])
+  .set('views', [SYSPATH['views'], `${SYSPATH['views']}/partials`]);
+
+app
   .use(ejsLayouts)
   .use(logger())
   .use(cors())
@@ -24,7 +26,7 @@ app
   .use(hpp())
   .use(csrf())
   .use(csrf.toLocal())
-  .use(express.static(syspath.dist));
+  .use(express.static(SYSPATH['dist']));
 
 app.get('/', (req, res) => {
   res.render('index');

@@ -3,15 +3,15 @@ import path from 'path';
 import pluralize from 'pluralize';
 import mkdirp from 'mkdirp-promise';
 import slash from 'slash';
+import SYSPATH from '@config/syspath';
 import { print } from '@utils';
-import { syspath } from '@config';
 
 const fileExist = target => fs.existsSync(target);
 const upperFirst = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default async function createModel(model, options) {
   try {
-    const pathToModels = slash(path.join(syspath.models, options.module));
+    const pathToModels = slash(path.join(SYSPATH['models'], options.module));
     const modelName = upperFirst(model);
     const modelFile = `${pathToModels}/${modelName}.js`;
     const tableName = options.table
@@ -27,7 +27,7 @@ export default async function createModel(model, options) {
     }
 
     const fileData = fs.readFileSync(
-      `${syspath.bin}/cli/templates/model.txt`,
+      `${SYSPATH['bin']}/cli/templates/model.txt`,
       'utf8'
     );
 

@@ -1,6 +1,6 @@
-import { path as root } from 'app-root-path';
+const root = require('path').resolve(process.cwd());
 
-export default {
+module.exports = {
   root,
   bin: `${root}/bin`,
   config: `${root}/config`,
@@ -8,7 +8,7 @@ export default {
   src: `${root}/src`,
   logs: `${root}/logs`,
   controllers: `${root}/src/app/controllers`,
-  models: `${root}/src/app/models`,
   middlewares: `${root}/src/app/middlewares`,
+  models: `${root}/src/app/models`,
   views: `${root}/src/app/views`
 };

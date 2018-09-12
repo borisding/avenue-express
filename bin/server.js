@@ -4,10 +4,10 @@ import 'make-promises-safe';
 import http from 'http';
 import app from '@app';
 import { print } from '@utils';
-import { sysenv } from '@config';
+import { ENV } from '@config';
 
 const server = http.createServer(app);
-const PORT = sysenv['PORT'];
+const PORT = ENV['PORT'] || 3000;
 
 server.listen(PORT);
 
