@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
 // GET method for index action
-export function index(req, res, next) {
-  next();
+export function index(req, res) {
+  res.send('Hi! User.');
 }
 
 // GET method for create action

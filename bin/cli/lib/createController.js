@@ -1,25 +1,20 @@
 import fs from 'fs';
 import path from 'path';
-import pluralize from 'pluralize';
 import mkdirp from 'mkdirp-promise';
 import slash from 'slash';
 import SYSPATH from '@config/syspath';
 import { print } from '@utils';
-
-const fileExist = target => fs.existsSync(target);
 
 export default async function createController(controller, options) {
   try {
     const pathToControllers = slash(
       path.join(SYSPATH['controllers'], options.module)
     );
-    const routerName = (controller = controller.toLowerCase());
-    const routerPath = !options.path ? pluralize(routerName) : options.path;
-    const controllerFile = `${pathToControllers}/${controller}.js`;
+    const controllerFile = `${pathToControllers}/${controller.toLowerCase()}.js`;
 
     await mkdirp(pathToControllers);
 
-    if (fileExist(controllerFile) && !options.force) {
+    if (fs.existsSync(controllerFile) && !options.force) {
       return print.warn(
         `([${controllerFile}] already exists. Use option --force to overwrite.)`
       );
@@ -32,7 +27,7 @@ export default async function createController(controller, options) {
       'utf8'
     );
 
-    fs.writeFileSync(controllerFile, fileData.replace(/<path>/gi, routerPath));
+    fs.writeFileSync(controllerFile, fileData);
     print.info(`Generated controller: ${controllerFile}`, 0);
   } catch (err) {
     print.error(err);

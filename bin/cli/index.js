@@ -18,10 +18,6 @@ program
     false
   )
   .option(
-    '-p, --path',
-    'Specify router path for generated controller. Default is using controller name (lowercase and pluralized).'
-  )
-  .option(
     '-m, --module',
     "Name of sub-folder that controller resides in `controllers` folder. Default is controller's base folder.",
     '.'

@@ -7,6 +7,7 @@ import compression from 'compression';
 import ejsLayouts from 'express-ejs-layouts';
 import { ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler } from '@middlewares';
+import * as controllers from '@controllers';
 
 const app = express();
 
@@ -28,10 +29,11 @@ app
   .use(csrf.toLocal())
   .use(express.static(SYSPATH['dist']));
 
-app.get('/', (req, res) => {
-  res.render('index');
-});
+// modular controllers (routers)
+app.use('/', controllers.home);
+app.use('/users', controllers.users);
 
+// mount error handler last
 app.use(errorHandler());
 
 export default app;
