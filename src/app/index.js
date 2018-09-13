@@ -12,6 +12,7 @@ import * as controllers from '@controllers';
 
 const app = express();
 const ext = ENV['VIEWS_EXT'];
+const engine = cons[ENV['VIEWS_ENGINE']];
 const views = [SYSPATH['views'], `${SYSPATH['views']}/partials`];
 
 // nunjucks config to allow adding filters, global, etc
@@ -24,9 +25,9 @@ const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
 njk.addGlobal('parentTemplate', `layout.${ext}`);
 
 app
-  // assign the views engine to targeted files
-  .engine(ext, cons[ENV['VIEWS_ENGINE']])
-  // set .html as the default extension
+  // assign the views engine for mapping template
+  .engine(ext, engine)
+  // set default extension for view files
   .set('view engine', ext);
 
 app
