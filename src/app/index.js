@@ -1,10 +1,11 @@
 import express from 'express';
 import helmet from 'helmet';
+import cons from 'consolidate';
 import cors from 'cors';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
-import ejsLayouts from 'express-ejs-layouts';
+//import ejsLayouts from 'express-ejs-layouts';
 import { ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler } from '@middlewares';
 import * as controllers from '@controllers';
@@ -12,11 +13,14 @@ import * as controllers from '@controllers';
 const app = express();
 
 app
-  .set('view engine', ENV['VIEW_ENGINE'])
+  // assign the env's template engine to .html files
+  .engine('html', cons[ENV['TEMPLATE_ENGINE']])
+  // set .html as the default extension
+  .set('view engine', 'html')
   .set('views', [SYSPATH['views'], `${SYSPATH['views']}/partials`]);
 
 app
-  .use(ejsLayouts)
+  //.use(ejsLayouts)
   .use(logger())
   .use(cors())
   .use(helmet())

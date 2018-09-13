@@ -1,19 +1,17 @@
-import isDev from 'isdev';
-
 // handling error from `createError` factory, by default
-// if using, say `Error` constructor directly, `err.statusCode` should be specified
-// or else, `500` status code will be used
+// `500` status code will be used if `err.statusCode` is not available
 // eslint-disable-next-line no-unused-vars
 const errorHandler = () => (err, req, res, next) => {
-  isDev && console.error(err.stack);
+  console.error(err.stack);
 
-  res.status(err.statusCode || 500);
+  err.code = err.statusCode || 500;
+  res.status(err.code);
 
   const errData = {
     errors: [
       {
         name: err.name,
-        code: err.statusCode,
+        code: err.code,
         message: err.message
       }
     ]

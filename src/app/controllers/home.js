@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 // GET method for index action
 export function index(req, res) {
-  res.render('index');
+  res.render('home');
 }
 
 // simple route for bare controller

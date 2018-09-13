@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 // GET method for index action
 export function index(req, res) {
-  res.send('Hi! User.');
+  res.render('users', { username: 'Boris Ding' });
 }
 
 // GET method for create action
