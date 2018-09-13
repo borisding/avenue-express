@@ -1,26 +1,35 @@
 import express from 'express';
-import helmet from 'helmet';
-import cons from 'consolidate';
 import cors from 'cors';
-import hpp from 'hpp';
-import cookieParser from 'cookie-parser';
+import cons from 'consolidate';
 import compression from 'compression';
-//import ejsLayouts from 'express-ejs-layouts';
-import { ENV, SYSPATH } from '@config';
-import { csrf, logger, errorHandler } from '@middlewares';
+import cookieParser from 'cookie-parser';
+import nunjucks from 'nunjucks';
+import helmet from 'helmet';
+import hpp from 'hpp';
+import { DEV, ENV, SYSPATH } from '@config';
+import { csrf, logger, errorHandler, notFound } from '@middlewares';
 import * as controllers from '@controllers';
 
 const app = express();
+const ext = ENV['VIEWS_EXT'];
+const views = [SYSPATH['views'], `${SYSPATH['views']}/partials`];
+
+// nunjucks config to allow adding filters, global, etc
+const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
+  express: app,
+  watch: !!DEV
+}));
+
+// set global variable of parent template as default layout
+njk.addGlobal('parentTemplate', `layout.${ext}`);
 
 app
-  // assign the env's template engine to .html files
-  .engine('html', cons[ENV['TEMPLATE_ENGINE']])
+  // assign the views engine to targeted files
+  .engine(ext, cons[ENV['VIEWS_ENGINE']])
   // set .html as the default extension
-  .set('view engine', 'html')
-  .set('views', [SYSPATH['views'], `${SYSPATH['views']}/partials`]);
+  .set('view engine', ext);
 
 app
-  //.use(ejsLayouts)
   .use(logger())
   .use(cors())
   .use(helmet())
@@ -34,10 +43,12 @@ app
   .use(express.static(SYSPATH['dist']));
 
 // modular controllers (routers)
-app.use('/', controllers.home);
-app.use('/users', controllers.users);
-
-// mount error handler last
-app.use(errorHandler());
+app
+  .use('/', controllers.home)
+  .use('/users', controllers.users)
+  // when none is matched
+  .use(notFound())
+  // mount error handler last
+  .use(errorHandler());
 
 export default app;
