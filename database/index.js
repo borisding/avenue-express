@@ -1,2 +1,2 @@
-export { default as Sql } from './connections/sql';
-export { default as NoSql } from './connections/nosql';
+export { default as Sql } from './connections/Sql';
+export { default as NoSql } from './connections/NoSql';

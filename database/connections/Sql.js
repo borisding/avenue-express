@@ -1,37 +1,38 @@
-import Sequelize, { Op } from 'sequelize';
 import extend from 'extend';
-import { ENV } from '@config';
+import Sequelize, { Op } from 'sequelize';
+import Database from '@database/connections/Database';
 import options from './options';
 
-const dialects = ['mysql', 'sqlite', 'postgres', 'mssql'];
 const connections = {};
+const instances = {};
 
-export default class Sql {
-  static createConnection(dialect = 'mysql') {
-    return new Sql(dialect);
+export default class Sql extends Database {
+  constructor(dialect) {
+    super(dialect, options);
   }
 
-  constructor(dialect) {
-    this.dialect = dialect;
-
-    if (!dialects.includes(this.dialect)) {
-      throw new TypeError(`Invalid SQL dialects. Supported: [${dialects}]`);
+  static createConnection(dialect = 'mysql') {
+    if (!instances[dialect]) {
+      instances[dialect] = new Sql(dialect);
     }
 
-    if (!Object.keys(options).includes(this.dialect)) {
-      throw new Error(`No dialect option is set for '${this.dialect}'.`);
-    }
+    return instances[dialect];
+  }
 
-    return this.create();
+  getDialects() {
+    return {
+      mysql: 'MYSQL_URI',
+      mssql: 'MSSQL_URI',
+      postgres: 'POSTGRES_URI',
+      sqlite: 'SQLITE_URI'
+    };
   }
 
   create() {
     // return established connection instance for targeted dialect, if any
     if (!(connections[this.dialect] instanceof Sequelize)) {
       connections[this.dialect] = new Sequelize(
-        ENV['DATABASE_NAME'],
-        ENV['DATABASE_USERNAME'],
-        ENV['DATABASE_PASSWORD'],
+        super.getDatabaseURI(),
         // to make sure passed in dialect always overwrites the one in options
         // also, assign `operatorsAliases` with Sequelize's built-in operators
         // @see: https://github.com/sequelize/sequelize/issues/8417

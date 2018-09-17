@@ -1,5 +1,3 @@
-import { ENV } from '@config';
-
 export default {
   // for more about mongoose options
   // @see: https://mongoosejs.com/docs/connections.html#options
@@ -13,13 +11,8 @@ export default {
   mysql: {
     pool: {
       max: 5,
-      min: 0
+      min: 0,
+      idle: 10000
     }
-  },
-
-  sqlite: {
-    // the storage engine for sqlite
-    // - default ':memory:'
-    storage: ENV['SQLITE_STORAGE']
   }
 };
