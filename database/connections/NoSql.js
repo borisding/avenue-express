@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import Redis from 'ioredis';
 import Database from '@database/connections/Database';
 import options from './options';
 
-let connections = {};
-let instances = {};
+const connections = {};
+const instances = {};
 
 export default class NoSql extends Database {
   constructor(dialect) {
@@ -25,18 +26,22 @@ export default class NoSql extends Database {
     };
   }
 
-  create() {
+  getConnection() {
     switch (this.dialect) {
       case 'redis':
-        // TODO: add redis client for connection
-        break;
+        return new Redis(super.getDatabaseURI(), options[this.dialect]);
+
       default:
-        if (!connections[this.dialect]) {
-          connections[this.dialect] = mongoose.createConnection(
-            super.getDatabaseURI(),
-            options[this.dialect]
-          );
-        }
+        return mongoose.createConnection(
+          super.getDatabaseURI(),
+          options[this.dialect]
+        );
+    }
+  }
+
+  create() {
+    if (!connections[this.dialect]) {
+      connections[this.dialect] = this.getConnection();
     }
 
     return connections[this.dialect];
