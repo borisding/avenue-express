@@ -1,0 +1,8 @@
+const syspath = require('./config/syspath');
+
+module.exports = {
+  config: `${syspath.database}/config.json`,
+  'seeders-path': `${syspath.database}/seeders`,
+  'migrations-path': `${syspath.database}/migrations`,
+  'models-path': syspath.models
+};

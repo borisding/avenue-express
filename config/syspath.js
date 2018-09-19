@@ -4,6 +4,7 @@ module.exports = {
   root,
   bin: `${root}/bin`,
   config: `${root}/config`,
+  database: `${root}/database`,
   dist: `${root}/dist`,
   src: `${root}/src`,
   logs: `${root}/logs`,

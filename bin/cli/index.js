@@ -2,7 +2,7 @@
 
 import sade from 'sade';
 import pkg from '@root/package';
-import { createController, createModel, createKey } from './lib';
+import * as actions from './lib';
 
 const program = sade('avenue');
 
@@ -22,33 +22,20 @@ program
     "Name of sub-folder that controller resides in `controllers` folder. Default is controller's base folder.",
     '.'
   )
-  .action(createController);
-
-program
-  .command('new:model <model>')
-  .describe('Create new model class in `models` folder.')
-  .option('-i, --id', 'Specify column identifier.', 'id')
-  .option(
-    '-f, --force',
-    'Force writing new model file. This will replace existing model file.',
-    false
-  )
-  .option(
-    '-t, --table',
-    'Name of `table` for the model. Default is using model class name (lowercase and pluralized).',
-    null
-  )
-  .option(
-    '-m, --module',
-    "Name of sub-folder that model resides in `models` folder. Default is model's base folder.",
-    '.'
-  )
-  .action(createModel);
+  .action(actions.createController);
 
 program
   .command('new:key')
   .describe('Generate new random key for application.')
   .option('-l, --length', 'Specify maximum length of generated random key.', 32)
-  .action(createKey);
+  .action(actions.createKey);
+
+program
+  .command('sequelize <command>')
+  .describe(
+    `Database migration by utilizing 'sequelize-cli' under the hood.
+    @see: http://docs.sequelizejs.com/manual/tutorial/migrations.html`
+  )
+  .action(actions.sequelizeCli);
 
 program.parse(process.argv);
