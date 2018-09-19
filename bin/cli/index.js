@@ -28,7 +28,7 @@ program
   .command('new:key')
   .describe('Generate new random key for application.')
   .option('-l, --length', 'Specify maximum length of generated random key.', 32)
-  .action(actions.createKey);
+  .action(actions.generateKey);
 
 program
   .command('sequelize <command>')

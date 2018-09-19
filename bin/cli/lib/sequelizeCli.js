@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import slash from 'slash';
 import syspath from '@config/syspath';
+import { print } from '@utils';
 
 export default function sequelizeCli(command, options) {
   let sequelize = `${syspath.root}/node_modules/.bin/sequelize`;
@@ -14,12 +15,12 @@ export default function sequelizeCli(command, options) {
     .join(' ');
 
   return exec(`${sequelize} ${opts}`, (err, stdout) => {
-    console.info('\nExecuted command: ', slash(sequelize));
+    print.info(`\nExecuted command: ${slash(sequelize)}`);
 
     if (err) {
-      return console.error(`ERROR: ${err}`);
+      return print.error(`ERROR: ${err}`);
     }
 
-    return console.info(stdout);
+    return print.success(stdout);
   });
 }
