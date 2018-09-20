@@ -4,18 +4,30 @@ import syspath from '@config/syspath';
 import { print } from '@utils';
 
 export default function sequelizeCli(command, options) {
+  let checkInfo = input => /help|version/.test(input);
   let sequelize = `${syspath.root}/node_modules/.bin/sequelize`;
-  let cliInfo = /help|version/.test(command);
+  let commandInfo = checkInfo(command);
+  let subCommandInfo = !commandInfo && options._[0] && checkInfo(options._[0]);
 
-  sequelize = `${sequelize} ${cliInfo ? '--' : ''}${command}`;
+  if (commandInfo) {
+    // check command info
+    sequelize = `${sequelize} -- ${command}`;
+  } else if (subCommandInfo) {
+    // check subcommand info
+    sequelize = `${sequelize} ${command} --${options._[0]}`;
+  } else {
+    // command itself
+    sequelize = `${sequelize} ${command}`;
+  }
 
+  // populate options string
   delete options._;
-  const opts = Object.keys(options)
+  let opts = Object.keys(options)
     .map(opt => `--${opt} ${options[opt]}`)
     .join(' ');
 
   return exec(`${sequelize} ${opts}`, (err, stdout) => {
-    print.info(`\nExecuted command: ${slash(sequelize)}`);
+    print.info(`\nSequelize command: ${slash(sequelize)}`);
 
     if (err) {
       return print.error(`ERROR: ${err}`);
