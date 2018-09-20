@@ -1,6 +1,6 @@
 /**
  * NOTE:
- * This file is generated via sequelize migration cli.
+ * This file is originally generated via sequelize migration cli.
  * Modified to serve as entry file for models.
  */
 import fs from 'fs';
@@ -13,18 +13,12 @@ const env = process.env.NODE_ENV || 'development';
 const config = DB[env];
 const db = {};
 
-let sequelize;
-
-if (config.useEnvVariable) {
-  sequelize = new Sequelize(process.env[config.useEnvVariable], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 fs.readdirSync(__dirname)
   .filter(file => {
@@ -32,16 +26,14 @@ fs.readdirSync(__dirname)
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
     );
   })
-  .forEach(file => {
+  .map(file => {
     const model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+Object.keys(db).map(
+  modelName => db[modelName].associate && db[modelName].associate(db)
+);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

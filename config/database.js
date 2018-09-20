@@ -5,26 +5,16 @@
  */
 const ENV = require('./env-properties.json');
 
+const getEnvConfig = () => ({
+  username: ENV['DB_USERNAME'],
+  password: ENV['DB_PASSWORD'],
+  database: ENV['DB_NAME'],
+  host: ENV['DB_HOST'],
+  dialect: ENV['DB_DIALECT']
+});
+
 module.exports = {
-  development: {
-    username: ENV['DB_USERNAME'],
-    password: ENV['DB_PASSWORD'],
-    database: ENV['DB_NAME'],
-    host: ENV['DB_HOST'],
-    dialect: ENV['DB_DIALECT']
-  },
-  test: {
-    username: ENV['DB_USERNAME'],
-    password: ENV['DB_PASSWORD'],
-    database: ENV['DB_NAME'],
-    host: ENV['DB_HOST'],
-    dialect: ENV['DB_DIALECT']
-  },
-  production: {
-    username: ENV['DB_USERNAME'],
-    password: ENV['DB_PASSWORD'],
-    database: ENV['DB_NAME'],
-    host: ENV['DB_HOST'],
-    dialect: ENV['DB_DIALECT']
-  }
+  development: getEnvConfig(),
+  production: getEnvConfig(),
+  test: getEnvConfig()
 };
