@@ -1,12 +1,13 @@
 import csurf from 'csurf';
 
-// config for CSRF, (default: cookie)
-const csrf = () => csurf({ cookie: true });
+// return `csurf` by passing `options` to it
+// no options provided by default
+const csrf = (options = {}) => csurf(options);
 
 // make `csrfToken` accessible in view templates, conveniently
 csrf.toLocal = () => (req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
-  return next();
+  next();
 };
 
 export default csrf;

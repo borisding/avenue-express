@@ -37,10 +37,9 @@ app
   .use(compression())
   .use(express.json())
   .use(express.urlencoded({ extended: true, limit: '10mb' }))
-  .use(cookieParser())
   .use(hpp())
-  .use(csrf())
-  .use(csrf.toLocal())
+  .use(cookieParser())
+  .use(csrf({ cookie: true }), csrf.toLocal())
   .use(express.static(SYSPATH['dist']));
 
 // modular controllers (routers)
