@@ -14,13 +14,19 @@ program
   .option('-b, --bare', 'Create minimal controller file as entry.', false)
   .option(
     '-f, --force',
-    'Force writing new controller file. This will replace existing controller file.',
+    'Force creating new controller file. This will replace existing controller file.',
     false
   )
   .option(
     '-m, --module',
     "Name of sub-folder that controller resides in `controllers` folder. Default is controller's base folder.",
     '.'
+  )
+
+  .option(
+    '-s, --suffix',
+    'Create new resource controller file with `Controller` suffix.',
+    true
   )
   .action(actions.createController);
 

@@ -7,10 +7,15 @@ import { print } from '@utils';
 
 export default async function createController(controller, options) {
   try {
+    const SUFFIX = 'Controller';
     const pathToControllers = slash(
       path.join(SYSPATH['controllers'], options.module)
     );
-    const controllerFile = `${pathToControllers}/${controller.toLowerCase()}.js`;
+
+    let controllerFile = `${pathToControllers}/${controller.toLowerCase()}${SUFFIX}.js`;
+    if (!options.suffix) {
+      controllerFile = controllerFile.replace(SUFFIX, '');
+    }
 
     await mkdirp(pathToControllers);
 

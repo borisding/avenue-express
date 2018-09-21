@@ -46,7 +46,7 @@ app
 // modular controllers (routers)
 app
   .use('/', controllers.home)
-  .use('/users', controllers.users)
+  .use('/users', controllers.user)
   // when none is matched
   .use(notFound())
   // mount error handler last
