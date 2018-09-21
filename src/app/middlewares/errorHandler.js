@@ -22,7 +22,7 @@ const errorHandler = () => (err, req, res, next) => {
   if (req.xhr) {
     res.json(errData);
   } else {
-    res.render('500', errData);
+    res.render('error', errData);
   }
 };
 
