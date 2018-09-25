@@ -3,6 +3,7 @@ const root = require('path').resolve(process.cwd());
 module.exports = {
   root,
   bin: `${root}/bin`,
+  build: `${root}/build`,
   config: `${root}/config`,
   database: `${root}/database`,
   public: `${root}/public`,

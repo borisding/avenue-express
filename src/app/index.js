@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import { DEV, ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler, notFound } from '@middlewares';
+import webpackAssets from '@build/webpack/assets.json';
 import * as controllers from '@controllers';
 
 const app = express();
@@ -21,8 +22,9 @@ const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
   watch: !!DEV
 }));
 
-// set global variable of parent template as default layout
+// set global variables for nunjucks templates
 njk.addGlobal('parentTemplate', `layout.${ext}`);
+njk.addGlobal('webpackAssets', webpackAssets);
 
 app
   // assign the views engine for mapping template
