@@ -3,8 +3,12 @@ require('module-alias/register');
 const fs = require('fs');
 const path = require('path');
 const isDev = require('isdev');
+const AssetsPlugin = require('assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require('@root/package');
 const syspath = require('@config/syspath');
+
+const publicPath = '/js/';
 
 // populate JS modules from `./src/assets/js` for multiple entries
 const getEntryFiles = () => {
@@ -23,23 +27,26 @@ const getEntryFiles = () => {
 };
 
 const webpackConfig = {
+  watch: isDev,
   mode: isDev ? 'development' : 'production',
   devtool: isDev ? 'cheap-module-inline-source-map' : 'source-map',
   context: syspath.src,
   entry: getEntryFiles(),
   optimization: {
+    minimizer: [new UglifyJsPlugin()],
     splitChunks: {
       cacheGroups: {
         vendor: {
           test: /node_modules/,
-          chunks: 'initial',
+          chunks: 'all',
           name: 'vendor'
         }
       }
     }
   },
   output: {
-    path: syspath.public,
+    publicPath,
+    path: `${syspath.public}${publicPath}`,
     filename: isDev ? '[name].js' : '[name].[contenthash].js',
     chunkFilename: isDev ? '[id].js' : '[id].[contenthash].js'
   },
@@ -62,8 +69,13 @@ const webpackConfig = {
       }
     ]
   },
-  // TODO
-  plugins: []
+  plugins: [
+    new AssetsPlugin({
+      filename: 'assets.json',
+      prettyPrint: isDev,
+      path: syspath.public
+    })
+  ]
 };
 
 module.exports = webpackConfig;

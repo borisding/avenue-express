@@ -40,7 +40,7 @@ app
   .use(hpp())
   .use(cookieParser())
   .use(csrf({ cookie: true }), csrf.toLocal())
-  .use(express.static(SYSPATH['dist']));
+  .use(express.static(SYSPATH['public']));
 
 // modular controllers (routers)
 app
