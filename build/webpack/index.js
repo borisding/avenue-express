@@ -72,8 +72,8 @@ const webpackConfig = {
   plugins: [
     new AssetsPlugin({
       prettyPrint: true,
-      filename: 'assets.json',
-      path: `${syspath.build}/webpack`
+      filename: 'bundles.json',
+      path: syspath.assets
     })
   ]
 };
