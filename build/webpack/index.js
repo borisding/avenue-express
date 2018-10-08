@@ -37,6 +37,21 @@ const getEntry = () => {
   return entryFiles;
 };
 
+// process assets map and inject into layout template
+const processOutput = assets => {
+  try {
+    const layoutSource = '_layout.html';
+    // prettier-ignore
+    const layoutContent = fs.readFileSync(`${syspath.views}/${layoutSource}`, 'utf8');
+    // prettier-ignore
+    const assetsMap = `(function(w) { w.assetsMap = ${JSON.stringify(assets)} })(window);`;
+    // replace assets map placeholder with actual output
+    return layoutContent.replace('__assetsMap__', assetsMap);
+  } catch (err) {
+    throw err;
+  }
+};
+
 // webpack's cofiguration
 const webpackConfig = {
   watch: isDev,
@@ -107,8 +122,9 @@ const webpackConfig = {
     }),
     new AssetsPlugin({
       prettyPrint: true,
-      filename: 'bundles.json',
-      path: syspath.assets
+      path: syspath.views,
+      filename: 'layout.html',
+      processOutput
     })
   ]
 };
