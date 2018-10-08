@@ -8,7 +8,6 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import { DEV, ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler, notFound } from '@middlewares';
-import bundles from '@assets/bundles.json';
 import * as controllers from '@controllers';
 
 const app = express();
@@ -23,7 +22,6 @@ const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
 }));
 
 // set global variables for nunjucks templates
-njk.addGlobal('bundles', bundles);
 njk.addGlobal('layout', `layout.${ext}`);
 
 app

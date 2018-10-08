@@ -38,11 +38,10 @@ const getEntry = () => {
 };
 
 // process assets map and inject into layout template
-const processOutput = assets => {
+const withSourceTemplate = source => assets => {
   try {
-    const layoutSource = '_layout.html';
     // prettier-ignore
-    const layoutContent = fs.readFileSync(`${syspath.views}/${layoutSource}`, 'utf8');
+    const layoutContent = fs.readFileSync(`${syspath.views}/${source}`, 'utf8');
     // prettier-ignore
     const assetsMap = `(function(w) { w.assetsMap = ${JSON.stringify(assets)} })(window);`;
     // replace assets map placeholder with actual output
@@ -124,7 +123,7 @@ const webpackConfig = {
       prettyPrint: true,
       path: syspath.views,
       filename: 'layout.html',
-      processOutput
+      processOutput: withSourceTemplate('_layout.html')
     })
   ]
 };
