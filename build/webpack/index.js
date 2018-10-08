@@ -41,11 +41,11 @@ const getEntry = () => {
 const withSourceTemplate = source => assets => {
   try {
     // prettier-ignore
-    const layoutContent = fs.readFileSync(`${syspath.views}/${source}`, 'utf8');
+    const sourceContent = fs.readFileSync(`${syspath.views}/${source}`, 'utf8');
     // prettier-ignore
     const assetsMap = `(function(w) { w.assetsMap = ${JSON.stringify(assets)} })(window);`;
     // replace assets map placeholder with actual output
-    return layoutContent.replace('__assetsMap__', assetsMap);
+    return sourceContent.replace('__assetsMap__', assetsMap);
   } catch (err) {
     throw err;
   }
