@@ -10,7 +10,7 @@ import hpp from 'hpp';
 import * as controllers from '@controllers';
 import { DEV, ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler, notFound } from '@middlewares';
-import assets from './webpack-assets';
+import assets from './webpackAssets';
 
 const app = express();
 const ext = ENV['VIEWS_EXT'];

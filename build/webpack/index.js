@@ -113,7 +113,7 @@ const webpackConfig = {
     new AssetsPlugin({
       prettyPrint: true,
       path: SYSPATH['app'],
-      filename: 'webpack-assets.js',
+      filename: 'webpackAssets.js',
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ]
