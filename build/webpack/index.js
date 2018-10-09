@@ -6,6 +6,7 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const NodemonPlugin = require('nodemon-webpack-plugin');
 const pkg = require('@root/package');
 const { DEV, ENV, SYSPATH } = require('@config');
 
@@ -98,6 +99,13 @@ const webpackConfig = {
     ]
   },
   plugins: [
+    new NodemonPlugin({
+      script: `${SYSPATH['root']}/index.js`,
+      ignore: ['src/assets', 'node_modules'],
+      watch: SYSPATH['src'],
+      verbose: false,
+      ext: 'js'
+    }),
     new MiniCssExtractPlugin({
       filename: DEV ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
       chunkFilename: DEV ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
