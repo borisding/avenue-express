@@ -1,0 +1,15 @@
+{# macro for including external script file based on the name, if any #}
+{% macro script(name) %}
+{% set scriptFile = name|script %}
+{% if scriptFile %}
+<script src={{scriptFile}}></script>
+{% endif %}
+{% endmacro %}
+
+{# macro for including external stylesheet based on the name, if any #}
+{% macro style(name) %}
+{% set styleFile = name|style %}
+{% if styleFile %}
+<link href={{styleFile}} rel="stylesheet">
+{% endif %}
+{% endmacro %}

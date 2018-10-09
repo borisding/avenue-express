@@ -1,15 +1,18 @@
+{% import "./macros/assets.html" as assets %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Avenue Express App | {{title}}</title>
     <meta name="csrf-token" content="{{csrfToken}}">
+    <title>Avenue Express App | {{title}}</title>
+    {{assets.style('global')}}
+    {{assets.style(moduleStyle)}}
   </head>
   <body>
-    <script>(function(w) { w.assetsMap = {"home":{"css":"/css/home.css","js":"/js/home.js"}} })(window);</script>
     {% block content %}{% endblock %}
+    {{assets.script('vendor')}}
+    {{assets.script(moduleScript)}}
   </body>
 </html>
-

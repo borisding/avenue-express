@@ -9,7 +9,6 @@ html,
 body {
   background-color: #fafbfc;
   font: $base-font-size $font-stack;
-  margin-top: $header-height;
 }
 
 body > .container {
@@ -32,18 +31,4 @@ hr {
   background: $color-border;
   border: 0;
   height: 1px;
-}
-
-header {
-  background-color: lighten($color-black, 10%);
-  color: $color-white;
-  display: block;
-  height: $header-height;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 100;
 }

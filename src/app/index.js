@@ -6,9 +6,11 @@ import cookieParser from 'cookie-parser';
 import nunjucks from 'nunjucks';
 import helmet from 'helmet';
 import hpp from 'hpp';
+
+import * as controllers from '@controllers';
 import { DEV, ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler, notFound } from '@middlewares';
-import * as controllers from '@controllers';
+import assets from './webpack-assets';
 
 const app = express();
 const ext = ENV['VIEWS_EXT'];
@@ -18,11 +20,24 @@ const views = [SYSPATH['views'], `${SYSPATH['views']}/partials`];
 // nunjucks config to allow adding filters, global, etc
 const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
   express: app,
+  trimBlocks: true,
+  lstripBlocks: true,
   watch: !!DEV
 }));
 
 // set global variables for nunjucks templates
 njk.addGlobal('layout', `layout.${ext}`);
+
+// set custom filters for nunjucks templates
+njk.addFilter('script', name => {
+  if (!assets[name]) return null;
+  if (assets[name].js) return assets[name].js;
+});
+
+njk.addFilter('style', name => {
+  if (!assets[name]) return null;
+  if (assets[name].css) return assets[name].css;
+});
 
 app
   // assign the views engine for mapping template

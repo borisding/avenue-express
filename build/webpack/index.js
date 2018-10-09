@@ -1,22 +1,19 @@
 require('module-alias/register');
 const fs = require('fs');
 const path = require('path');
-const isDev = require('isdev');
 const autoprefixer = require('autoprefixer');
 const AssetsPlugin = require('assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require('@root/package');
-const syspath = require('@config/syspath');
-
-const publicPath = '/';
+const { DEV, ENV, SYSPATH } = require('@config');
 
 // populate respective module JS and SCSS files as entry points
 const getEntry = () => {
   const entryFiles = {};
-  const jsPath = `${syspath.assets}/js`;
-  const scssPath = `${syspath.assets}/scss`;
+  const jsPath = `${SYSPATH['assets']}/js`;
+  const scssPath = `${SYSPATH['assets']}/scss`;
 
   fs.readdirSync(jsPath).filter(file => {
     const { name, ext } = path.parse(file);
@@ -37,26 +34,12 @@ const getEntry = () => {
   return entryFiles;
 };
 
-// process assets map and inject into layout template
-const withSourceTemplate = source => assets => {
-  try {
-    // prettier-ignore
-    const sourceContent = fs.readFileSync(`${syspath.views}/${source}`, 'utf8');
-    // prettier-ignore
-    const assetsMap = `(function(w) { w.assetsMap = ${JSON.stringify(assets)} })(window);`;
-    // replace assets map placeholder with actual output
-    return sourceContent.replace('__assetsMap__', assetsMap);
-  } catch (err) {
-    throw err;
-  }
-};
-
 // webpack's cofiguration
 const webpackConfig = {
-  watch: isDev,
-  mode: isDev ? 'development' : 'production',
-  devtool: isDev ? 'cheap-module-inline-source-map' : 'source-map',
-  context: syspath.src,
+  watch: DEV,
+  mode: DEV ? 'development' : 'production',
+  devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
+  context: SYSPATH['src'],
   entry: getEntry(),
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
@@ -71,10 +54,10 @@ const webpackConfig = {
     }
   },
   output: {
-    publicPath,
-    path: syspath.public,
-    filename: isDev ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
-    chunkFilename: isDev ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
+    publicPath: ENV['PUBLIC_PATH'],
+    path: SYSPATH['public'],
+    filename: DEV ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
+    chunkFilename: DEV ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss'],
@@ -89,7 +72,7 @@ const webpackConfig = {
           loader: 'babel-loader',
           options: {
             compact: false,
-            cacheDirectory: !!isDev
+            cacheDirectory: !!DEV
           }
         }
       },
@@ -116,14 +99,14 @@ const webpackConfig = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: isDev ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
-      chunkFilename: isDev ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
+      filename: DEV ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
+      chunkFilename: DEV ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
     }),
     new AssetsPlugin({
       prettyPrint: true,
-      path: syspath.views,
-      filename: 'layout.html',
-      processOutput: withSourceTemplate('_layout.html')
+      path: SYSPATH['app'],
+      filename: 'webpack-assets.js',
+      processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ]
 };
