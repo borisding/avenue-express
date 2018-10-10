@@ -6,11 +6,10 @@ import cookieParser from 'cookie-parser';
 import nunjucks from 'nunjucks';
 import helmet from 'helmet';
 import hpp from 'hpp';
-
 import * as controllers from '@controllers';
 import { DEV, ENV, SYSPATH } from '@config';
 import { csrf, logger, errorHandler, notFound } from '@middlewares';
-import assets from './webpackAssets';
+import assets from '@build/webpack/assets';
 
 const app = express();
 const ext = ENV['VIEWS_EXT'];

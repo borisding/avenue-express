@@ -1,1 +1,0 @@
-module.exports = {"home":{"css":"/css/home.css","js":"/js/home.js"}}

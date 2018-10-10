@@ -102,7 +102,7 @@ const webpackConfig = {
     new NodemonPlugin({
       script: `${SYSPATH['root']}/index.js`,
       ignore: ['src/assets', 'node_modules'],
-      watch: SYSPATH['src'],
+      watch: [SYSPATH['src'], `${SYSPATH['build']}/webpack/assets.js`],
       verbose: false,
       ext: 'js'
     }),
@@ -112,8 +112,8 @@ const webpackConfig = {
     }),
     new AssetsPlugin({
       prettyPrint: true,
-      path: SYSPATH['app'],
-      filename: 'webpackAssets.js',
+      path: `${SYSPATH['build']}/webpack`,
+      filename: 'assets.js',
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ]
