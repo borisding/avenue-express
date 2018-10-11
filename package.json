@@ -9,13 +9,16 @@
     "config": "node build/scripts/config.js",
     "webpack": "npm-run-all clean config && webpack --config build/webpack/config.babel.js",
     "build": "cross-env NODE_ENV=production npm run webpack",
+    "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",
     "dev": "npm run webpack",
     "server": "node .",
     "start": "npm-run-all build server",
     "lint:js": "eslint . --fix",
     "lint:scss": "stylelint **/*.scss --syntax=scss --fix",
     "lint": "npm-run-all lint:scss lint:js",
-    "test": "npm run lint:js && jest"
+    "test": "npm run lint:js && jest",
+    "test:watch": "npm test -- --watch",
+    "test:coverage": "rimraf coverage && npm test -- --coverage"
   },
   "keywords": [
     "express",
@@ -112,6 +115,7 @@
     "stylelint-scss": "^3.3.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.20.2",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.2"
   },
   "_moduleAliases": {

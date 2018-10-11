@@ -7,8 +7,11 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import pkg from '@root/package';
 import { DEV, ENV, SYSPATH } from '@config';
+
+const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 
 // populate respective module JS and SCSS files as entry points
 const getEntry = () => {
@@ -125,6 +128,12 @@ const webpackConfig = {
       path: `${SYSPATH['build']}/webpack`,
       filename: 'assets.js',
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
+    }),
+    // for more webpack bundle analyzer options,
+    // @see: https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin
+    new BundleAnalyzerPlugin({
+      analyzerMode: isAnalyze ? 'server' : 'disabled',
+      openAnalyzer: isAnalyze
     })
   ]
 };
