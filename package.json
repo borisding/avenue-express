@@ -5,7 +5,7 @@
   "main": "index.js",
   "bin": "avenue.js",
   "scripts": {
-    "clean": "rimraf public config/*.json",
+    "clean": "rimraf public config/*.json build/webpack/assets.js",
     "config": "node build/scripts/config.js",
     "webpack": "npm-run-all clean config && webpack --config build/webpack",
     "build": "cross-env NODE_ENV=production npm run webpack",
