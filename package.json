@@ -82,7 +82,9 @@
     "@babel/preset-react": "^7.0.0",
     "assets-webpack-plugin": "^3.9.7",
     "autoprefixer": "^9.1.5",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "chokidar": "^2.0.4",
     "copy-webpack-plugin": "^4.5.3",
@@ -102,6 +104,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.14.3",
+    "regenerator-runtime": "^0.12.1",
     "sass-loader": "^7.1.0",
     "stylelint": "^9.6.0",
     "stylelint-config-sass-guidelines": "^5.2.0",
@@ -135,7 +138,7 @@
       "js"
     ],
     "testEnvironment": "node",
-    "testRegex": ".*.spec\\.js$",
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.jsx?$",
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ]
