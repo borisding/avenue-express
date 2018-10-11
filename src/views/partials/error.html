@@ -2,11 +2,13 @@
 {% extends layout %}
 
 {% block content %}
-<h3>Something went wrong.</h3>
+<div class="notification is-danger">
+    <h3>Something went wrong.</h3>
 
-<ul>
-{% for error in errors %}
-    <li>({{error.code}}) {{error.message}}</li>
-{% endfor %}
-</ul>
+    <ul>
+    {% for error in errors %}
+        <li>({{error.code}}) {{error.message}}</li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}

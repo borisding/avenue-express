@@ -3,6 +3,7 @@ import path from 'path';
 import autoprefixer from 'autoprefixer';
 import AssetsPlugin from 'assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import FixStyleOnlyEntriesPlugin from 'webpack-fix-style-only-entries';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
@@ -11,12 +12,12 @@ import pkg from '../../package';
 import { DEV, ENV, SYSPATH } from '../../config';
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
+const jsPath = `${SYSPATH['ASSETS']}/js`;
+const scssPath = `${SYSPATH['ASSETS']}/scss`;
 
 // populate respective module JS and SCSS files as entry points
-const getEntry = () => {
+const getModuleEntry = () => {
   const entryFiles = {};
-  const jsPath = `${SYSPATH['ASSETS']}/js`;
-  const scssPath = `${SYSPATH['ASSETS']}/scss`;
 
   fs.readdirSync(jsPath).filter(file => {
     const { name, ext } = path.parse(file);
@@ -43,7 +44,7 @@ const webpackConfig = {
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
   context: SYSPATH['SRC'],
-  entry: getEntry(),
+  entry: { ...getModuleEntry(), main: `${scssPath}/main.scss` },
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
@@ -90,7 +91,7 @@ const webpackConfig = {
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.(sass|scss)$/,
         exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
@@ -111,6 +112,8 @@ const webpackConfig = {
     ]
   },
   plugins: [
+    // this plugin prevents emit redundant JS file for single entry style
+    new FixStyleOnlyEntriesPlugin(),
     new NodemonPlugin({
       script: `${SYSPATH['ROOT']}/index.js`,
       ignore: ['src/assets', 'node_modules'],

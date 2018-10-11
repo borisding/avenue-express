@@ -11,8 +11,12 @@
     {{assets.style(moduleStyle)}}
   </head>
   <body>
+  <section class="section">
+    <div class="container">
     {% block content %}{% endblock %}
-    {{assets.script('vendor')}}
-    {{assets.script(moduleScript)}}
+    </div>
+  </section>
+  {{assets.script('vendor')}}
+  {{assets.script(moduleScript)}}
   </body>
 </html>
