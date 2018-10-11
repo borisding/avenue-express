@@ -1,14 +1,14 @@
-require('module-alias/register');
-const fs = require('fs');
-const path = require('path');
-const autoprefixer = require('autoprefixer');
-const AssetsPlugin = require('assets-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const NodemonPlugin = require('nodemon-webpack-plugin');
-const pkg = require('@root/package');
-const { DEV, ENV, SYSPATH } = require('@config');
+import 'module-alias/register';
+import fs from 'fs';
+import path from 'path';
+import autoprefixer from 'autoprefixer';
+import AssetsPlugin from 'assets-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import NodemonPlugin from 'nodemon-webpack-plugin';
+import pkg from '@root/package';
+import { DEV, ENV, SYSPATH } from '@config';
 
 // populate respective module JS and SCSS files as entry points
 const getEntry = () => {
@@ -72,8 +72,18 @@ const webpackConfig = {
         use: {
           loader: 'babel-loader',
           options: {
+            babelrc: false,
             compact: false,
-            cacheDirectory: !!DEV
+            cacheDirectory: !!DEV,
+            presets: [
+              ['@babel/preset-env', { modules: false, useBuiltIns: 'usage' }],
+              '@babel/preset-react'
+            ],
+            plugins: [
+              '@babel/plugin-transform-strict-mode',
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-proposal-class-properties'
+            ]
           }
         }
       },

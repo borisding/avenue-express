@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf public config/*.json build/webpack/assets.js",
     "config": "node build/scripts/config.js",
-    "webpack": "npm-run-all clean config && webpack --config build/webpack",
+    "webpack": "npm-run-all clean config && webpack --config build/webpack/config.babel.js",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "dev": "npm run webpack",
     "server": "node .",
@@ -80,6 +80,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "assets-webpack-plugin": "^3.9.7",
     "autoprefixer": "^9.1.5",
     "babel-core": "^7.0.0-bridge.0",
