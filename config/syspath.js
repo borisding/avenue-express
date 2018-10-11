@@ -1,18 +1,18 @@
-const root = require('path').resolve(process.cwd());
+const ROOT = require('path').resolve(process.cwd());
 
 module.exports = {
-  root,
-  bin: `${root}/bin`,
-  build: `${root}/build`,
-  config: `${root}/config`,
-  database: `${root}/database`,
-  logs: `${root}/logs`,
-  public: `${root}/public`,
-  src: `${root}/src`,
-  app: `${root}/src/app`,
-  assets: `${root}/src/assets`,
-  controllers: `${root}/src/app/controllers`,
-  middlewares: `${root}/src/app/middlewares`,
-  models: `${root}/src/app/models`,
-  views: `${root}/src/app/views`
+  ROOT,
+  BIN: `${ROOT}/bin`,
+  BUILD: `${ROOT}/build`,
+  CONFIG: `${ROOT}/config`,
+  DATABASE: `${ROOT}/database`,
+  LOGS: `${ROOT}/logs`,
+  PUBLIC: `${ROOT}/public`,
+  UTILS: `${ROOT}/utils`,
+  SRC: `${ROOT}/src`,
+  ASSETS: `${ROOT}/src/assets`,
+  CONTROLLERS: `${ROOT}/src/controllers`,
+  MIDDLEWARES: `${ROOT}/src/middlewares`,
+  MODELS: `${ROOT}/src/models`,
+  VIEWS: `${ROOT}/src/views`
 };

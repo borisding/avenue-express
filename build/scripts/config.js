@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const dotenvParseVariables = require('dotenv-parse-variables');
 const SYSPATH = require('@config/syspath');
 
-let pathToEnv = `${SYSPATH['config']}/.env`;
+let pathToEnv = `${SYSPATH['CONFIG']}/.env`;
 
 // using .env.example file instead if .env does not exist
 if (!fs.existsSync(pathToEnv)) {
@@ -25,7 +25,7 @@ const writeEnvProperties = () => {
     let envProperties = JSON.stringify(parsedEnv, null, 2);
 
     fs.writeFileSync(
-      `${SYSPATH['config']}/${targetConfigFile}`,
+      `${SYSPATH['CONFIG']}/${targetConfigFile}`,
       envProperties,
       'utf8'
     );
@@ -33,7 +33,7 @@ const writeEnvProperties = () => {
     console.info(
       'Config file [%s] was written in location [%s]!',
       targetConfigFile,
-      slash(SYSPATH['config'])
+      slash(SYSPATH['CONFIG'])
     );
   } catch (err) {
     console.error('Failed to write config file [%s]', targetConfigFile);

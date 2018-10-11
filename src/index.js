@@ -14,7 +14,7 @@ import assets from '@build/webpack/assets';
 const app = express();
 const ext = ENV['VIEWS_EXT'];
 const engine = cons[ENV['VIEWS_ENGINE']];
-const views = [SYSPATH['views'], `${SYSPATH['views']}/partials`];
+const views = [SYSPATH['VIEWS'], `${SYSPATH['VIEWS']}/partials`];
 
 // nunjucks config to allow adding filters, global, etc
 const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
@@ -54,7 +54,7 @@ app
   .use(hpp())
   .use(cookieParser())
   .use(csrf({ cookie: true }), csrf.toLocal())
-  .use(express.static(SYSPATH['public']));
+  .use(express.static(SYSPATH['PUBLIC']));
 
 // modular controllers (routers)
 app

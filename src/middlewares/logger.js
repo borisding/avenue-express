@@ -8,7 +8,7 @@ const logger = () => {
   }
 
   return morgan('combined', {
-    stream: fs.createWriteStream(`${SYSPATH['logs']}/access.log`, {
+    stream: fs.createWriteStream(`${SYSPATH['LOGS']}/access.log`, {
       flags: 'a'
     }),
     skip: (req, res) => res.statusCode < 400

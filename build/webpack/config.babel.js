@@ -16,8 +16,8 @@ const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 // populate respective module JS and SCSS files as entry points
 const getEntry = () => {
   const entryFiles = {};
-  const jsPath = `${SYSPATH['assets']}/js`;
-  const scssPath = `${SYSPATH['assets']}/scss`;
+  const jsPath = `${SYSPATH['ASSETS']}/js`;
+  const scssPath = `${SYSPATH['ASSETS']}/scss`;
 
   fs.readdirSync(jsPath).filter(file => {
     const { name, ext } = path.parse(file);
@@ -43,7 +43,7 @@ const webpackConfig = {
   watch: DEV,
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
-  context: SYSPATH['src'],
+  context: SYSPATH['SRC'],
   entry: getEntry(),
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
@@ -59,7 +59,7 @@ const webpackConfig = {
   },
   output: {
     publicPath: ENV['PUBLIC_PATH'],
-    path: SYSPATH['public'],
+    path: SYSPATH['PUBLIC'],
     filename: DEV ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
     chunkFilename: DEV ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
   },
@@ -113,9 +113,9 @@ const webpackConfig = {
   },
   plugins: [
     new NodemonPlugin({
-      script: `${SYSPATH['root']}/index.js`,
+      script: `${SYSPATH['ROOT']}/index.js`,
       ignore: ['src/assets', 'node_modules'],
-      watch: [SYSPATH['src'], `${SYSPATH['build']}/webpack/assets.js`],
+      watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
       verbose: false,
       ext: 'js'
     }),
@@ -125,7 +125,7 @@ const webpackConfig = {
     }),
     new AssetsPlugin({
       prettyPrint: true,
-      path: `${SYSPATH['build']}/webpack`,
+      path: `${SYSPATH['BUILD']}/webpack`,
       filename: 'assets.js',
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     }),

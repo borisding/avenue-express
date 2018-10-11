@@ -1,11 +1,11 @@
-import { exec } from 'child_process';
 import slash from 'slash';
-import syspath from '@config/syspath';
+import { exec } from 'child_process';
 import { print } from '@utils';
+import SYSPATH from '@config/syspath';
 
 export default function sequelizeCli(command, options) {
   let checkInfo = input => /help|version/.test(input);
-  let sequelize = `${syspath.root}/node_modules/.bin/sequelize`;
+  let sequelize = `${SYSPATH['ROOT']}/node_modules/.bin/sequelize`;
   let commandInfo = checkInfo(command);
   let subCommandInfo = !commandInfo && options._[0] && checkInfo(options._[0]);
 

@@ -126,14 +126,13 @@
     "@database": "database",
     "@logs": "logs",
     "@public": "public",
+    "@utils": "utils",
     "@src": "src",
-    "@app": "src/app",
-    "@controllers": "src/app/controllers",
-    "@middlewares": "src/app/middlewares",
-    "@models": "src/app/models",
-    "@views": "src/app/views",
-    "@assets": "src/assets",
-    "@utils": "src/utils"
+    "@controllers": "src/controllers",
+    "@middlewares": "src/middlewares",
+    "@models": "src/models",
+    "@views": "src/views",
+    "@assets": "src/assets"
   },
   "jest": {
     "collectCoverageFrom": [

@@ -9,10 +9,11 @@ export default async function createController(controller, options) {
   try {
     const SUFFIX = 'Controller';
     const pathToControllers = slash(
-      path.join(SYSPATH['controllers'], options.module)
+      path.join(SYSPATH['CONTROLLERS'], options.module)
     );
 
     let controllerFile = `${pathToControllers}/${controller.toLowerCase()}${SUFFIX}.js`;
+
     if (!options.suffix) {
       controllerFile = controllerFile.replace(SUFFIX, '');
     }
@@ -26,7 +27,7 @@ export default async function createController(controller, options) {
     }
 
     const fileData = fs.readFileSync(
-      `${SYSPATH['bin']}/cli/templates/controller.${
+      `${SYSPATH['BIN']}/cli/templates/controller.${
         options.bare ? 'bare' : 'resource'
       }.txt`,
       'utf8'
