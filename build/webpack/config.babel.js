@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import fs from 'fs';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
@@ -8,8 +7,8 @@ import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import pkg from '@root/package';
-import { DEV, ENV, SYSPATH } from '@config';
+import pkg from '../../package';
+import { DEV, ENV, SYSPATH } from '../../config';
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 

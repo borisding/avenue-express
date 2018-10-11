@@ -1,11 +1,8 @@
-// enable module aliases for config `require`
-require('module-alias/register');
-
-const fs = require('fs');
-const slash = require('slash');
-const dotenv = require('dotenv');
-const dotenvParseVariables = require('dotenv-parse-variables');
-const SYSPATH = require('@config/syspath');
+import fs from 'fs';
+import slash from 'slash';
+import dotenv from 'dotenv';
+import dotenvParseVariables from 'dotenv-parse-variables';
+import SYSPATH from '../../config/syspath';
 
 let pathToEnv = `${SYSPATH['CONFIG']}/.env`;
 

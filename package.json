@@ -6,7 +6,7 @@
   "bin": "avenue.js",
   "scripts": {
     "clean": "rimraf public config/*.json build/webpack/assets.js",
-    "config": "node build/scripts/config.js",
+    "config": "node -r esm build/scripts/config.js",
     "webpack": "npm-run-all clean config && webpack --config build/webpack/config.babel.js",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",
