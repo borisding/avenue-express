@@ -116,7 +116,7 @@ const webpackConfig = {
     new FixStyleOnlyEntriesPlugin(),
     new NodemonPlugin({
       script: `${SYSPATH['ROOT']}/index.js`,
-      ignore: ['src/assets', 'node_modules'],
+      ignore: ['src/assets', 'node_modules', 'sessions'],
       watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
       verbose: false,
       ext: 'js'

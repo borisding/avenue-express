@@ -7,9 +7,9 @@ import nunjucks from 'nunjucks';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import * as controllers from '@controllers';
-import { DEV, ENV, SYSPATH } from '@config';
-import { csrf, logger, errorHandler, notFound } from '@middlewares';
 import assets from '@build/webpack/assets';
+import { DEV, ENV, SYSPATH } from '@config';
+import { csrf, logger, session, errorHandler, notFound } from '@middlewares';
 
 const app = express();
 const ext = 'html';
@@ -49,10 +49,12 @@ app
   .use(helmet())
   .use(cors())
   .use(cookieParser())
+  .use(session())
   .use(compression())
   .use(csrf({ cookie: true }), csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
-  .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
+  .use(express.urlencoded({ extended: true, limit: '10mb' }))
+  .use(hpp())
   .use(express.static(SYSPATH['PUBLIC']));
 
 // modular controllers (routers)
