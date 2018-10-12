@@ -12,7 +12,7 @@ import { csrf, logger, errorHandler, notFound } from '@middlewares';
 import assets from '@build/webpack/assets';
 
 const app = express();
-const ext = ENV['VIEWS_EXT'];
+const ext = 'html';
 const engine = cons[ENV['VIEWS_ENGINE']];
 const views = [SYSPATH['VIEWS'], `${SYSPATH['VIEWS']}/partials`];
 
@@ -46,14 +46,13 @@ app
 
 app
   .use(logger())
-  .use(cors())
   .use(helmet())
-  .use(compression())
-  .use(express.json())
-  .use(express.urlencoded({ extended: true, limit: '10mb' }))
-  .use(hpp())
+  .use(cors())
   .use(cookieParser())
+  .use(compression())
   .use(csrf({ cookie: true }), csrf.toLocal())
+  .use(express.json({ limit: '1mb' }))
+  .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
   .use(express.static(SYSPATH['PUBLIC']));
 
 // modular controllers (routers)
