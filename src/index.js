@@ -6,10 +6,10 @@ import cookieParser from 'cookie-parser';
 import nunjucks from 'nunjucks';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import * as controllers from '@controllers';
+import * as mid from '@middlewares';
+import * as ctl from '@controllers';
 import assets from '@build/webpack/assets';
 import { DEV, ENV, SYSPATH } from '@config';
-import { csrf, logger, session, errorHandler, notFound } from '@middlewares';
 
 const app = express();
 const ext = 'html';
@@ -45,25 +45,23 @@ app
   .set('view engine', ext);
 
 app
-  .use(logger())
+  .use(mid.logger())
+  .use(compression())
   .use(helmet())
   .use(cors())
   .use(cookieParser())
-  .use(session())
-  .use(compression())
-  .use(csrf({ cookie: true }), csrf.toLocal())
+  .use(mid.session())
+  .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
-  .use(express.urlencoded({ extended: true, limit: '10mb' }))
-  .use(hpp())
+  .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
   .use(express.static(SYSPATH['PUBLIC']));
 
-// modular controllers (routers)
 app
-  .use('/', controllers.home)
-  .use('/users', controllers.user)
+  .use('/', ctl.home)
+  .use('/users', ctl.user)
   // when none is matched
-  .use(notFound())
+  .use(mid.notFound())
   // mount error handler last
-  .use(errorHandler());
+  .use(mid.errorHandler());
 
 export default app;
