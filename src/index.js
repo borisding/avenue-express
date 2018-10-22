@@ -3,6 +3,8 @@ import cors from 'cors';
 import cons from 'consolidate';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import sessionFileStore from 'session-file-store';
 import nunjucks from 'nunjucks';
 import helmet from 'helmet';
 import hpp from 'hpp';
@@ -15,6 +17,17 @@ const app = express();
 const ext = 'html';
 const engine = cons[ENV['VIEWS_ENGINE']];
 const views = [SYSPATH['VIEWS'], `${SYSPATH['VIEWS']}/partials`];
+
+// session configuration for file storage
+const FileStore = sessionFileStore(session);
+const fileSession = () =>
+  session({
+    store: new FileStore(),
+    resave: false,
+    saveUninitialized: false,
+    secret: ENV['SECRET_KEY'],
+    cookie: { maxAge: ENV['COOKIE_MAXAGE'] }
+  });
 
 // nunjucks config to allow adding filters, global, etc
 const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
@@ -50,7 +63,7 @@ app
   .use(helmet())
   .use(cors())
   .use(cookieParser())
-  .use(mid.session())
+  .use(fileSession())
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
