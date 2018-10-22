@@ -18,5 +18,8 @@
   </section>
   {{assets.script('vendor')}}
   {{assets.script(moduleScript)}}
+  {% if production %}
+  {{assets.script('offline')}}
+  {% endif %}
   </body>
 </html>
