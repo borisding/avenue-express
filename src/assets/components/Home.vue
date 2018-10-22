@@ -1,12 +1,18 @@
 <template>
-  <div class="greetings">{{ greetings }}</div>
+  <article class="message is-info">
+  <div class="message-header">
+    <p>Greetings Widget</p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body"><span class="greetings">{{message}}</span></div>
+</article>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      greetings: 'Hi! This is loaded from Vue Home single file component.'
+      message: 'Hi! This widget is loaded from Home Vue single file component.'
     };
   }
 };
