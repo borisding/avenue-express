@@ -1,12 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import autoprefixer from 'autoprefixer';
 import AssetsPlugin from 'assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import FixStyleOnlyEntriesPlugin from 'webpack-fix-style-only-entries';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
+import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import pkg from '../../package';
 import { DEV, ENV, SYSPATH } from '../../config';
@@ -38,6 +37,12 @@ const getModuleEntry = () => {
   return entryFiles;
 };
 
+// Vue aliases
+const vueAliases = {
+  vue$: 'vue/dist/vue.esm.js',
+  '@components': `${SYSPATH['ASSETS']}/components`
+};
+
 // webpack's cofiguration
 const webpackConfig = {
   watch: DEV,
@@ -64,11 +69,17 @@ const webpackConfig = {
     chunkFilename: DEV ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.css', '.scss'],
-    alias: pkg._moduleAliases
+    extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
+    alias: Object.assign(vueAliases, pkg._moduleAliases)
   },
   module: {
     rules: [
+      // rule for Vue's Single File Components (SFCs)
+      {
+        test: /\.vue$/,
+        exclude: /node_modules/,
+        loader: 'vue-loader'
+      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -79,8 +90,7 @@ const webpackConfig = {
             compact: false,
             cacheDirectory: !!DEV,
             presets: [
-              ['@babel/preset-env', { modules: false, useBuiltIns: 'usage' }],
-              '@babel/preset-react'
+              ['@babel/preset-env', { modules: false, useBuiltIns: 'usage' }]
             ],
             plugins: [
               '@babel/plugin-transform-strict-mode',
@@ -90,9 +100,27 @@ const webpackConfig = {
           }
         }
       },
+      // Vue specific style config for SFCs
+      {
+        test: /\.(sass|scss|css)$/,
+        exclude: [/node_modules/, /scss/],
+        use: [
+          {
+            loader: 'vue-style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: { importLoaders: 1, sourceMap: true }
+          },
+          {
+            loader: 'postcss-loader'
+          }
+        ]
+      },
+      // general Sass file config (except .vue single file components)
       {
         test: /\.(sass|scss)$/,
-        exclude: /node_modules/,
+        exclude: ['/node_modules/', '/components/'],
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -100,8 +128,7 @@ const webpackConfig = {
             options: { importLoaders: 2, sourceMap: true }
           },
           {
-            loader: 'postcss-loader',
-            options: { plugins: () => [autoprefixer] }
+            loader: 'postcss-loader'
           },
           {
             loader: 'sass-loader',
@@ -112,8 +139,6 @@ const webpackConfig = {
     ]
   },
   plugins: [
-    // this plugin prevents emit redundant JS file for single entry style
-    new FixStyleOnlyEntriesPlugin(),
     new NodemonPlugin({
       script: `${SYSPATH['ROOT']}/index.js`,
       ignore: ['src/assets', 'node_modules', 'sessions'],
@@ -121,6 +146,7 @@ const webpackConfig = {
       verbose: false,
       ext: 'js'
     }),
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: DEV ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
       chunkFilename: DEV ? 'css/[id].css' : 'css/[id].[contenthash:8].css'

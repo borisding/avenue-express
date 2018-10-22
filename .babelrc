@@ -1,7 +1,6 @@
 {
     "presets": [
-        ["@babel/preset-env", { "useBuiltIns": "usage" }],
-        "@babel/preset-react"
+        ["@babel/preset-env", { "useBuiltIns": "usage" }]
     ],
     "plugins": [
         "@babel/plugin-transform-strict-mode",
