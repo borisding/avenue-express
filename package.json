@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf public config/*.json build/webpack/assets.js",
     "config": "node -r esm build/scripts/config.js",
-    "webpack": "npm-run-all clean config && webpack --config build/webpack/config.babel.js",
+    "webpack": "npm-run-all clean config && webpack --config build/webpack/config.js",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",
     "postinstall": "npm run build",
@@ -17,7 +17,7 @@
     "lint:js": "eslint . --fix",
     "lint:scss": "stylelint **/*.scss --syntax=scss --fix",
     "lint": "npm-run-all lint:scss lint:js",
-    "test": "npm run lint:js && jest",
+    "test": "npm run lint:js && cross-env NODE_ENV=test jest",
     "test:watch": "npm test -- --watch",
     "test:coverage": "rimraf coverage && npm test -- --coverage"
   },
@@ -82,12 +82,14 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/register": "^7.0.0",
+    "@vue/test-utils": "^1.0.0-beta.25",
     "assets-webpack-plugin": "^3.9.7",
     "autoprefixer": "^9.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
+    "babel-plugin-webpack-alias": "^2.1.2",
     "chokidar": "^2.0.4",
     "copy-webpack-plugin": "^4.5.4",
     "css-loader": "^1.0.0",
@@ -98,6 +100,7 @@
     "file-loader": "^2.0.0",
     "husky": "^1.1.2",
     "jest": "^23.6.0",
+    "jest-serializer-vue": "^2.0.2",
     "mini-css-extract-plugin": "^0.4.4",
     "node-sass": "^4.9.4",
     "nodemon": "^1.18.4",
@@ -113,6 +116,7 @@
     "stylelint-config-sass-guidelines": "^5.2.0",
     "stylelint-scss": "^3.3.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
+    "vue-jest": "^3.0.0",
     "vue-loader": "^15.4.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.17",
@@ -195,11 +199,20 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.js"
+      "src/**/*.{js,vue}",
+      "!**/node_modules/**"
     ],
     "moduleFileExtensions": [
-      "js"
+      "js",
+      "vue"
     ],
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-serializer-vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
     "testEnvironment": "node",
     "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.jsx?$",
     "testPathIgnorePatterns": [

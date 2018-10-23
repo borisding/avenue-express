@@ -6,5 +6,12 @@
         "@babel/plugin-transform-strict-mode",
         "@babel/plugin-syntax-dynamic-import",
         "@babel/plugin-proposal-class-properties"
-    ]
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                ["babel-plugin-webpack-alias", { "config": "./build/webpack/config.js" }]
+            ]
+        }
+    }
 }

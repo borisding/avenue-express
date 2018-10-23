@@ -1,20 +1,21 @@
-import fs from 'fs';
-import path from 'path';
-import AssetsPlugin from 'assets-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
-import NodemonPlugin from 'nodemon-webpack-plugin';
-import OfflinePlugin from 'offline-plugin';
-import VueLoaderPlugin from 'vue-loader/lib/plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import pkg from '../../package';
-import { DEV, ENV, SYSPATH } from '../../config';
+const fs = require('fs');
+const path = require('path');
+const AssetsPlugin = require('assets-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const NodemonPlugin = require('nodemon-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const pkg = require('../../package');
+const { DEV, ENV, SYSPATH } = require('../../config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const jsPath = `${SYSPATH['ASSETS']}/js`;
 const scssPath = `${SYSPATH['ASSETS']}/scss`;
 const sourceMap = !!DEV;
+const { assign, keys } = Object;
 
 // Vue aliases
 const vueAliases = {
@@ -24,7 +25,7 @@ const vueAliases = {
 
 // loop and compute alias with absolute path, respectively
 const moduleAliases = {};
-Object.keys(pkg._moduleAliases).map(alias => {
+keys(pkg._moduleAliases).map(alias => {
   moduleAliases[alias] = `${SYSPATH['ROOT']}/${pkg._moduleAliases[alias]}`;
 });
 
@@ -57,7 +58,7 @@ const webpackConfig = {
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
   context: SYSPATH['SRC'],
-  entry: { ...getModuleEntry(), main: `${scssPath}/main.scss` },
+  entry: assign(getModuleEntry(), { main: `${scssPath}/main.scss` }),
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
@@ -78,7 +79,7 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
-    alias: { ...vueAliases, ...moduleAliases }
+    alias: assign(vueAliases, moduleAliases)
   },
   module: {
     rules: [
