@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home.vue renders correctly 1`] = `
+<article class="message is-info">
+  <div class="message-header">
+    <p>Greetings Widget</p> <button aria-label="delete" class="delete"></button>
+  </div>
+  <div class="message-body"><span class="greetings">Hi! This widget is loaded from Home Vue single file component.</span></div>
+</article>
+`;
