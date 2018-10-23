@@ -5,6 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
+import OfflinePlugin from 'offline-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import pkg from '../../package';
@@ -13,6 +14,19 @@ import { DEV, ENV, SYSPATH } from '../../config';
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const jsPath = `${SYSPATH['ASSETS']}/js`;
 const scssPath = `${SYSPATH['ASSETS']}/scss`;
+const sourceMap = !!DEV;
+
+// Vue aliases
+const vueAliases = {
+  vue$: 'vue/dist/vue.esm.js',
+  '@components': `${SYSPATH['ASSETS']}/components`
+};
+
+// loop and compute alias with absolute path, respectively
+const moduleAliases = {};
+Object.keys(pkg._moduleAliases).map(alias => {
+  moduleAliases[alias] = `${SYSPATH['ROOT']}/${pkg._moduleAliases[alias]}`;
+});
 
 // populate respective module JS and SCSS files as entry points
 const getModuleEntry = () => {
@@ -35,12 +49,6 @@ const getModuleEntry = () => {
   });
 
   return entryFiles;
-};
-
-// Vue aliases
-const vueAliases = {
-  vue$: 'vue/dist/vue.esm.js',
-  '@components': `${SYSPATH['ASSETS']}/components`
 };
 
 // webpack's cofiguration
@@ -70,7 +78,7 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
-    alias: Object.assign(vueAliases, pkg._moduleAliases)
+    alias: { ...vueAliases, ...moduleAliases }
   },
   module: {
     rules: [
@@ -110,7 +118,7 @@ const webpackConfig = {
           },
           {
             loader: 'css-loader',
-            options: { importLoaders: 1, sourceMap: true }
+            options: { importLoaders: 1, sourceMap }
           },
           {
             loader: 'postcss-loader'
@@ -125,14 +133,14 @@ const webpackConfig = {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { importLoaders: 2, sourceMap: true }
+            options: { importLoaders: 2, sourceMap }
           },
           {
             loader: 'postcss-loader'
           },
           {
             loader: 'sass-loader',
-            options: { sourceMap: true }
+            options: { sourceMap }
           }
         ]
       }
@@ -156,14 +164,26 @@ const webpackConfig = {
       path: `${SYSPATH['BUILD']}/webpack`,
       filename: 'assets.js',
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
-    }),
-    // for more webpack bundle analyzer options,
-    // @see: https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin
-    new BundleAnalyzerPlugin({
-      analyzerMode: isAnalyze ? 'server' : 'disabled',
-      openAnalyzer: isAnalyze
     })
-  ]
+  ].concat(
+    DEV
+      ? []
+      : [
+          new OfflinePlugin({
+            externals: ['/'],
+            publicPath: ENV['PUBLIC_PATH'],
+            relativePaths: false, // to allow using publicPath
+            ServiceWorker: { events: true }, // use ServiceWorker for offline usage
+            AppCache: false // disable for AppCache
+          }),
+          // for more webpack bundle analyzer options,
+          // @see: https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin
+          new BundleAnalyzerPlugin({
+            analyzerMode: isAnalyze ? 'server' : 'disabled',
+            openAnalyzer: isAnalyze
+          })
+        ]
+  )
 };
 
 module.exports = webpackConfig;

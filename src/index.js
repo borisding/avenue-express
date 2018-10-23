@@ -39,6 +39,7 @@ const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
 
 // set global variables for nunjucks templates
 njk.addGlobal('layout', `layout.${ext}`);
+njk.addGlobal('production', !DEV);
 
 // set custom filters for nunjucks templates
 njk.addFilter('script', name => {
