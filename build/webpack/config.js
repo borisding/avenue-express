@@ -40,6 +40,11 @@ const getModuleEntry = () => {
       entryFiles[name] = [`${jsPath}/${file}`];
     }
 
+    // we don't need `offline.js` for development
+    if (DEV) {
+      delete entryFiles.offline;
+    }
+
     // check if module has .scss file as well
     // if there is, push as part of the module entry point
     const moduleScss = `${scssPath}/${name}.scss`;
@@ -58,7 +63,7 @@ const webpackConfig = {
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
   context: SYSPATH['SRC'],
-  entry: assign(getModuleEntry(), { main: `${scssPath}/main.scss` }),
+  entry: assign({ main: `${scssPath}/main.scss` }, getModuleEntry()),
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
@@ -161,9 +166,9 @@ const webpackConfig = {
       chunkFilename: DEV ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
     }),
     new AssetsPlugin({
+      filename: 'assets.js',
       prettyPrint: true,
       path: `${SYSPATH['BUILD']}/webpack`,
-      filename: 'assets.js',
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(
