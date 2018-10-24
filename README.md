@@ -1,4 +1,5 @@
 ## Avenue-Express
+
 <p>
 <a href="https://github.com/borisding/avenue-express"><img src="https://img.shields.io/github/release/borisding/avenue-express.svg" alt="Release Version"></a>
 <a href="https://raw.githubusercontent.com/borisding/avenue-express/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
@@ -10,6 +11,7 @@ This starter aims to be productive and good fit for MVC web development and also
 > If you're looking for Server-Side Rendering (SSR) web starter kit, please also check out [universsr](https://github.com/borisding/universsr).
 
 ## Requirement
+
 This project starter should be working as expected with the following minimal version of Node/NPM, respectively:
 
 | Dependency |  Version  |
@@ -17,9 +19,9 @@ This project starter should be working as expected with the following minimal ve
 | Node       | >= v8.0.0 |
 | NPM        | >= v5.0.0 |
 
-
 ## Quick Start
-1) Clone the git repository into your new project folder and install required dependencies by running the command below:
+
+1. Clone the git repository into your new project folder and install required dependencies by running the command below:
 
 ```bash
 # cloning git repository into `my-project` folder
@@ -28,7 +30,8 @@ git clone --depth=1 https://github.com/borisding/avenue-express.git my-project
 # install project dependencies
 cd my-project && npm install
 ```
-2) Running application by executing one of the following scripts:
+
+2. Running application by executing one of the following scripts:
 
 **Development**
 
@@ -39,7 +42,8 @@ npm run dev
 **Production**
 
 ```bash
-npm start
+# build for production ready and start server
+npm run build && npm start
 ```
 
 To run tests:
@@ -54,6 +58,7 @@ npm test
 ```
 
 ## Project Structure
+
 Below is a brief description of project structure in tree-view:
 
 ```
@@ -143,6 +148,7 @@ console.log(SYSPATH["PUBLIC"]);
 ```
 
 ## Avenue CLI
+
 - This stater comes with a light CLI to perform some routine tasks, such as controller file creation, Sequelize database migration, etc.
 
 - To see available commands:
@@ -152,6 +158,7 @@ $ node avenue --help
 ```
 
 ## Controllers
+
 - Controller file can be generated via the following command:
 
 ```bash
@@ -167,35 +174,36 @@ node avenue new:controller --help
 
 - This starter borrows the same action names from [Laravel](https://laravel.com) framework for its resource controller to perform typical CRUD operations:
 
-| HTTP Verb     | URI                                          | Action   | 
-| --------------| ---------------------------------------------|----------|
-| GET           | `/users`                                     | `index`  |
-| GET           | `/users/create`                              | `create` |
-| POST          | `/users`                                     | `store`  |
-| GET           | `/users/:id`                                 | `show`   |
-| GET           | `/users/:id/edit`                            | `edit`   |
-| PUT           | `/users/:id`                                 | `update` |
-| DELETE        | `/users/:id`                                 | `destroy`|
+| HTTP Verb | URI               | Action    |
+| --------- | ----------------- | --------- |
+| GET       | `/users`          | `index`   |
+| GET       | `/users/create`   | `create`  |
+| POST      | `/users`          | `store`   |
+| GET       | `/users/:id`      | `show`    |
+| GET       | `/users/:id/edit` | `edit`    |
+| PUT       | `/users/:id`      | `update`  |
+| DELETE    | `/users/:id`      | `destroy` |
 
 - For generated bare controller, there is only one `index` action in controller file, eg:
 
 ```js
-import { Router } from 'express';
+import { Router } from "express";
 
 // GET method for index action
 export function index(req, res) {
-  res.render('home');
+  res.render("home");
 }
 
 // simple route for bare controller
 const router = Router();
 
-router.get('/', index);
+router.get("/", index);
 
 export default router;
 ```
 
 ## Models
+
 - By default, this starter uses [Sequelize](http://docs.sequelizejs.com/) ORM for dealing with SQL databases.
 
 - For instance, to create a new `User` model via Avenue CLI:
