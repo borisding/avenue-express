@@ -57,6 +57,23 @@ const getModuleEntry = () => {
   return entryFiles;
 };
 
+// file loader for image/font rule
+const getFileLoader = (options = {}) => {
+  return [
+    {
+      loader: 'url-loader',
+      options: assign(
+        {
+          fallback: 'file-loader',
+          limit: 10240,
+          emitFile: true
+        },
+        options
+      )
+    }
+  ];
+};
+
 // webpack's cofiguration
 const webpackConfig = {
   watch: DEV,
@@ -84,7 +101,7 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
-    alias: assign(vueAliases, moduleAliases)
+    alias: assign(moduleAliases, vueAliases)
   },
   module: {
     rules: [
@@ -149,6 +166,14 @@ const webpackConfig = {
             options: { sourceMap }
           }
         ]
+      },
+      {
+        test: /\.(svg|png|jpe?g|gif)(\?.*)?$/i,
+        use: getFileLoader({ name: 'img/[name].[ext]' })
+      },
+      {
+        test: /\.(eot|ttf|woff2?)(\?.*)?$/i,
+        use: getFileLoader({ name: 'fonts/[name].[ext]' })
       }
     ]
   },
