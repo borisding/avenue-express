@@ -11,7 +11,7 @@ export default function sequelizeCli(command, options) {
 
   if (commandInfo) {
     // check command info
-    sequelize = `${sequelize} -- ${command}`;
+    sequelize = `${sequelize} --${command}`;
   } else if (subCommandInfo) {
     // check subcommand info
     sequelize = `${sequelize} ${command} --${options._[0]}`;

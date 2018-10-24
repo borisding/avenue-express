@@ -37,11 +37,8 @@ program
   .action(actions.generateKey);
 
 program
-  .command('sequelize <command>')
-  .describe(
-    `Database migration by utilizing 'sequelize-cli' under the hood.
-    @see: http://docs.sequelizejs.com/manual/tutorial/migrations.html`
-  )
+  .command('orm <command>')
+  .describe('Database migration by utilizing `sequelize-cli` under the hood.')
   .action(actions.sequelizeCli);
 
 program.parse(process.argv);
