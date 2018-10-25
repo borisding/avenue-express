@@ -20,7 +20,7 @@ const views = [SYSPATH['VIEWS'], `${SYSPATH['VIEWS']}/partials`];
 
 // session configuration for file storage
 const FileStore = sessionFileStore(session);
-const fileSession = () =>
+const sessionFile = () =>
   session({
     store: new FileStore(),
     resave: false,
@@ -64,7 +64,7 @@ app
   .use(helmet())
   .use(cors())
   .use(cookieParser())
-  .use(fileSession())
+  .use(sessionFile())
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
