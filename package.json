@@ -166,6 +166,7 @@
     }
   },
   "eslintIgnore": [
+    "database",
     "coverage",
     "logs",
     "public/**/*.js"
