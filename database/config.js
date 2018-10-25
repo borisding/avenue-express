@@ -3,9 +3,9 @@
  * This file is generated via sequelize migration cli.
  * Modified to serve dynamic import for app models & migration
  */
-const ENV = require('./env-properties.json');
+const ENV = require('../config/env-properties');
 
-const getEnvConfig = () => ({
+const getDbConfig = () => ({
   username: ENV['DB_USERNAME'],
   password: ENV['DB_PASSWORD'],
   database: ENV['DB_NAME'],
@@ -14,7 +14,7 @@ const getEnvConfig = () => ({
 });
 
 module.exports = {
-  development: getEnvConfig(),
-  production: getEnvConfig(),
-  test: getEnvConfig()
+  development: getDbConfig(),
+  production: getDbConfig(),
+  test: getDbConfig()
 };

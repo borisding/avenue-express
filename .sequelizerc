@@ -1,7 +1,7 @@
 const SYSPATH = require('./config/syspath');
 
 module.exports = {
-  config: `${SYSPATH['CONFIG']}/database.js`,
+  config: `${SYSPATH['DATABASE']}/config.js`,
   'seeders-path': `${SYSPATH['DATABASE']}/seeders`,
   'migrations-path': `${SYSPATH['DATABASE']}/migrations`,
   'models-path': SYSPATH['MODELS']

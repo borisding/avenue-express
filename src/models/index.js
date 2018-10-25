@@ -6,11 +6,11 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
-import { DB } from '@config';
+import dbConfig from '@database/config';
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = DB[env];
+const config = dbConfig[env];
 const db = {};
 
 const sequelize = new Sequelize(

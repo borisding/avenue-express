@@ -1,4 +1,4 @@
-const ENV = require('./env-properties.json');
+const ENV = require('./env-properties');
 
 // assigned with `process.env` or fallback to default port value
 // when one of the following is not defined in '.env' file
@@ -8,9 +8,6 @@ if (!ENV['PORT']) {
 
 // export built environment properties for app usage
 module.exports.ENV = ENV;
-
-// export named `DB` as part of config
-module.exports.DB = require('./database');
 
 // export named `SYSPATH` as part of config
 module.exports.SYSPATH = require('./syspath');
