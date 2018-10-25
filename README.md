@@ -121,6 +121,7 @@ Below is a brief description of project structure in tree-view:
 |  ├─server.js                      # Express server file
 |  ├─cli                            # folder for Avenue command-line interface
 ```
+
 **[Back to top](#table-of-contents)**
 
 ## Configuration
@@ -263,9 +264,11 @@ node avenue orm help
 **[Back to top](#table-of-contents)**
 
 ## Views
+
 - All view templates can be found in `./src/views`. It uses [`nunjucks`](https://mozilla.github.io/nunjucks/) as default templating engine in conjunction with [`consolidate.js`](https://github.com/tj/consolidate.js/).
 
-- The default template file extension is `html`. 
+- The default template file extension is `html`.
+
 ```js
 // in `./src/index.js`
 
@@ -278,7 +281,6 @@ app
   // set default extension for view files
   .set('view engine', ext);
 ...
-
 ```
 
 - If you're going to use different templating engine, make sure all nunjucks' macros, filters, etc are migrated and applied for your preferred templating language. Also, read through [template engine settings](https://expressjs.com/en/guide/using-template-engines.html) for Express.
@@ -289,8 +291,8 @@ app
 
 **[Back to top](#table-of-contents)**
 
-
 ## Frontend Assets
+
 - All asset source files (js, css/scss, images, etc) are placed in `./src/assets`. The generated assets such as JS bundles and final CSS outputs will be kept in `./public` folder.
 
 - After runnig webpack build process, `./build/webpack/assets.js` will be generated with `assets-webpack-plugin`, which consists a list of assets in key/value pairs with the paths included. This allows us to find it and include in respective module view templates by using nunjucks macro `./src/views/macros/assets.html`.
@@ -318,9 +320,12 @@ optimization: {
 ...
 ```
 
+- [Bulma](https://bulma.io/) is also chosen as default CSS framework for this starter. Please check out the [guide](https://bulma.io/documentation/customize/) to learn about customization.
+
 **[Back to top](#table-of-contents)**
 
 ## Session Management
+
 - This starter comes with default file storage (`session-file-store`) for session management. Please take a look at `./src/index.js`.
 
 - Feel free to use different storage for session management. For instance, storing sessions with Redis:
@@ -353,6 +358,7 @@ app.use(session({
 **[Back to top](#table-of-contents)**
 
 ## Nodemon and Webpack
+
 - This starter uses `nodemon-webpack-plugin` together with webpack to run development server for monitoring file changes. The directories for `watch` property are as follows:
 
 ```
@@ -366,6 +372,7 @@ watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
 **[Back to top](#table-of-contents)**
 
 ## Lint Checks and Formatting
+
 - [ESLint](https://eslint.org/) and [Styelint](https://stylelint.io/) are being used for JS and SCSS lint checks, respectively. [Prettier](https://prettier.io/) is also used in conjunction with ESLint plugins for code formatting.
 
 - There are several pre-defined lint rules in `package.json`. Feel free to add/remove any of them for project needs.
@@ -375,6 +382,7 @@ watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
 **[Back to top](#table-of-contents)**
 
 ## Unit Testing
+
 - All test files should reside in `./src/tests` folder. [Jest](https://jestjs.io/) framework is used for running tests. All Jest related config can be seen under `jest` property in `package.json`.
 
 - Besides, `vue-jest` and `jest-serializer-vue` are also included for testing `.vue` components.
@@ -390,4 +398,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **[Back to top](#table-of-contents)**
 
 ## License
+
 [MIT](https://raw.githubusercontent.com/borisding/avenue-express/master/LICENSE)
