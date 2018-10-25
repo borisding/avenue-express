@@ -6,9 +6,23 @@
 <a href="https://travis-ci.org/borisding/avenue-express"><img src="https://travis-ci.org/borisding/avenue-express.svg?branch=master" alt="Travis CI Build"></a>
 </p>
 
-This starter aims to be productive and good fit for MVC web development and also, traditional client-side single page application, powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
+This starter aims to be productive and good fit for Node.js web development with MVC architectural pattern and also, traditional client-side SPA powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
 
 > If you're looking for Server-Side Rendering (SSR) web starter kit, please also check out [universsr](https://github.com/borisding/universsr).
+
+## Table of Contents
+
+- [Requirement](#requirement)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure) / [Configuration](#configuration) / [CLI](#cli)
+- [Controllers](#controllers) / [Models](#models) / [Views](#views)
+- [Frontend Assets](#frontend-assets)
+- [Session Management](#session-management)
+- [Nodemon and Webpack](#nodemon-and-webpack)
+- [Lint Checks and Formatting](#lint-checks-and-formatting)
+- [Unit Testing](#unit-testing)
+- [Changelog](#changelog)
+- [License](#license)
 
 ## Requirement
 
@@ -18,6 +32,8 @@ This project starter should be working as expected with the following minimal ve
 | ---------- | :-------: |
 | Node       | >= v8.0.0 |
 | NPM        | >= v5.0.0 |
+
+**[Back to top](#table-of-contents)**
 
 ## Quick Start
 
@@ -57,6 +73,8 @@ npm run config
 npm test
 ```
 
+**[Back to top](#table-of-contents)**
+
 ## Project Structure
 
 Below is a brief description of project structure in tree-view:
@@ -95,7 +113,7 @@ Below is a brief description of project structure in tree-view:
 ├─database                          # Sequelize's migration folder
 |    ├─seeders                      # contains all database seed files
 |    ├─migrations                   # contains all database migration files
-├─config                            # contains all app configurations
+├─config                            # contains app configurations
 ├─build                             # contains webpack and build scripts
 |   ├─webpack                       # contains webpack configuration
 |   ├─scripts                       # contains all script files for build workflow
@@ -103,14 +121,15 @@ Below is a brief description of project structure in tree-view:
 |  ├─server.js                      # Express server file
 |  ├─cli                            # folder for Avenue command-line interface
 ```
+**[Back to top](#table-of-contents)**
 
-## Project Configuration
+## Configuration
 
-- Project configuration should be placed in `./config` directory. By default, this starter comes with an example `.env.example` required for the app usage. Please rename the file to `.env` to serve your actual app configuration.
+- Project environment config is placed in `./config` directory. There is `.env.example` required for the app usage. Please rename the file to `.env` to serve your actual app configuration.
 
-- This starter relies on `dotenv` package to load environment variables from `.env` into Node's `process.env`. You should always define new environment variables in `.env`.
+- It uses `dotenv` package to load environment variables from `.env` into Node's `process.env`. You should always define new environment variables in `.env`.
 
-- When environment values changed, we can execute the following script to load new changes into `process.env`:
+- When environment values changed, execute the following script to load new changes into `process.env`:
 
 ```bash
 npm run config
@@ -129,25 +148,24 @@ console.log(ENV["PORT"]);
 
 > You should never commit `.env` file to version control. Please [check out](https://www.npmjs.com/package/dotenv#faq) the FAQ section on `dotenv` page for more details.
 
-- Besides `ENV` object, it also exposes `DEV`, `DB`, `SYSPATH` respectively:
+- Besides `ENV` object, it also exposes `DEV` and `SYSPATH`:
 
 ```js
-import { DEV, DB, SYSPATH } from "@config";
+import { DEV, SYSPATH } from "@config";
 
 // check if we're in development environment
 if (DEV) {
   console.log("We are in development environment.");
 }
 
-// get development's database config
-console.log(DB["development"]);
-
 // print absolute path of `public` directory
 // defined system paths can be found in `syspath.js`
 console.log(SYSPATH["PUBLIC"]);
 ```
 
-## Avenue CLI
+**[Back to top](#table-of-contents)**
+
+## CLI
 
 - This stater comes with a light CLI to perform some routine tasks, such as controller file creation, Sequelize database migration, etc.
 
@@ -156,6 +174,8 @@ console.log(SYSPATH["PUBLIC"]);
 ```bash
 $ node avenue --help
 ```
+
+**[Back to top](#table-of-contents)**
 
 ## Controllers
 
@@ -202,9 +222,11 @@ router.get("/", index);
 export default router;
 ```
 
+**[Back to top](#table-of-contents)**
+
 ## Models
 
-- By default, this starter uses [Sequelize](http://docs.sequelizejs.com/) ORM for dealing with SQL databases.
+- By default, this starter uses [Sequelize](http://docs.sequelizejs.com/) ORM for dealing with relational databases (default dialect is `mysql`).
 
 - For instance, to create a new `User` model via Avenue CLI:
 
@@ -221,6 +243,8 @@ import db from '@models';
 // eg: find all users
 db.User.findAll().then(users => {
   console.log(users);
+}).catch(err => {
+  // error handling
 });
 ...
 ```
@@ -236,4 +260,134 @@ node avenue orm help
 
 > Be sure to go through with the [Sequelize Migrations](http://docs.sequelizejs.com/manual/tutorial/migrations.html) page.
 
-(WIP...)
+**[Back to top](#table-of-contents)**
+
+## Views
+- All view templates can be found in `./src/views`. It uses [`nunjucks`](https://mozilla.github.io/nunjucks/) as default templating engine in conjunction with [`consolidate.js`](https://github.com/tj/consolidate.js/).
+
+- The default template file extension is `html`. 
+```js
+// in `./src/index.js`
+
+...
+const ext = 'html';
+
+app
+  // assign the views engine for mapping template
+  .engine(ext, engine)
+  // set default extension for view files
+  .set('view engine', ext);
+...
+
+```
+
+- If you're going to use different templating engine, make sure all nunjucks' macros, filters, etc are migrated and applied for your preferred templating language. Also, read through [template engine settings](https://expressjs.com/en/guide/using-template-engines.html) for Express.
+
+- `layout.html` is the default page layout to be extended by partial views. Feel free to create new layout templates based on the needs.
+
+> You may install [vscode-nunjucks](https://github.com/ronnidc/vscode-nunjucks) extension for syntax definition in Visual Studio Code.
+
+**[Back to top](#table-of-contents)**
+
+
+## Frontend Assets
+- All asset source files (js, css/scss, images, etc) are placed in `./src/assets`. The generated assets such as JS bundles and final CSS outputs will be kept in `./public` folder.
+
+- After runnig webpack build process, `./build/webpack/assets.js` will be generated with `assets-webpack-plugin`, which consists a list of assets in key/value pairs with the paths included. This allows us to find it and include in respective module view templates by using nunjucks macro `./src/views/macros/assets.html`.
+
+- To keep project modular, it's recommended to use the same naming for `.js` and `.scss` source files. For instance, we have partial view called `user.html`, which having some JS code and style need to be applied. We can create `user.js` and `user.scss` respectively for webpack to look up and include it as part of entry files for bundling.
+
+- `.vue` components should be placed in `./src/assets/components` folder for Vue loaders to process during webpack build process. Please go through with the webpack config on rules section.
+
+- Vendor chunk will be created with the following config in webpack:
+
+```js
+...
+optimization: {
+    ...
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          chunks: 'all',
+          name: 'vendor'
+        }
+      }
+    }
+  }
+...
+```
+
+**[Back to top](#table-of-contents)**
+
+## Session Management
+- This starter comes with default file storage (`session-file-store`) for session management. Please take a look at `./src/index.js`.
+
+- Feel free to use different storage for session management. For instance, storing sessions with Redis:
+
+```js
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import Redis from 'ioredis'; // redis client we use for
+import { ENV } from '@config';
+
+...
+const RedisStore = connectRedis(session);
+// please check ioredis docs for more details
+const client = new Redis({
+  port: ENV['REDIS_PORT'],
+  host: ENV['REDIS_HOST'],
+  password: ENV['REDIS_PASSWORD'] // password, if any
+});
+
+app.use(session({
+  store: new RedisStore({ client }),
+  secret: ENV['SECRET_KEY'],
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 86400000 }
+}));
+...
+```
+
+**[Back to top](#table-of-contents)**
+
+## Nodemon and Webpack
+- This starter uses `nodemon-webpack-plugin` together with webpack to run development server for monitoring file changes. The directories for `watch` property are as follows:
+
+```
+...
+watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
+...
+```
+
+- Meanwhile, webpack's watch mode is also turned on for development to monitor frontend asset changes. Whenever new bundle is introduced into `./src/webpack/build/assets.js`, nodemon will restart the server for the update.
+
+**[Back to top](#table-of-contents)**
+
+## Lint Checks and Formatting
+- [ESLint](https://eslint.org/) and [Styelint](https://stylelint.io/) are being used for JS and SCSS lint checks, respectively. [Prettier](https://prettier.io/) is also used in conjunction with ESLint plugins for code formatting.
+
+- There are several pre-defined lint rules in `package.json`. Feel free to add/remove any of them for project needs.
+
+- There is also `.eslintrc` config file in `./src/models` folder to overwrite the default rules in `package.json`. This to avoid lint check error in any model files that is generated via Sequelize CLI.
+
+**[Back to top](#table-of-contents)**
+
+## Unit Testing
+- All test files should reside in `./src/tests` folder. [Jest](https://jestjs.io/) framework is used for running tests. All Jest related config can be seen under `jest` property in `package.json`.
+
+- Besides, `vue-jest` and `jest-serializer-vue` are also included for testing `.vue` components.
+
+**[Back to top](#table-of-contents)**
+
+## Changelog
+
+All notable changes made to the project will be documented on [release page](https://github.com/borisding/avenue-express/releases).
+
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+**[Back to top](#table-of-contents)**
+
+## License
+[MIT](https://raw.githubusercontent.com/borisding/avenue-express/master/LICENSE)
