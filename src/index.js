@@ -18,24 +18,14 @@ const ext = 'html';
 const engine = cons[ENV['VIEWS_ENGINE']];
 const views = [SYSPATH['VIEWS'], `${SYSPATH['VIEWS']}/partials`];
 
-// session configuration for file storage
-const FileStore = sessionFileStore(session);
-const sessionFile = () =>
-  session({
-    store: new FileStore(),
-    resave: false,
-    saveUninitialized: false,
-    secret: ENV['SECRET_KEY'],
-    cookie: { maxAge: ENV['COOKIE_MAXAGE'] }
-  });
-
 // nunjucks config to allow adding filters, global, etc
-const njk = (cons.requires.nunjucks = nunjucks.configure(views, {
+cons.requires.nunjucks = nunjucks;
+const njk = cons.requires.nunjucks.configure(views, {
   express: app,
   trimBlocks: true,
   lstripBlocks: true,
   watch: !!DEV
-}));
+});
 
 // set global variables for nunjucks templates
 njk.addGlobal('layout', `layout.${ext}`);
@@ -51,6 +41,17 @@ njk.addFilter('style', name => {
   if (!assets[name]) return null;
   if (assets[name].css) return assets[name].css;
 });
+
+// session configuration for file storage
+const FileStore = sessionFileStore(session);
+const sessionFile = () =>
+  session({
+    store: new FileStore(),
+    resave: false,
+    saveUninitialized: false,
+    secret: ENV['SECRET_KEY'],
+    cookie: { maxAge: ENV['COOKIE_MAXAGE'] }
+  });
 
 app
   // assign the views engine for mapping template

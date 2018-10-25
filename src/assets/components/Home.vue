@@ -22,4 +22,7 @@ export default {
 .greetings {
   color: #00f;
 }
+.message {
+  margin-top: 25px;
+}
 </style>
