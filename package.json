@@ -29,6 +29,10 @@
     "type": "git",
     "url": "https://github.com/borisding/avenue-express.git"
   },
+  "verbose": true,
+  "engines": {
+    "node": "10.x"
+  },
   "author": "Boris Ding Poh Hing",
   "license": "MIT",
   "husky": {
