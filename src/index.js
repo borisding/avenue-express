@@ -60,7 +60,7 @@ app
   .set('view engine', ext);
 
 app
-  .use(mid.logger())
+  .use(mid.httpLogger())
   .use(compression())
   .use(helmet())
   .use(cors())

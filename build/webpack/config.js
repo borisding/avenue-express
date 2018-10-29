@@ -179,11 +179,15 @@ const webpackConfig = {
   },
   plugins: [
     new NodemonPlugin({
+      ext: 'js',
+      verbose: false,
       script: `${SYSPATH['ROOT']}/index.js`,
       ignore: ['src/assets', 'node_modules', 'sessions'],
-      watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
-      verbose: false,
-      ext: 'js'
+      watch: [
+        SYSPATH['SRC'],
+        SYSPATH['UTILS'],
+        `${SYSPATH['BUILD']}/webpack/assets.js`
+      ]
     }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
