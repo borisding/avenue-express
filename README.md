@@ -20,6 +20,7 @@ This starter aims to be productive and good fit for Node.js web development with
 - [Session Management](#session-management)
 - [Nodemon and Webpack](#nodemon-and-webpack)
 - [Lint Checks and Formatting](#lint-checks-and-formatting)
+- [Logging](#logging)
 - [Unit Testing](#unit-testing)
 - [Changelog](#changelog)
 - [License](#license)
@@ -378,6 +379,32 @@ watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
 - There are several pre-defined lint rules in `package.json`. Feel free to add/remove any of them for project needs.
 
 - There is also `.eslintrc` config file in `./src/models` folder to overwrite the default rules in `package.json`. This to avoid lint check error in any model files that is generated via Sequelize CLI.
+
+**[Back to top](#table-of-contents)**
+
+## Logging
+- This starter uses `winston` as default logger for logging http request and exception error logs. Please check out the logger file (`./utils/logger.js`) with default config.
+
+```js
+// example of using winston logger
+import logger from '@utils';
+
+logger.info('This log message is for info level');
+
+```
+
+- `httpLogger` custom middleware is also provided, where `morgan` is used with winston for logging http request. To use http logger:
+
+```js
+// example of using http logger middleware
+...
+import { httpLogger } from '@middlewares';
+
+app.use(httpLogger());
+...
+```
+
+- All log files will go into `./logs` folder.
 
 **[Back to top](#table-of-contents)**
 
