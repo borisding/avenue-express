@@ -115,7 +115,7 @@
     "prettier": "^1.14.3",
     "regenerator-runtime": "^0.12.1",
     "sass-loader": "^7.1.0",
-    "stylelint": "^9.6.0",
+    "stylelint": "^9.7.0",
     "stylelint-config-sass-guidelines": "^5.2.0",
     "stylelint-scss": "^3.3.2",
     "uglifyjs-webpack-plugin": "^2.0.1",
