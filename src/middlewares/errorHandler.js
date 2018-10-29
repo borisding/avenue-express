@@ -1,4 +1,4 @@
-import logger from '@utils/logger';
+import { logger } from '@utils';
 
 // handling error from `createError` factory, by default
 // `500` status code will be used if `err.statusCode` is not available

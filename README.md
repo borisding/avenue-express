@@ -387,7 +387,7 @@ watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
 
 ```js
 // example of using winston logger
-import logger from '@utils';
+import { logger } from '@utils';
 
 logger.info('This log message is for info level');
 

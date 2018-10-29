@@ -1,5 +1,5 @@
 import morgan from 'morgan';
-import logger from '@utils/logger';
+import { logger } from '@utils';
 import { DEV } from '@config';
 
 // winston logger's "stream" writable for morgan
