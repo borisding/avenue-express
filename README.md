@@ -362,9 +362,13 @@ app.use(session({
 
 - This starter uses `nodemon-webpack-plugin` together with webpack to run development server for monitoring file changes. The directories for `watch` property are as follows:
 
-```
+```js
 ...
-watch: [SYSPATH['SRC'], `${SYSPATH['BUILD']}/webpack/assets.js`],
+watch: [
+  SYSPATH['SRC'],
+  SYSPATH['UTILS'],
+  `${SYSPATH['BUILD']}/webpack/assets.js`
+]
 ...
 ```
 
