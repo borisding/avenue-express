@@ -1,4 +1,6 @@
 export { default as App } from './App';
-/* prettier-ignore */
-export const Dashboard = () => import(/* webpackChunkName: "dashboard" */ './Dashboard');
-export const Users = () => import(/* webpackChunkName: "users" */ './Users');
+// lazy loading components
+export const Dashboard = () =>
+  import(/* webpackChunkName: "admin.dashboard" */ './Dashboard');
+export const Users = () =>
+  import(/* webpackChunkName: "admin.users" */ './Users');
