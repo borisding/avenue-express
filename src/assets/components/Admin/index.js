@@ -1,2 +1,2 @@
-export { default as Dashboard } from '@components/Admin/Dashboard';
-export { default as Users } from '@components/Admin/Users';
+export { default as Dashboard } from './Dashboard';
+export { default as Users } from './Users';
