@@ -110,6 +110,7 @@ const webpackConfig = {
     splitChunks: {
       cacheGroups: {
         vendor: {
+          reuseExistingChunk: true,
           test: /node_modules/,
           chunks: 'all',
           name: 'vendor'
