@@ -12,8 +12,6 @@ const pkg = require('../../package');
 const { DEV, ENV, SYSPATH } = require('../../config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
-const jsPath = `${SYSPATH['ASSETS']}/js`;
-const scssPath = `${SYSPATH['ASSETS']}/scss`;
 const sourceMap = !!DEV;
 const { assign, keys } = Object;
 
@@ -30,14 +28,14 @@ keys(pkg._moduleAliases).map(alias => {
 });
 
 // populate respective module JS and SCSS files as entry points
-const getModuleEntry = () => {
+const getModuleEntry = (targetDir = `${SYSPATH['ASSETS']}/js`) => {
   const entryFiles = {};
 
-  fs.readdirSync(jsPath).filter(file => {
+  fs.readdirSync(targetDir).filter(file => {
     const { name, ext } = path.parse(file);
 
     if (ext === '.js') {
-      entryFiles[name] = [`${jsPath}/${file}`];
+      entryFiles[name] = [`${SYSPATH['ASSETS']}/js/${file}`];
     }
 
     // we don't need `offline.js` for development
@@ -47,7 +45,7 @@ const getModuleEntry = () => {
 
     // check if module has .scss file as well
     // if there is, push as part of the module entry point
-    const moduleScss = `${scssPath}/${name}.scss`;
+    const moduleScss = `${SYSPATH['ASSETS']}/scss/${name}.scss`;
 
     if (fs.existsSync(moduleScss)) {
       entryFiles[name].push(moduleScss);
@@ -55,6 +53,23 @@ const getModuleEntry = () => {
   });
 
   return entryFiles;
+};
+
+// loaders for styles
+const getStyleLoaders = () => {
+  return [
+    {
+      loader: 'css-loader',
+      options: { importLoaders: 2, sourceMap }
+    },
+    {
+      loader: 'postcss-loader'
+    },
+    {
+      loader: 'sass-loader',
+      options: { sourceMap }
+    }
+  ];
 };
 
 // file loader for image/font rule
@@ -80,7 +95,10 @@ const webpackConfig = {
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
   context: SYSPATH['SRC'],
-  entry: assign({ main: `${scssPath}/main.scss` }, getModuleEntry()),
+  entry: assign(
+    { main: `${SYSPATH['ASSETS']}/scss/main.scss` },
+    getModuleEntry()
+  ),
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
@@ -134,38 +152,14 @@ const webpackConfig = {
       // Vue specific style config for SFCs
       {
         test: /\.(sass|scss|css)$/,
-        exclude: [/node_modules/, /scss/],
-        use: [
-          {
-            loader: 'vue-style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: { importLoaders: 1, sourceMap }
-          },
-          {
-            loader: 'postcss-loader'
-          }
-        ]
+        exclude: [/node_modules/, `${SYSPATH['ASSETS']}/scss`],
+        use: [{ loader: 'vue-style-loader' }, ...getStyleLoaders()]
       },
       // general Sass file config (except .vue single file components)
       {
         test: /\.(sass|scss)$/,
-        exclude: ['/node_modules/', '/components/'],
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: { importLoaders: 2, sourceMap }
-          },
-          {
-            loader: 'postcss-loader'
-          },
-          {
-            loader: 'sass-loader',
-            options: { sourceMap }
-          }
-        ]
+        exclude: ['/node_modules/', `${SYSPATH['ASSETS']}/components`],
+        use: [MiniCssExtractPlugin.loader, ...getStyleLoaders()]
       },
       {
         test: /\.(svg|png|jpe?g|gif)(\?.*)?$/i,
