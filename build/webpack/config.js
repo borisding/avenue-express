@@ -95,6 +95,12 @@ const webpackConfig = {
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
   context: SYSPATH['SRC'],
+  // for more about performance hints
+  // @see: https://webpack.js.org/configuration/performance/#performance
+  performance: {
+    maxEntrypointSize: 400000,
+    maxAssetSize: 400000
+  },
   entry: assign(
     { main: `${SYSPATH['ASSETS']}/scss/main.scss` },
     getModuleEntry()

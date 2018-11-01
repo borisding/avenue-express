@@ -9,8 +9,7 @@
 export default {
   data() {
     return {
-      message:
-        'We do not need SEO friendly for Admin Portal. Thus, we go for Single Page Application approach.'
+      message: 'This is gonna be the dashboard panel.'
     };
   }
 };
