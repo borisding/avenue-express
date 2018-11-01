@@ -3,3 +3,4 @@
 
 export { default as home } from './homeController';
 export { default as user } from './userController';
+export { default as admin } from './adminController';
