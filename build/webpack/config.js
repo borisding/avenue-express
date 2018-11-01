@@ -72,8 +72,8 @@ const getStyleLoaders = () => {
   ];
 };
 
-// file loader for image/font rule
-const getFileLoader = (options = {}) => {
+// loaders for image/font rule
+const getFileLoaders = (options = {}) => {
   return [
     {
       loader: 'url-loader',
@@ -163,11 +163,11 @@ const webpackConfig = {
       },
       {
         test: /\.(svg|png|jpe?g|gif)(\?.*)?$/i,
-        use: getFileLoader({ name: 'img/[name].[ext]' })
+        use: getFileLoaders({ name: 'img/[name].[ext]' })
       },
       {
         test: /\.(eot|ttf|woff2?)(\?.*)?$/i,
-        use: getFileLoader({ name: 'fonts/[name].[ext]' })
+        use: getFileLoaders({ name: 'fonts/[name].[ext]' })
       }
     ]
   },
