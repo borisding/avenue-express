@@ -1,2 +1,4 @@
-export { default as Dashboard } from './Dashboard';
-export { default as Users } from './Users';
+export { default as App } from './App';
+/* prettier-ignore */
+export const Dashboard = () => import(/* webpackChunkName: "dashboard" */ './Dashboard');
+export const Users = () => import(/* webpackChunkName: "users" */ './Users');

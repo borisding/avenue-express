@@ -14,6 +14,7 @@ const routes = [
 // instantiate Vue instance with Vue Router, etc
 new Vue({
   el: '#app',
+  components: { App: Admin.App },
   router: new VueRouter({
     mode: 'history',
     base: 'admin',
