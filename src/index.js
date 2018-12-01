@@ -69,7 +69,8 @@ app
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
-  .use(express.static(SYSPATH['PUBLIC']));
+  .use(express.static(SYSPATH['PUBLIC']))
+  .get('/favicon.ico', (req, res) => res.status(204));
 
 app
   .use('/', ctl.home)
