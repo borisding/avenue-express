@@ -10,13 +10,7 @@ logger.stream = {
 };
 
 const httpLogger = () => {
-  if (DEV) {
-    return morgan('short', {
-      stream: logger.stream
-    });
-  }
-
-  return morgan('combined', {
+  return morgan(DEV ? 'short' : 'combined', {
     stream: logger.stream,
     skip: (req, res) => res.statusCode < 400
   });
