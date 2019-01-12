@@ -2,14 +2,14 @@ const ROOT = require('path').resolve(process.cwd());
 
 module.exports = {
   ROOT,
+  APP: `${ROOT}/app`,
   BIN: `${ROOT}/bin`,
   CONFIG: `${ROOT}/config`,
   PUBLIC: `${ROOT}/public`,
   UTILS: `${ROOT}/utils`,
-  SRC: `${ROOT}/src`,
-  CONTROLLERS: `${ROOT}/src/controllers`,
-  MIDDLEWARES: `${ROOT}/src/middlewares`,
-  MODELS: `${ROOT}/src/models`,
+  CONTROLLERS: `${ROOT}/app/controllers`,
+  MIDDLEWARES: `${ROOT}/app/middlewares`,
+  MODELS: `${ROOT}/app/models`,
   RESOURCES: `${ROOT}/resources`,
   ASSETS: `${ROOT}/resources/assets`,
   VIEWS: `${ROOT}/resources/views`,

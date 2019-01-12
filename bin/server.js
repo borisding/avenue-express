@@ -2,7 +2,7 @@
 
 import 'make-promises-safe';
 import http from 'http';
-import app from '@src/index';
+import app from '@app';
 import { print } from '@utils';
 import { ENV } from '@config';
 

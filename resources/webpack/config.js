@@ -89,7 +89,7 @@ const webpackConfig = {
   watch: DEV,
   mode: DEV ? 'development' : 'production',
   devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
-  context: SYSPATH['SRC'],
+  context: SYSPATH['APP'],
   // for more about performance hints
   // @see: https://webpack.js.org/configuration/performance/#performance
   performance: {
@@ -180,7 +180,7 @@ const webpackConfig = {
       script: `${SYSPATH['ROOT']}/index.js`,
       ignore: ['resources/assets', 'node_modules', 'storage/sessions'],
       watch: [
-        SYSPATH['SRC'],
+        SYSPATH['APP'],
         SYSPATH['UTILS'],
         `${SYSPATH['RESOURCES']}/webpack/assets.js`
       ]
