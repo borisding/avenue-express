@@ -5,8 +5,8 @@
   "main": "index.js",
   "bin": "avenue.js",
   "scripts": {
-    "clean": "rimraf public resources/assets/index.js",
-    "webpack": "npm run clean && webpack --config resources/webpack/config.js",
+    "clean": "rimraf public app/assets/index.js",
+    "webpack": "npm run clean && webpack --progress --hide-modules",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",
     "dev": "cross-env NODE_ENV=development npm run webpack",
@@ -16,7 +16,7 @@
     "lint": "npm-run-all lint:scss lint:js",
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "npm test -- --watch",
-    "test:coverage": "rimraf resources/jest/coverage && npm test -- --coverage --runInBand",
+    "test:coverage": "rimraf storage/coverage && npm test -- --coverage --runInBand",
     "heroku-postbuild": "npm run build"
   },
   "keywords": [
@@ -170,7 +170,6 @@
     }
   },
   "eslintIgnore": [
-    "resources/jest/coverage",
     "storage/**/*",
     "public/**/*.js"
   ],
@@ -187,36 +186,37 @@
   "_moduleAliases": {
     "@root": ".",
     "@app": "app",
+    "@assets": "app/assets",
     "@controllers": "app/controllers",
     "@middlewares": "app/middlewares",
     "@models": "app/models",
+    "@views": "app/views",
     "@bin": "bin",
     "@config": "config",
     "@logger": "logger",
     "@public": "public",
     "@utils": "utils",
-    "@resources": "resources",
-    "@assets": "resources/assets",
-    "@views": "resources/views",
     "@storage": "storage",
     "@database": "storage/database",
     "@logs": "storage/logs"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/resources/jest/setupTest.js",
-    "coverageDirectory": "<rootDir>/resources/jest/coverage",
+    "setupTestFrameworkScriptFile": "<rootDir>/config/jest/setupTest.js",
+    "coverageDirectory": "<rootDir>/storage/coverage",
     "collectCoverageFrom": [
       "app/**/*.js",
-      "resources/assets/components/**/*.vue",
-      "!**/node_modules/**"
+      "app/assets/components/**/*.vue",
+      "!**/node_modules/**",
+      "!app/index.js",
+      "!app/assets/index.js"
     ],
     "moduleFileExtensions": [
       "js",
       "vue"
     ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/resources/jest/fileMock.js",
-      "\\.(css|scss)$": "<rootDir>/resources/jest/styleMock.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/fileMock.js",
+      "\\.(css|scss)$": "<rootDir>/config/jest/styleMock.js"
     },
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-vue"

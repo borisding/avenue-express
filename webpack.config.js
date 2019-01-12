@@ -10,27 +10,27 @@ const NodemonPlugin = require('nodemon-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const pkg = require('@root/package');
-const { getCustomEnv } = require('@root/env');
+const pkg = require('./package');
+const { getCustomEnv } = require('./env');
 const { isDev, syspath } = require('@config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const sourceMap = !!isDev;
 
 // populate respective module JS and SCSS files as entry points
-const getModuleEntry = (targetDir = `${syspath.resources}/assets/js`) => {
+const getModuleEntry = (targetDir = `${syspath.app}/assets/js`) => {
   const entryFiles = {};
 
   fs.readdirSync(targetDir).filter(file => {
     const { name, ext } = path.parse(file);
 
     if (ext === '.js') {
-      entryFiles[name] = [`${syspath.resources}/assets/js/${file}`];
+      entryFiles[name] = [`${syspath.app}/assets/js/${file}`];
     }
 
     // check if module has .scss file as well
     // if there is, push as part of the module entry point
-    const moduleScss = `${syspath.resources}/assets/scss/${name}.scss`;
+    const moduleScss = `${syspath.app}/assets/scss/${name}.scss`;
 
     if (fs.existsSync(moduleScss)) {
       entryFiles[name].push(moduleScss);
@@ -90,7 +90,7 @@ const webpackConfig = {
     maxAssetSize: 400000
   },
   entry: {
-    main: `${syspath.resources}/assets/scss/main.scss`,
+    main: `${syspath.app}/assets/scss/main.scss`,
     ...getModuleEntry()
   },
   optimization: {
@@ -118,7 +118,7 @@ const webpackConfig = {
       ...pkg._moduleAliases,
       // vue specific
       vue$: 'vue/dist/vue.esm.js',
-      '@components': `${syspath.resources}/assets/components`
+      '@components': `${syspath.app}/assets/components`
     }
   },
   module: {
@@ -150,13 +150,13 @@ const webpackConfig = {
       // Vue specific style config for SFCs
       {
         test: /\.(sass|scss|css)$/,
-        exclude: [/node_modules/, `${syspath.resources}/assets/scss`],
+        exclude: [/node_modules/, `${syspath.app}/assets/scss`],
         use: [{ loader: 'vue-style-loader' }, ...getStyleLoaders()]
       },
       // general Sass file config (except .vue single file components)
       {
         test: /\.(sass|scss)$/,
-        exclude: ['/node_modules/', `${syspath.resources}/assets/components`],
+        exclude: ['/node_modules/', `${syspath.app}/assets/components`],
         use: [MiniCssExtractPlugin.loader, ...getStyleLoaders()]
       },
       {
@@ -179,7 +179,7 @@ const webpackConfig = {
     new AssetsPlugin({
       filename: 'index.js',
       prettyPrint: true,
-      path: `${syspath.resources}/assets`,
+      path: `${syspath.app}/assets`,
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(
@@ -189,12 +189,8 @@ const webpackConfig = {
             ext: 'js',
             verbose: false,
             script: `${syspath.root}/index.js`,
-            ignore: ['node_modules', 'resources', 'storage'],
-            watch: [
-              syspath.app,
-              syspath.utils,
-              `${syspath.resources}/assets/index.js`
-            ]
+            ignore: ['node_modules', 'storage'],
+            watch: [syspath.app, syspath.utils]
           })
         ]
       : [

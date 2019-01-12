@@ -8,18 +8,16 @@ import sessionFileStore from 'session-file-store';
 import nunjucks from 'nunjucks';
 import helmet from 'helmet';
 import hpp from 'hpp';
+
+import { isDev, syspath } from '@config';
 import * as mid from '@middlewares';
 import * as ctl from '@controllers';
-import assets from '@resources/assets';
-import { isDev, syspath } from '@config';
+import assets from './assets';
 
 const app = express();
 const ext = 'html';
 const engine = cons[process.env.VIEWS_ENGINE];
-const views = [
-  `${syspath.resources}/views`,
-  `${syspath.resources}/views/partials`
-];
+const views = [`${syspath.app}/views`, `${syspath.app}/views/partials`];
 
 // nunjucks config to allow adding filters, global, etc
 cons.requires.nunjucks = nunjucks;
