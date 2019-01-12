@@ -1,6 +1,7 @@
 require('module-alias/register');
 const fs = require('fs');
 const path = require('path');
+const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -10,37 +11,38 @@ const OfflinePlugin = require('offline-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const pkg = require('@root/package');
-const { DEV, ENV, SYSPATH } = require('@config');
+const { getCustomEnv } = require('@root/env');
+const { isDev, syspath } = require('@config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
-const sourceMap = !!DEV;
+const sourceMap = !!isDev;
 const { assign } = Object;
 
 // Vue aliases
 const vueAliases = {
   vue$: 'vue/dist/vue.esm.js',
-  '@components': `${SYSPATH['ASSETS']}/components`
+  '@components': `${syspath.resources}/assets/components`
 };
 
 // populate respective module JS and SCSS files as entry points
-const getModuleEntry = (targetDir = `${SYSPATH['ASSETS']}/js`) => {
+const getModuleEntry = (targetDir = `${syspath.resources}/assets/js`) => {
   const entryFiles = {};
 
   fs.readdirSync(targetDir).filter(file => {
     const { name, ext } = path.parse(file);
 
     if (ext === '.js') {
-      entryFiles[name] = [`${SYSPATH['ASSETS']}/js/${file}`];
+      entryFiles[name] = [`${syspath.resources}/assets/js/${file}`];
     }
 
     // we don't need `offline.js` for development
-    if (DEV) {
+    if (isDev) {
       delete entryFiles.offline;
     }
 
     // check if module has .scss file as well
     // if there is, push as part of the module entry point
-    const moduleScss = `${SYSPATH['ASSETS']}/scss/${name}.scss`;
+    const moduleScss = `${syspath.resources}/assets/scss/${name}.scss`;
 
     if (fs.existsSync(moduleScss)) {
       entryFiles[name].push(moduleScss);
@@ -86,10 +88,10 @@ const getFileLoaders = (options = {}) => {
 
 // webpack's cofiguration
 const webpackConfig = {
-  watch: DEV,
-  mode: DEV ? 'development' : 'production',
-  devtool: DEV ? 'cheap-module-inline-source-map' : 'source-map',
-  context: SYSPATH['APP'],
+  watch: isDev,
+  mode: isDev ? 'development' : 'production',
+  devtool: isDev ? 'cheap-module-inline-source-map' : 'source-map',
+  context: syspath.app,
   // for more about performance hints
   // @see: https://webpack.js.org/configuration/performance/#performance
   performance: {
@@ -97,7 +99,7 @@ const webpackConfig = {
     maxAssetSize: 400000
   },
   entry: assign(
-    { main: `${SYSPATH['ASSETS']}/scss/main.scss` },
+    { main: `${syspath.resources}/assets/scss/main.scss` },
     getModuleEntry()
   ),
   optimization: {
@@ -114,10 +116,10 @@ const webpackConfig = {
     }
   },
   output: {
-    publicPath: ENV['PUBLIC_PATH'],
-    path: SYSPATH['PUBLIC'],
-    filename: DEV ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
-    chunkFilename: DEV ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
+    publicPath: process.env.PUBLIC_PATH,
+    path: syspath.public,
+    filename: isDev ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
+    chunkFilename: isDev ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
@@ -139,10 +141,8 @@ const webpackConfig = {
           options: {
             babelrc: false,
             compact: false,
-            cacheDirectory: !!DEV,
-            presets: [
-              ['@babel/preset-env', { modules: false, useBuiltIns: 'usage' }]
-            ],
+            cacheDirectory: !!isDev,
+            presets: [['@babel/preset-env', { useBuiltIns: 'usage' }]],
             plugins: [
               '@babel/plugin-transform-strict-mode',
               '@babel/plugin-syntax-dynamic-import',
@@ -154,13 +154,13 @@ const webpackConfig = {
       // Vue specific style config for SFCs
       {
         test: /\.(sass|scss|css)$/,
-        exclude: [/node_modules/, `${SYSPATH['ASSETS']}/scss`],
+        exclude: [/node_modules/, `${syspath.resources}/assets/scss`],
         use: [{ loader: 'vue-style-loader' }, ...getStyleLoaders()]
       },
       // general Sass file config (except .vue single file components)
       {
         test: /\.(sass|scss)$/,
-        exclude: ['/node_modules/', `${SYSPATH['ASSETS']}/components`],
+        exclude: ['/node_modules/', `${syspath.resources}/assets/components`],
         use: [MiniCssExtractPlugin.loader, ...getStyleLoaders()]
       },
       {
@@ -174,35 +174,36 @@ const webpackConfig = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin(getCustomEnv().stringified),
     new NodemonPlugin({
       ext: 'js',
       verbose: false,
-      script: `${SYSPATH['ROOT']}/index.js`,
+      script: `${syspath.root}/index.js`,
       ignore: ['resources/assets', 'node_modules', 'storage/sessions'],
       watch: [
-        SYSPATH['APP'],
-        SYSPATH['UTILS'],
-        `${SYSPATH['RESOURCES']}/webpack/assets.js`
+        syspath.app,
+        syspath.utils,
+        `${syspath.resources}/assets/index.js`
       ]
     }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: DEV ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
-      chunkFilename: DEV ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
+      filename: isDev ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
+      chunkFilename: isDev ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
     }),
     new AssetsPlugin({
-      filename: 'assets.js',
+      filename: 'index.js',
       prettyPrint: true,
-      path: `${SYSPATH['RESOURCES']}/webpack`,
+      path: `${syspath.resources}/assets`,
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(
-    DEV
+    isDev
       ? []
       : [
           new OfflinePlugin({
             externals: ['/'],
-            publicPath: ENV['PUBLIC_PATH'],
+            publicPath: process.env.PUBLIC_PATH,
             relativePaths: false, // to allow using publicPath
             ServiceWorker: { events: true }, // use ServiceWorker for offline usage
             AppCache: false // disable for AppCache

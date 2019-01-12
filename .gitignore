@@ -6,5 +6,4 @@ npm-debug.log
 .DS_Store
 .env
 *.log
-*-properties.json
-assets.js
+resources/assets/index.js

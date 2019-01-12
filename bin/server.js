@@ -4,10 +4,9 @@ import 'make-promises-safe';
 import http from 'http';
 import app from '@app';
 import { print } from '@utils';
-import { ENV } from '@config';
 
 const server = http.createServer(app);
-const PORT = ENV['PORT'] || 3000;
+const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 server.listen(PORT);
 
@@ -30,6 +29,8 @@ server.on('error', err => {
 
 ['SIGINT', 'SIGTERM'].forEach(signal => {
   process.on(signal, () => {
-    server.close(() => process.exit(0));
+    server.close(() => {
+      process.exit();
+    });
   });
 });

@@ -1,16 +1,13 @@
-/**
- * NOTE:
- * This file is generated via sequelize migration cli.
- * Modified to serve dynamic import for app models & migration
- */
-const ENV = require('../config/env-properties');
+// NOTE:
+// This file is generated via sequelize migration cli.
+// Modified to serve dynamic import for app models & migration
 
 const getDbConfig = () => ({
-  username: ENV['DB_USERNAME'],
-  password: ENV['DB_PASSWORD'],
-  database: ENV['DB_NAME'],
-  host: ENV['DB_HOST'],
-  dialect: ENV['DB_DIALECT']
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT
 });
 
 module.exports = {

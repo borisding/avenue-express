@@ -10,13 +10,16 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import * as mid from '@middlewares';
 import * as ctl from '@controllers';
-import assets from '@resources/webpack/assets';
-import { DEV, ENV, SYSPATH } from '@config';
+import assets from '@resources/assets';
+import { isDev, syspath } from '@config';
 
 const app = express();
 const ext = 'html';
-const engine = cons[ENV['VIEWS_ENGINE']];
-const views = [SYSPATH['VIEWS'], `${SYSPATH['VIEWS']}/partials`];
+const engine = cons[process.env.VIEWS_ENGINE];
+const views = [
+  `${syspath.resources}/views`,
+  `${syspath.resources}/views/partials`
+];
 
 // nunjucks config to allow adding filters, global, etc
 cons.requires.nunjucks = nunjucks;
@@ -24,12 +27,12 @@ const njk = cons.requires.nunjucks.configure(views, {
   express: app,
   trimBlocks: true,
   lstripBlocks: true,
-  watch: !!DEV
+  watch: !!isDev
 });
 
 // set global variables for nunjucks templates
 njk.addGlobal('layout', `layout.${ext}`);
-njk.addGlobal('production', !DEV);
+njk.addGlobal('production', !isDev);
 
 // set custom filters for nunjucks templates
 njk.addFilter('script', name => {
@@ -46,11 +49,11 @@ njk.addFilter('style', name => {
 const FileStore = sessionFileStore(session);
 const sessionFile = () =>
   session({
-    store: new FileStore({ path: `${SYSPATH['STORAGE']}/sessions` }),
+    store: new FileStore({ path: `${syspath.storage}/sessions` }),
     resave: false,
     saveUninitialized: false,
-    secret: ENV['SECRET_KEY'],
-    cookie: { maxAge: ENV['COOKIE_MAXAGE'] }
+    secret: process.env.SECRET_KEY,
+    cookie: { maxAge: parseInt(process.env.COOKIE_MAXAGE, 10) }
   });
 
 app
@@ -69,7 +72,7 @@ app
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
-  .use(express.static(SYSPATH['PUBLIC']))
+  .use(express.static(syspath.public))
   .get('/favicon.ico', (req, res) => res.status(204));
 
 app

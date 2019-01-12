@@ -2,14 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp-promise';
 import slash from 'slash';
-import SYSPATH from '@config/syspath';
+import { syspath } from '@config';
 import { print } from '@utils';
 
 export default async function createController(controller, options) {
   try {
     const SUFFIX = 'Controller';
     const pathToControllers = slash(
-      path.join(SYSPATH['CONTROLLERS'], options.module)
+      path.join(`${syspath.app}/controllers`, options.module)
     );
 
     let controllerFile = `${pathToControllers}/${controller.toLowerCase()}${SUFFIX}.js`;
@@ -27,7 +27,7 @@ export default async function createController(controller, options) {
     }
 
     const fileData = fs.readFileSync(
-      `${SYSPATH['BIN']}/cli/templates/controller.${
+      `${syspath.bin}/cli/templates/controller.${
         options.bare ? 'bare' : 'resource'
       }.txt`,
       'utf8'
