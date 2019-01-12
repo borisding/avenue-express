@@ -1,13 +1,13 @@
 {
   "name": "avenue-express",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Express MVC application starter for getting shit done.",
   "main": "index.js",
   "bin": "avenue.js",
   "scripts": {
-    "clean": "rimraf public build/webpack/assets.js",
-    "config": "node -r esm build/scripts/config.js",
-    "webpack": "npm-run-all clean config && webpack --config build/webpack/config.js",
+    "clean": "rimraf public resources/webpack/assets.js",
+    "config": "node -r esm resources/scripts/config.js",
+    "webpack": "npm-run-all clean config && webpack --config resources/webpack/config.js",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",
     "postinstall": "npm run build",
@@ -189,18 +189,19 @@
   "_moduleAliases": {
     "@root": ".",
     "@bin": "bin",
-    "@build": "build",
     "@config": "config",
-    "@database": "database",
-    "@logs": "logs",
     "@public": "public",
     "@utils": "utils",
     "@src": "src",
     "@controllers": "src/controllers",
     "@middlewares": "src/middlewares",
     "@models": "src/models",
-    "@views": "src/views",
-    "@assets": "src/assets"
+    "@resources": "resources",
+    "@assets": "resources/assets",
+    "@views": "resources/views",
+    "@storage": "storage",
+    "@database": "storage/database",
+    "@logs": "storage/logs"
   },
   "jest": {
     "collectCoverageFrom": [

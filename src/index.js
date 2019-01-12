@@ -10,7 +10,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import * as mid from '@middlewares';
 import * as ctl from '@controllers';
-import assets from '@build/webpack/assets';
+import assets from '@resources/webpack/assets';
 import { DEV, ENV, SYSPATH } from '@config';
 
 const app = express();
@@ -46,7 +46,7 @@ njk.addFilter('style', name => {
 const FileStore = sessionFileStore(session);
 const sessionFile = () =>
   session({
-    store: new FileStore(),
+    store: new FileStore({ path: `${SYSPATH['STORAGE']}/sessions` }),
     resave: false,
     saveUninitialized: false,
     secret: ENV['SECRET_KEY'],

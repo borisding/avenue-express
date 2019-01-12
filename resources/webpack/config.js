@@ -1,3 +1,4 @@
+require('module-alias/register');
 const fs = require('fs');
 const path = require('path');
 const AssetsPlugin = require('assets-webpack-plugin');
@@ -8,24 +9,18 @@ const NodemonPlugin = require('nodemon-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const pkg = require('../../package');
-const { DEV, ENV, SYSPATH } = require('../../config');
+const pkg = require('@root/package');
+const { DEV, ENV, SYSPATH } = require('@config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const sourceMap = !!DEV;
-const { assign, keys } = Object;
+const { assign } = Object;
 
 // Vue aliases
 const vueAliases = {
   vue$: 'vue/dist/vue.esm.js',
   '@components': `${SYSPATH['ASSETS']}/components`
 };
-
-// loop and compute alias with absolute path, respectively
-const moduleAliases = {};
-keys(pkg._moduleAliases).map(alias => {
-  moduleAliases[alias] = `${SYSPATH['ROOT']}/${pkg._moduleAliases[alias]}`;
-});
 
 // populate respective module JS and SCSS files as entry points
 const getModuleEntry = (targetDir = `${SYSPATH['ASSETS']}/js`) => {
@@ -126,7 +121,7 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
-    alias: assign(moduleAliases, vueAliases)
+    alias: assign(pkg._moduleAliases, vueAliases)
   },
   module: {
     rules: [
@@ -183,11 +178,11 @@ const webpackConfig = {
       ext: 'js',
       verbose: false,
       script: `${SYSPATH['ROOT']}/index.js`,
-      ignore: ['src/assets', 'node_modules', 'sessions'],
+      ignore: ['resources/assets', 'node_modules', 'storage/sessions'],
       watch: [
         SYSPATH['SRC'],
         SYSPATH['UTILS'],
-        `${SYSPATH['BUILD']}/webpack/assets.js`
+        `${SYSPATH['RESOURCES']}/webpack/assets.js`
       ]
     }),
     new VueLoaderPlugin(),
@@ -198,7 +193,7 @@ const webpackConfig = {
     new AssetsPlugin({
       filename: 'assets.js',
       prettyPrint: true,
-      path: `${SYSPATH['BUILD']}/webpack`,
+      path: `${SYSPATH['RESOURCES']}/webpack`,
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(
