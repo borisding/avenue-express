@@ -78,7 +78,6 @@ app
 app
   .use('/', ctl.home)
   .use('/users', ctl.user)
-  .use('/admin', ctl.admin)
   // when none is matched
   .use(mid.notFound())
   // mount error handler last

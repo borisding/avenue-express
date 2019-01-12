@@ -16,13 +16,6 @@ const { isDev, syspath } = require('@config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const sourceMap = !!isDev;
-const { assign } = Object;
-
-// Vue aliases
-const vueAliases = {
-  vue$: 'vue/dist/vue.esm.js',
-  '@components': `${syspath.resources}/assets/components`
-};
 
 // populate respective module JS and SCSS files as entry points
 const getModuleEntry = (targetDir = `${syspath.resources}/assets/js`) => {
@@ -35,11 +28,6 @@ const getModuleEntry = (targetDir = `${syspath.resources}/assets/js`) => {
       entryFiles[name] = [`${syspath.resources}/assets/js/${file}`];
     }
 
-    // we don't need `offline.js` for development
-    if (isDev) {
-      delete entryFiles.offline;
-    }
-
     // check if module has .scss file as well
     // if there is, push as part of the module entry point
     const moduleScss = `${syspath.resources}/assets/scss/${name}.scss`;
@@ -48,6 +36,11 @@ const getModuleEntry = (targetDir = `${syspath.resources}/assets/js`) => {
       entryFiles[name].push(moduleScss);
     }
   });
+
+  // we don't need `offline.js` for development
+  if (isDev) {
+    delete entryFiles.offline;
+  }
 
   return entryFiles;
 };
@@ -74,14 +67,12 @@ const getFileLoaders = (options = {}) => {
   return [
     {
       loader: 'url-loader',
-      options: assign(
-        {
-          fallback: 'file-loader',
-          limit: 10240,
-          emitFile: true
-        },
-        options
-      )
+      options: {
+        fallback: 'file-loader',
+        limit: 10240,
+        emitFile: true,
+        ...options
+      }
     }
   ];
 };
@@ -98,10 +89,10 @@ const webpackConfig = {
     maxEntrypointSize: 400000,
     maxAssetSize: 400000
   },
-  entry: assign(
-    { main: `${syspath.resources}/assets/scss/main.scss` },
-    getModuleEntry()
-  ),
+  entry: {
+    main: `${syspath.resources}/assets/scss/main.scss`,
+    ...getModuleEntry()
+  },
   optimization: {
     minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
@@ -123,7 +114,12 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
-    alias: assign(pkg._moduleAliases, vueAliases)
+    alias: {
+      ...pkg._moduleAliases,
+      // vue specific
+      vue$: 'vue/dist/vue.esm.js',
+      '@components': `${syspath.resources}/assets/components`
+    }
   },
   module: {
     rules: [
@@ -175,17 +171,6 @@ const webpackConfig = {
   },
   plugins: [
     new webpack.DefinePlugin(getCustomEnv().stringified),
-    new NodemonPlugin({
-      ext: 'js',
-      verbose: false,
-      script: `${syspath.root}/index.js`,
-      ignore: ['resources/assets', 'node_modules', 'storage/sessions'],
-      watch: [
-        syspath.app,
-        syspath.utils,
-        `${syspath.resources}/assets/index.js`
-      ]
-    }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: isDev ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
@@ -199,11 +184,23 @@ const webpackConfig = {
     })
   ].concat(
     isDev
-      ? []
+      ? [
+          new NodemonPlugin({
+            ext: 'js',
+            verbose: false,
+            script: `${syspath.root}/index.js`,
+            ignore: ['node_modules', 'resources', 'storage'],
+            watch: [
+              syspath.app,
+              syspath.utils,
+              `${syspath.resources}/assets/index.js`
+            ]
+          })
+        ]
       : [
           new OfflinePlugin({
             externals: ['/'],
-            publicPath: process.env.PUBLIC_PATH,
+            publicPath: process.env.PUBLIC_PATH || '/',
             relativePaths: false, // to allow using publicPath
             ServiceWorker: { events: true }, // use ServiceWorker for offline usage
             AppCache: false // disable for AppCache
