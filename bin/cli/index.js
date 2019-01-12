@@ -4,9 +4,7 @@ import sade from 'sade';
 import pkg from '@root/package';
 import * as actions from './lib';
 
-const program = sade('avenue');
-
-program.version(pkg.version);
+const program = sade('avenue').version(pkg.version);
 
 program
   .command('new:controller <controller>')
@@ -38,7 +36,17 @@ program
 
 program
   .command('orm <command>')
-  .describe('Database migration by utilizing `sequelize-cli` under the hood.')
-  .action(actions.sequelizeCli);
+  .describe('Running `sequelize-cli` under the hood in `development` mode.')
+  .action(actions.sequelizeCli('development'));
+
+program
+  .command('orm:prod <command>')
+  .describe('Running `sequelize-cli` under the hood in `production` mode.')
+  .action(actions.sequelizeCli('production'));
+
+program
+  .command('orm:test <command>')
+  .describe('Running `sequelize-cli` under the hood in `test` mode.')
+  .action(actions.sequelizeCli('test'));
 
 program.parse(process.argv);

@@ -3,7 +3,11 @@ import { exec } from 'child_process';
 import { print } from '@utils';
 import { syspath } from '@config';
 
-export default function sequelizeCli(command, options) {
+export default (env = 'development') => (command, options) => {
+  // set `NODE_ENV` value for Sequelize CLI
+  // default value is `development`
+  process.env.NODE_ENV = env;
+
   let checkInfo = input => /help|version/.test(input);
   let sequelize = `${syspath.root}/node_modules/.bin/sequelize`;
   let commandInfo = checkInfo(command);
@@ -35,4 +39,4 @@ export default function sequelizeCli(command, options) {
 
     return print.success(stdout);
   });
-}
+};

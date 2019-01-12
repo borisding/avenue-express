@@ -1,8 +1,7 @@
-/**
- * NOTE:
- * This file is originally generated via sequelize migration cli.
- * Modified to serve as entry file for models.
- */
+// NOTE:
+// This file is originally generated via sequelize migration cli.
+// Modified to serve as entry file for models.
+
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
@@ -17,7 +16,10 @@ const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
-  config
+  {
+    ...config,
+    operatorsAliases: Sequelize.Op
+  }
 );
 
 fs.readdirSync(__dirname)
