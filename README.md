@@ -6,7 +6,7 @@
 <a href="https://travis-ci.org/borisding/avenue-express"><img src="https://travis-ci.org/borisding/avenue-express.svg?branch=master" alt="Travis CI Build"></a>
 </p>
 
-This starter aims to be productive and good fit for Node.js web development with MVC architectural pattern and also, traditional client-side SPA powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
+This project starter aims to be productive and good fit for Node.js web development with MVC architectural pattern powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
 
 > If you're looking for Server-Side Rendering (SSR) web starter kit, please also check out [universsr](https://github.com/borisding/universsr).
 
@@ -14,7 +14,7 @@ This starter aims to be productive and good fit for Node.js web development with
 
 - [Requirement](#requirement)
 - [Quick Start](#quick-start)
-- [Project Structure](#project-structure) / [Configuration](#configuration) / [CLI](#cli)
+- [Project Structure](#project-structure) / [Configuration](#configuration) / [CLI and ORM](#cli-and-orm)
 - [Controllers](#controllers) / [Models](#models) / [Views](#views)
 - [Frontend Assets](#frontend-assets)
 - [Session Management](#session-management)
@@ -31,7 +31,7 @@ This project starter should be working as expected with the following minimal ve
 
 | Dependency |  Version  |
 | ---------- | :-------: |
-| Node       | >= v8.0.0 |
+| Node       | >= v8.3.0 |
 | NPM        | >= v5.0.0 |
 
 **[Back to top](#table-of-contents)**
@@ -58,6 +58,14 @@ npm run dev
 
 **Production**
 
+Copy `.env.development` to `./config/dotenv` folder as `.env` for production usage:
+
+```bash
+cp config/dotenv/.env.development config/dotenv/.env
+```
+
+Change environment variables in `.env` to serve your app. Avoid using the same port for both development and production.
+
 ```bash
 # build for production ready and start server
 npm run build && npm start
@@ -68,9 +76,6 @@ To run tests:
 **Test**
 
 ```bash
-# only execute `config` script when `env-properties.json` is not available
-npm run config
-
 npm test
 ```
 
@@ -78,23 +83,31 @@ npm test
 
 ## Project Structure
 
-Below is a brief description of project structure in tree-view:
+Below is a overview of project structure in tree-view:
 
 ```
-├─.babelrc                          # default babel configuration
 ├─.sequelizerc                      # Sequelize configuration for CLI
 ├─.travis.yml                       # config file for Travis build workflow
 ├─avenue.js                         # CLI entry file for the app
+├─babel.config.js                   # default babel configuration
+├─env.js                            # .env file loader with `dotenv` and `dotenv-expand`
 ├─esm.js                            # ESM loader and module alias hook
 ├─index.js                          # expose Express server file
 ├─package-lock.json                 # NPM package lock file
 ├─package.json                      # NPM package file
+├─webpack.config.js                 # webpack bundler's configuration
 | ...
 ├─utils                             # contains all utility files
 ├─tests                             # contains all mocks and tests
-|   ├─mocks                         # contains all mock files
-|   ├─components                    # contains all tests for Vue SFCs
-├─src                               # parent folder of all source files
+├─storage                           # contains database, logs, sessions files, coverage reports
+├─public                            # contains production ready assets/files
+├─node_modules                      # contains required node packages
+├─logger                            # contains winston logger for the app
+├─config                            # contains project .env files, jest and other configs
+├─bin                               # parent folder for server and CLI
+|  ├─server.js                      # Express server file
+|  ├─cli                            # folder for Avenue command-line interface
+├─app                               # parent folder of all app source files
 |  ├─index.js                       # entry file for Express framework
 |  ├─views                          # contains respective view templates
 |  |   ├─layout.html                # default layout template for the app
@@ -108,66 +121,53 @@ Below is a brief description of project structure in tree-view:
 |  |   ├─js                         # contains all JS module source files
 |  |   ├─img                        # contains all images
 |  |   ├─components                 # contains all Vue's Single File Components (SFCs)
-├─sessions                          # default folder for session file storage
-├─public                            # contains production ready assets/files
-├─logs                              # any log files, such as http request logs
-├─database                          # Sequelize's migration folder
-|    ├─seeders                      # contains all database seed files
-|    ├─migrations                   # contains all database migration files
-├─config                            # contains app configurations
-├─build                             # contains webpack and build scripts
-|   ├─webpack                       # contains webpack configuration
-|   ├─scripts                       # contains all script files for build workflow
-├─bin                               # parent folder for server and CLI
-|  ├─server.js                      # Express server file
-|  ├─cli                            # folder for Avenue command-line interface
 ```
 
 **[Back to top](#table-of-contents)**
 
 ## Configuration
 
-- Project environment config is placed in `./config` directory. There is `.env.example` required for the app usage. Please rename the file to `.env` to serve your actual app configuration.
+**Environment Variables**
 
-- It uses `dotenv` package to load environment variables from `.env` into Node's `process.env`. You should always define new environment variables in `.env`.
+- `dotenv` and `dotenv-expand` packages are used in conjunction with `webpack.DefinePlugin` plugin for managing environment variables. The entire logic can be found in `./env.js` file. The .env is environment sepecific and is loaded based on the defined `process.env.NODE_ENV` value:
 
-- When environment values changed, execute the following script to load new changes into `process.env`:
+| File name          | NODE_ENV    |    In Source Control    |
+| ------------------ | ----------- | :---------------------: |
+| `.env.test`        | test        |           Yes           |
+| `.env.development` | development |           Yes           |
+| `.env`             | production  | No (Need to create new) |
 
-```bash
-npm run config
-```
-
-- After script is executed, it will also generate `env-properties.json` to be required in `./config/index.js`. We should not amend directly any of the environment properties, which supposed to be synced with `.env`
-
-- To use the environment properties, import file as follows:
+- Defined custom environment variables can be accessed via `process.env.[VARIABLE_NAME]`, for in instance:
 
 ```js
-import { ENV } from "@config";
-
-// print PORT value as configured in `.env`
-console.log(ENV["PORT"]);
+process.env.PORT; // this will give us PORT value
 ```
 
-> You should never commit `.env` file to version control. Please [check out](https://www.npmjs.com/package/dotenv#faq) the FAQ section on `dotenv` page for more details.
+- Only those variables we defined in `.env*` file will get stringified for webpack.DefinePlugin for client build process, which is useful when come to client-side usage.
 
-- Besides `ENV` object, it also exposes `DEV` and `SYSPATH`:
+**Others**
+
+- `isDev` and `syspath` are also exposed in `./config/index.js` for project usage:
 
 ```js
-import { DEV, SYSPATH } from "@config";
+import { isDev, syspath } from '@config';
 
-// check if we're in development environment
-if (DEV) {
-  console.log("We are in development environment.");
+// checking for development environment
+if (isDev) {
+  // do something only for development mode
 }
 
-// print absolute path of `public` directory
-// defined system paths can be found in `syspath.js`
-console.log(SYSPATH["PUBLIC"]);
+// expose project core directories, eg: absolute path of `app`
+console.log(syspath.app);
 ```
+
+- Feel free to add more configuration and used upon project needs.
+
+- `jest` testing framework setup and mocks reside in `./config/jest` folder.
 
 **[Back to top](#table-of-contents)**
 
-## CLI
+## CLI and ORM
 
 - This stater comes with a light CLI to perform some routine tasks, such as controller file creation, Sequelize database migration, etc.
 
@@ -185,13 +185,13 @@ $ node avenue --help
 
 ```bash
 # generate targeted controller file with provided inputs
-node avenue new:controller <controller> [options]
+node avenue controller:new <controller> [options]
 
-# example for `userController` in `./src/controllers`
-node avenue new:controller user
+# example for `userController` in `./app/controllers`
+node avenue controller:new user
 
 # to see more options of the subcommand line:
-node avenue new:controller --help
+node avenue controller:new --help
 ```
 
 - This starter borrows the same action names from [Laravel](https://laravel.com) framework for its resource controller to perform typical CRUD operations:
@@ -209,17 +209,17 @@ node avenue new:controller --help
 - For generated bare controller, there is only one `index` action in controller file, eg:
 
 ```js
-import { Router } from "express";
+import { Router } from 'express';
 
 // GET method for index action
 export function index(req, res) {
-  res.render("home");
+  res.render('home');
 }
 
 // simple route for bare controller
 const router = Router();
 
-router.get("/", index);
+router.get('/', index);
 
 export default router;
 ```
@@ -236,7 +236,7 @@ export default router;
 node avenue orm model:generate --name User --attributes firstName:string,lastName:string,email:string
 ```
 
-- Once `user.js` is created in `./src/models` and migration performed, we can access `User` model with `db` object in `./src/models/index.js`:
+- Once `user.js` is created in `./app/models` and migration performed, we can access `User` model with `db` object in `./app/models/index.js`:
 
 ```js
 import db from '@models';
@@ -250,6 +250,14 @@ db.User.findAll().then(users => {
 });
 ...
 ```
+
+- To do migration, eg:
+
+```js
+node avenue orm db:migrate
+```
+
+> By default, `orm` command will load env variables from `.env.development` file before running CLI tasks in `development` mode. For other environments, please use `orm:test` and `orm:prod` commands instead for both `test` and `production`, respectively.
 
 - Basically, the internal `orm` command executes Sequelize CLI commands under the hood, which is installed locally in `./node_modules`:
 
@@ -266,12 +274,12 @@ node avenue orm help
 
 ## Views
 
-- All view templates can be found in `./src/views`. It uses [`nunjucks`](https://mozilla.github.io/nunjucks/) as default templating engine in conjunction with [`consolidate.js`](https://github.com/tj/consolidate.js/).
+- All view templates can be found in `./app/views`. It uses [`nunjucks`](https://mozilla.github.io/nunjucks/) as default templating engine in conjunction with [`consolidate.js`](https://github.com/tj/consolidate.js/).
 
 - The default template file extension is `html`.
 
 ```js
-// in `./src/index.js`
+// in `./app/index.js`
 
 ...
 const ext = 'html';
@@ -294,13 +302,13 @@ app
 
 ## Frontend Assets
 
-- All asset source files (js, css/scss, images, etc) are placed in `./src/assets`. The generated assets such as JS bundles and final CSS outputs will be kept in `./public` folder.
+- All asset source files (js, css/scss, images, etc) are placed in `./app/assets`. The generated assets such as JS bundles and final CSS outputs will be kept in `./public` folder.
 
-- After runnig webpack build process, `./build/webpack/assets.js` will be generated with `assets-webpack-plugin`, which consists a list of assets in key/value pairs with the paths included. This allows us to find it and include in respective module view templates by using nunjucks macro `./src/views/macros/assets.html`.
+- After runnig webpack build process, `./app/assets/index.js` will be generated with `assets-webpack-plugin`, which consists a list of assets in key/value pairs with the paths included. This allows us to find it and include in respective module view templates by using nunjucks macro `./app/views/macros/assets.html`.
 
 - To keep project modular, it's recommended to use the same naming for `.js` and `.scss` source files. For instance, we have partial view called `user.html`, which having some JS code and style need to be applied. We can create `user.js` and `user.scss` respectively for webpack to look up and include it as part of entry files for bundling.
 
-- `.vue` components should be placed in `./src/assets/components` folder for Vue loaders to process during webpack build process. Please go through with the webpack config on rules section.
+- `.vue` components should be placed in `./app/assets/components` folder for Vue loaders to process during webpack build process. Please go through with the webpack config on rules section.
 
 - Vendor chunk will be created with the following config in webpack:
 
@@ -327,7 +335,7 @@ optimization: {
 
 ## Session Management
 
-- This starter comes with default file storage (`session-file-store`) for session management. Please take a look at `./src/index.js`.
+- This starter comes with default file storage (`session-file-store`) for session management. Please take a look at `./app/index.js`.
 
 - Feel free to use different storage for session management. For instance, storing sessions with Redis:
 
@@ -335,20 +343,19 @@ optimization: {
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import Redis from 'ioredis'; // redis client we use for
-import { ENV } from '@config';
 
 ...
 const RedisStore = connectRedis(session);
 // please check ioredis docs for more details
 const client = new Redis({
-  port: ENV['REDIS_PORT'],
-  host: ENV['REDIS_HOST'],
-  password: ENV['REDIS_PASSWORD'] // password, if any
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST,
+  password: process.env.REDIS_PASSWORD // password, if any
 });
 
 app.use(session({
   store: new RedisStore({ client }),
-  secret: ENV['SECRET_KEY'],
+  secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 86400000 }
@@ -360,19 +367,9 @@ app.use(session({
 
 ## Nodemon and Webpack
 
-- This starter uses `nodemon-webpack-plugin` together with webpack to run development server for monitoring file changes. The directories for `watch` property are as follows:
+- This starter uses `nodemon-webpack-plugin` together with webpack to run development server for monitoring file changes. Be sure to check out `NodemonPlugin` config in webpack file.
 
-```js
-...
-watch: [
-  SYSPATH['SRC'],
-  SYSPATH['UTILS'],
-  `${SYSPATH['BUILD']}/webpack/assets.js`
-]
-...
-```
-
-- Meanwhile, webpack's watch mode is also turned on for development to monitor frontend asset changes. Whenever new bundle is introduced into `./src/webpack/build/assets.js`, nodemon will restart the server for the update.
+- Meanwhile, webpack's watch mode is also turned on for development to monitor frontend asset changes and get reflected upon updates.
 
 **[Back to top](#table-of-contents)**
 
@@ -382,19 +379,19 @@ watch: [
 
 - There are several pre-defined lint rules in `package.json`. Feel free to add/remove any of them for project needs.
 
-- There is also `.eslintrc` config file in `./src/models` folder to overwrite the default rules in `package.json`. This to avoid lint check error in any model files that is generated via Sequelize CLI.
+- There is also `.eslintrc` config file in `./app/models` folder to overwrite the default rules in `package.json`. This to avoid lint check error in any model files that is generated via Sequelize CLI.
 
 **[Back to top](#table-of-contents)**
 
 ## Logging
-- This starter uses `winston` as default logger for logging http request and exception error logs. Please check out the logger file (`./utils/logger.js`) with default config.
+
+- This starter uses `winston` as default logger for logging http request and exception error logs. Please check out the logger file (`./logger/winston.js`) with default config.
 
 ```js
 // example of using winston logger
-import { logger } from '@utils';
+import { logger } from '@logger';
 
 logger.info('This log message is for info level');
-
 ```
 
 - `httpLogger` custom middleware is also provided, where `morgan` is used with winston for logging http request. To use http logger:
@@ -408,13 +405,13 @@ app.use(httpLogger());
 ...
 ```
 
-- All log files will go into `./logs` folder.
+- All log files will go into `./storage/logs` folder.
 
 **[Back to top](#table-of-contents)**
 
 ## Unit Testing
 
-- All test files should reside in `./src/tests` folder. [Jest](https://jestjs.io/) framework is used for running tests. All Jest related config can be seen under `jest` property in `package.json`.
+- All test files should reside in `./tests` folder. [Jest](https://jestjs.io/) framework is used for running tests. All Jest related config can be seen under `jest` property in `package.json`.
 
 - Besides, `vue-jest` and `jest-serializer-vue` are also included for testing `.vue` components.
 
@@ -422,7 +419,7 @@ app.use(httpLogger());
 
 ## Changelog
 
-All notable changes made to the project will be documented on [release page](https://github.com/borisding/avenue-express/releases).
+All notable changes made to the project will be documented on [release page](https://github.com/borisding/avenue-express/releases). Always using the latest version for new project.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
