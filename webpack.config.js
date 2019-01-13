@@ -189,7 +189,7 @@ const webpackConfig = {
             ext: 'js',
             verbose: false,
             script: `${syspath.root}/index.js`,
-            ignore: ['node_modules', 'storage'],
+            ignore: ['node_modules', syspath.storage, `${syspath.app}/assets`],
             watch: [syspath.app, syspath.utils]
           })
         ]

@@ -25,6 +25,9 @@ const njk = cons.requires.nunjucks.configure(views, {
   express: app,
   trimBlocks: true,
   lstripBlocks: true,
+  // no cache in `development` mode
+  noCache: !!isDev,
+  // watch changes in `development` mode
   watch: !!isDev
 });
 
