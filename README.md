@@ -4,6 +4,8 @@
 <a href="https://github.com/borisding/avenue-express"><img src="https://img.shields.io/github/release/borisding/avenue-express.svg" alt="Release Version"></a>
 <a href="https://raw.githubusercontent.com/borisding/avenue-express/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
 <a href="https://travis-ci.org/borisding/avenue-express"><img src="https://travis-ci.org/borisding/avenue-express.svg?branch=master" alt="Travis CI Build"></a>
+<a href="https://david-dm.org/borisding/avenue-express"><img src="https://david-dm.org/borisding/avenue-express/status.svg" alt="Dependencies"></a>
+<a href="https://david-dm.org/borisding/avenue-express?type=dev"><img src="https://david-dm.org/borisding/avenue-express/dev-status.svg" alt="Dev Dependencies"></a>
 </p>
 
 This project starter aims to be productive and good fit for Node.js web development with MVC architectural pattern powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
