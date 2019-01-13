@@ -12,8 +12,9 @@ if (!NODE_ENV) {
   );
 }
 
-// using .env.[NODE_ENV] file instead when not in `production` environment
-let envFile = `${syspath.config}/.env`;
+// using .env.[NODE_ENV] file instead
+// when not in `production` environment, which is also default
+let envFile = `${syspath.config}/dotenv/.env`;
 if (NODE_ENV !== 'production') {
   envFile = `${envFile}.${NODE_ENV}`;
 }
