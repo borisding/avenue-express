@@ -7,7 +7,7 @@ import * as actions from './lib';
 const program = sade('avenue').version(pkg.version);
 
 program
-  .command('new:controller <controller>')
+  .command('controller:new <controller>')
   .describe('Create new resource controller with corresponding router.')
   .option('-b, --bare', 'Create minimal controller file as entry.', false)
   .option(
@@ -20,7 +20,6 @@ program
     "Name of sub-folder that controller resides in `controllers` folder. Default is controller's base folder.",
     '.'
   )
-
   .option(
     '-s, --suffix',
     'Create new resource controller file with `Controller` suffix.',
@@ -29,7 +28,7 @@ program
   .action(actions.createController);
 
 program
-  .command('new:key')
+  .command('key')
   .describe('Generate new random key for application.')
   .option('-l, --length', 'Specify maximum length of generated random key.', 32)
   .action(actions.generateKey);
