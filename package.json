@@ -1,6 +1,6 @@
 {
   "name": "avenue-express",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Express MVC application starter for getting shit done.",
   "main": "index.js",
   "bin": "avenue.js",
@@ -30,7 +30,8 @@
   },
   "verbose": true,
   "engines": {
-    "node": "10.x"
+    "npm": ">=5",
+    "node": ">=8.3.0"
   },
   "author": "Boris Ding Poh Hing",
   "license": "MIT",
