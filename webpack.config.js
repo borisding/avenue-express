@@ -153,9 +153,9 @@ const webpackConfig = {
         exclude: [/node_modules/, `${syspath.app}/assets/scss`],
         use: [{ loader: 'vue-style-loader' }, ...getStyleLoaders()]
       },
-      // general Sass file config (except .vue single file components)
+      // general styles config (except .vue single file components)
       {
-        test: /\.(sass|scss)$/,
+        test: /\.(sass|scss|css)$/,
         exclude: ['/node_modules/', `${syspath.app}/assets/components`],
         use: [MiniCssExtractPlugin.loader, ...getStyleLoaders()]
       },
