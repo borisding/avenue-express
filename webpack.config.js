@@ -110,7 +110,9 @@ const webpackConfig = {
     publicPath: process.env.PUBLIC_PATH,
     path: syspath.public,
     filename: isDev ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
-    chunkFilename: isDev ? 'js/[id].js' : 'js/[id].[contenthash:8].js'
+    chunkFilename: isDev
+      ? 'js/[name].chunk.js'
+      : 'js/[name].chunk.[contenthash:8].js'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
@@ -174,7 +176,9 @@ const webpackConfig = {
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: isDev ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
-      chunkFilename: isDev ? 'css/[id].css' : 'css/[id].[contenthash:8].css'
+      chunkFilename: isDev
+        ? 'css/[name].css'
+        : 'css/[name].chunk.[contenthash:8].css'
     }),
     new AssetsPlugin({
       filename: 'index.js',
