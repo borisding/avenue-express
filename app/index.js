@@ -12,7 +12,7 @@ import hpp from 'hpp';
 import { isDev, syspath } from '@config';
 import * as mid from '@middlewares';
 import * as ctl from '@controllers';
-import assets from './assets';
+import assets from '@assets';
 
 const app = express();
 const ext = 'html';

@@ -5,7 +5,7 @@
   "main": "index.js",
   "bin": "avenue.js",
   "scripts": {
-    "clean": "rimraf public app/assets/index.js",
+    "clean": "rimraf public assets/index.js",
     "webpack": "npm run clean && webpack --progress --hide-modules",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",
@@ -188,7 +188,7 @@
   "_moduleAliases": {
     "@root": ".",
     "@app": "app",
-    "@assets": "app/assets",
+    "@assets": "assets",
     "@controllers": "app/controllers",
     "@middlewares": "app/middlewares",
     "@models": "app/models",
@@ -209,10 +209,10 @@
     "coverageDirectory": "<rootDir>/storage/coverage",
     "collectCoverageFrom": [
       "app/**/*.js",
-      "app/assets/components/**/*.vue",
+      "app/views/**/*.vue",
       "!**/node_modules/**",
       "!app/index.js",
-      "!app/assets/index.js"
+      "!assets/index.js"
     ],
     "moduleFileExtensions": [
       "js",

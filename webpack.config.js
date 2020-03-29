@@ -18,19 +18,19 @@ const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const sourceMap = !!isDev;
 
 // populate respective module JS and SCSS files as entry points
-const getModuleEntry = (targetDir = `${syspath.app}/assets/js`) => {
+const getModuleEntry = (targetDir = `${syspath.assets}/js`) => {
   const entryFiles = {};
 
   fs.readdirSync(targetDir).filter(file => {
     const { name, ext } = path.parse(file);
 
     if (ext === '.js') {
-      entryFiles[name] = [`${syspath.app}/assets/js/${file}`];
+      entryFiles[name] = [`${syspath.assets}/js/${file}`];
     }
 
     // check if module has .scss file as well
     // if there is, push as part of the module entry point
-    const moduleScss = `${syspath.app}/assets/scss/${name}.scss`;
+    const moduleScss = `${syspath.assets}/scss/${name}.scss`;
 
     if (fs.existsSync(moduleScss)) {
       entryFiles[name].push(moduleScss);
@@ -90,7 +90,7 @@ const webpackConfig = {
     maxAssetSize: 400000
   },
   entry: {
-    main: `${syspath.app}/assets/scss/main.scss`,
+    main: `${syspath.assets}/scss/main.scss`,
     ...getModuleEntry()
   },
   optimization: {
@@ -152,18 +152,18 @@ const webpackConfig = {
       // Vue specific style config for SFCs
       {
         test: /\.(sass|scss|css)$/,
-        exclude: [/node_modules/, `${syspath.app}/assets/scss`],
+        exclude: [/node_modules/, `${syspath.assets}/scss`],
         use: [{ loader: 'vue-style-loader' }, ...getStyleLoaders()]
       },
       // general styles config (except .vue single file components)
       {
         test: /\.(sass|scss|css)$/,
-        exclude: ['/node_modules/', `${syspath.app}/assets/components`],
+        exclude: ['/node_modules/', `${syspath.assets}/components`],
         use: [MiniCssExtractPlugin.loader, ...getStyleLoaders()]
       },
       {
         test: /\.(svg|png|jpe?g|gif)(\?.*)?$/i,
-        use: getFileLoaders({ name: 'img/[name].[ext]' })
+        use: getFileLoaders({ name: 'images/[name].[ext]' })
       },
       {
         test: /\.(eot|ttf|woff2?)(\?.*)?$/i,
@@ -183,7 +183,7 @@ const webpackConfig = {
     new AssetsPlugin({
       filename: 'index.js',
       prettyPrint: true,
-      path: `${syspath.app}/assets`,
+      path: syspath.assets,
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(
@@ -193,7 +193,7 @@ const webpackConfig = {
             ext: 'js',
             verbose: false,
             script: `${syspath.root}/index.js`,
-            ignore: ['node_modules', syspath.storage, `${syspath.app}/assets`],
+            ignore: ['node_modules', syspath.storage, syspath.assets],
             watch: [syspath.app, syspath.utils]
           })
         ]
