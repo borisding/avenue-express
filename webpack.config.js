@@ -120,7 +120,7 @@ const webpackConfig = {
       ...pkg._moduleAliases,
       // vue specific
       vue$: 'vue/dist/vue.esm.js',
-      '@components': `${syspath.app}/assets/components`
+      '@components': `${syspath.app}/views/components`
     }
   },
   module: {
