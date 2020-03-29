@@ -12,7 +12,7 @@
     "dev": "cross-env NODE_ENV=development npm run webpack",
     "start": "cross-env NODE_ENV=production node .",
     "lint:js": "eslint . --fix",
-    "lint:scss": "stylelint **/*.scss --syntax=scss --fix",
+    "lint:scss": "stylelint **/*.scss **/*.vue --fix",
     "lint": "npm-run-all lint:scss lint:js",
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "npm test -- --watch",
