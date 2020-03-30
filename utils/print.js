@@ -1,4 +1,4 @@
-import colors from 'colors';
+const colors = require('colors');
 
 // simple print colorful consoles util for universal usage
 const print = {
@@ -20,4 +20,4 @@ const print = {
   }
 };
 
-export default print;
+module.exports = print;

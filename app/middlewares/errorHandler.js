@@ -1,4 +1,4 @@
-import { logger } from '@logger';
+const { logger } = require('@logger');
 
 // handling error from `createError` factory, by default
 // `500` status code will be used if `err.statusCode` is not available
@@ -29,4 +29,4 @@ const errorHandler = () => (err, req, res, next) => {
   }
 };
 
-export default errorHandler;
+module.exports = errorHandler;

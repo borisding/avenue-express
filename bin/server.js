@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import 'make-promises-safe';
-import http from 'http';
-import app from '@app';
-import { print } from '@utils';
+require('make-promises-safe');
+const http = require('http');
+const app = require('@app');
+const { print } = require('@utils');
 
 const server = http.createServer(app);
 const PORT = parseInt(process.env.PORT, 10) || 3000;
@@ -27,7 +27,7 @@ server.on('error', err => {
   }
 });
 
-['SIGINT', 'SIGTERM'].forEach(signal => {
+['SIGINT', 'SIGTERM', 'SIGHUP'].forEach(signal => {
   process.on(signal, () => {
     server.close(() => {
       process.exit();

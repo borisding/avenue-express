@@ -1,37 +1,37 @@
-import { Router } from 'express';
+const { Router } = require('express');
 
 // GET method for index action
-export function index(req, res) {
+function index(req, res) {
   res.render('users', { username: 'Guest' });
 }
 
 // GET method for create action
-export function create(req, res, next) {
+function create(req, res, next) {
   next();
 }
 
 // POST method for store action
-export function store(req, res, next) {
+function store(req, res, next) {
   next();
 }
 
 // GET method for show action
-export function show(req, res, next) {
+function show(req, res, next) {
   next();
 }
 
 // GET method for edit action
-export function edit(req, res, next) {
+function edit(req, res, next) {
   next();
 }
 
 // PUT method for update action
-export function update(req, res, next) {
+function update(req, res, next) {
   next();
 }
 
 // DELETE method for destroy action
-export function destroy(req, res, next) {
+function destroy(req, res, next) {
   next();
 }
 
@@ -50,4 +50,4 @@ router
   .put('/:id', update)
   .delete('/:id', destroy);
 
-export default router;
+module.exports = router;

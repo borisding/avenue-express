@@ -1,1 +1,3 @@
-export { default as print } from './print';
+module.exports = {
+  print: require('./print')
+};

@@ -1,7 +1,7 @@
-import random from 'random-key';
-import { print } from '@utils';
+const random = require('random-key');
+const { print } = require('@utils');
 
-export default function generateKey(options) {
+function generateKey(options) {
   const BASE_LEN = 16;
   const DEFAULT_LEN = BASE_LEN * 2;
   const MIN_LEN = BASE_LEN;
@@ -24,3 +24,5 @@ export default function generateKey(options) {
   print.info(`Generated new key (${options.length}):`);
   print.success(random.generate(options.length));
 }
+
+module.exports = generateKey;

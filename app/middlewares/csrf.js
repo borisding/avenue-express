@@ -1,4 +1,4 @@
-import csurf from 'csurf';
+const csurf = require('csurf');
 
 // return `csurf` by passing `options` to it
 // no options provided by default
@@ -10,4 +10,4 @@ csrf.toLocal = () => (req, res, next) => {
   next();
 };
 
-export default csrf;
+module.exports = csrf;

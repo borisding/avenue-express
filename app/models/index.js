@@ -2,10 +2,10 @@
 // This file is originally generated via sequelize migration cli.
 // Modified to serve as entry file for models.
 
-import fs from 'fs';
-import path from 'path';
-import Sequelize from 'sequelize';
-import dbConfig from '@database/config';
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const dbConfig = require('@database/config');
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
@@ -40,4 +40,4 @@ Object.keys(db).map(
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+module.exports = db;

@@ -1,9 +1,9 @@
-import slash from 'slash';
-import { exec } from 'child_process';
-import { print } from '@utils';
-import { syspath } from '@config';
+const slash = require('slash');
+const { exec } = require('child_process');
+const { print } = require('@utils');
+const { syspath } = require('@config');
 
-export default (env = 'development') => (command, options) => {
+module.exports = (env = 'development') => (command, options) => {
   // set `NODE_ENV` value for Sequelize CLI
   // default value is `development`
   process.env.NODE_ENV = env;

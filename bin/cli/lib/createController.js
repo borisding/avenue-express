@@ -1,11 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import mkdirp from 'mkdirp-promise';
-import slash from 'slash';
-import { syspath } from '@config';
-import { print } from '@utils';
+const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp-promise');
+const slash = require('slash');
+const { syspath } = require('@config');
+const { print } = require('@utils');
 
-export default async function createController(controller, options) {
+async function createController(controller, options) {
   try {
     const SUFFIX = 'Controller';
     const pathToControllers = slash(
@@ -39,3 +39,5 @@ export default async function createController(controller, options) {
     print.error(err);
   }
 }
+
+module.exports = createController;

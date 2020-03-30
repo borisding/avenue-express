@@ -28,4 +28,4 @@ const notFound = () => (req, res, next) => {
   });
 };
 
-export default notFound;
+module.exports = notFound;

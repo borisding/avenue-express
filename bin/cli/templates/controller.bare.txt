@@ -1,7 +1,7 @@
-import { Router } from 'express';
+const { Router } = require('express');
 
 // GET method for index action
-export function index(req, res, next) {
+function index(req, res, next) {
   next();
 }
 
@@ -10,4 +10,4 @@ const router = Router();
 
 router.get('/', index);
 
-export default router;
+module.exports = router;

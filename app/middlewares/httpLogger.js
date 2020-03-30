@@ -1,6 +1,6 @@
-import morgan from 'morgan';
-import { logger } from '@logger';
-import { isDev } from '@config';
+const morgan = require('morgan');
+const { logger } = require('@logger');
+const { isDev } = require('@config');
 
 // winston logger's "stream" writable for morgan
 logger.stream = {
@@ -16,4 +16,4 @@ const httpLogger = () => {
   });
 };
 
-export default httpLogger;
+module.exports = httpLogger;

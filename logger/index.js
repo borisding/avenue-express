@@ -1,1 +1,3 @@
-export { default as logger } from './winston';
+module.exports = {
+  logger: require('./winston')
+};

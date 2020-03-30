@@ -1,18 +1,18 @@
-import express from 'express';
-import cors from 'cors';
-import cons from 'consolidate';
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import sessionFileStore from 'session-file-store';
-import nunjucks from 'nunjucks';
-import helmet from 'helmet';
-import hpp from 'hpp';
+const express = require('express');
+const cors = require('cors');
+const cons = require('consolidate');
+const compression = require('compression');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const sessionFileStore = require('session-file-store');
+const nunjucks = require('nunjucks');
+const helmet = require('helmet');
+const hpp = require('hpp');
 
-import { isDev, syspath } from '@config';
-import * as mid from '@middlewares';
-import * as ctl from '@controllers';
-import assets from '@assets';
+const { isDev, syspath } = require('@config');
+const mid = require('@middlewares');
+const ctl = require('@controllers');
+const assets = require('@assets');
 
 const app = express();
 const ext = 'html';
@@ -84,4 +84,4 @@ app
   // mount error handler last
   .use(mid.errorHandler());
 
-export default app;
+module.exports = app;

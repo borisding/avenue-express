@@ -1,5 +1,5 @@
-import { format, transports, createLogger } from 'winston';
-import { isDev, syspath } from '@config';
+const { format, transports, createLogger } = require('winston');
+const { isDev, syspath } = require('@config');
 
 const { combine, json, timestamp, label } = format;
 const logger = createLogger({
@@ -30,4 +30,4 @@ if (isDev) {
   );
 }
 
-export default logger;
+module.exports = logger;

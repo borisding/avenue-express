@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import sade from 'sade';
-import pkg from '@root/package';
-import * as actions from './lib';
+const sade = require('sade');
+const pkg = require('@root/package');
+const actions = require('./lib');
 
 const program = sade('avenue').version(pkg.version);
 
