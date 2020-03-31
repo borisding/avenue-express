@@ -137,15 +137,8 @@ const webpackConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            babelrc: false,
-            compact: false,
             cacheDirectory: !!isDev,
-            presets: [['@babel/preset-env', { useBuiltIns: 'usage' }]],
-            plugins: [
-              '@babel/plugin-transform-strict-mode',
-              '@babel/plugin-syntax-dynamic-import',
-              '@babel/plugin-proposal-class-properties'
-            ]
+            configFile: true
           }
         }
       },

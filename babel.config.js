@@ -1,10 +1,14 @@
 module.exports = {
-  presets: ['@babel/preset-env'],
-  plugins: [
-    '@babel/plugin-transform-strict-mode',
-    '@babel/plugin-syntax-dynamic-import',
-    '@babel/plugin-proposal-class-properties'
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        corejs: 3,
+        useBuiltIns: 'usage'
+      }
+    ]
   ],
+  plugins: ['@babel/plugin-transform-strict-mode'],
   env: {
     test: {
       presets: [
