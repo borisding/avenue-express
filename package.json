@@ -112,7 +112,9 @@
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "stylelint": "^13.2.1",
+    "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-sass-guidelines": "^7.0.0",
+    "stylelint-prettier": "^1.1.2",
     "stylelint-scss": "^3.16.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.0.0",
@@ -128,59 +130,6 @@
     "> 1%",
     "last 2 versions"
   ],
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {
-        "grid": true,
-        "flexbox": "no-2009"
-      }
-    }
-  },
-  "eslintConfig": {
-    "root": true,
-    "parser": "babel-eslint",
-    "extends": [
-      "eslint:recommended",
-      "prettier"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "env": {
-      "browser": true,
-      "node": true,
-      "es6": true,
-      "jest": true
-    },
-    "parserOptions": {
-      "sourceType": "module"
-    },
-    "rules": {
-      "no-console": 0,
-      "no-global-assign": 0,
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "endOfLine": "auto"
-        }
-      ]
-    }
-  },
-  "eslintIgnore": [
-    "storage/**/*",
-    "public/**/*.js"
-  ],
-  "stylelint": {
-    "plugins": [
-      "stylelint-scss"
-    ],
-    "extends": "stylelint-config-sass-guidelines",
-    "rules": {
-      "selector-max-id": 1,
-      "selector-class-pattern": null
-    }
-  },
   "_moduleAliases": {
     "@root": ".",
     "@app": "app",
@@ -197,37 +146,5 @@
     "@storage": "storage",
     "@database": "storage/database",
     "@logs": "storage/logs"
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/config/jest/setupTest.js"
-    ],
-    "coverageDirectory": "<rootDir>/storage/coverage",
-    "collectCoverageFrom": [
-      "app/**/*.js",
-      "app/views/**/*.vue",
-      "!**/node_modules/**",
-      "!app/index.js",
-      "!assets/index.js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "vue"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/fileMock.js",
-      "\\.(css|scss)$": "<rootDir>/config/jest/styleMock.js"
-    },
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/jest-serializer-vue"
-    ],
-    "transform": {
-      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
-    },
-    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.jsx?$",
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ]
   }
 }
