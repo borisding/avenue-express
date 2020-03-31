@@ -3,6 +3,6 @@ module.exports = {
   // core system paths of application
   syspath: require('./syspath'),
 
-  // is development
+  // is development environment
   isDev: require('isdev')
 };

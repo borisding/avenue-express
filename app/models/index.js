@@ -5,19 +5,16 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const dbConfig = require('@database/config');
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = dbConfig[env];
 const db = {};
 
 const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
   {
-    ...config,
+    dialect: process.env.DB_DIALECT,
     operatorsAliases: Sequelize.Op
   }
 );
