@@ -11,7 +11,7 @@ const OfflinePlugin = require('offline-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const pkg = require('./package');
-const { getCustomEnv } = require('./env');
+const { getCustomEnv } = require('./env.loader');
 const { isDev, syspath } = require('@config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';

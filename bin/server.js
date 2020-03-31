@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-require('make-promises-safe');
 const http = require('http');
 const app = require('@app');
 const { print } = require('@utils');
