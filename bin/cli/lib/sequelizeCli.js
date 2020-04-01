@@ -2,17 +2,18 @@ const slash = require('slash');
 const { exec } = require('child_process');
 const { print } = require('@utils');
 const { syspath } = require('@config');
-const { prettyFormat } = require('../utils');
+const { prettierFormat } = require('../utils');
+const sequelizeConfig = require('@root/.sequelizerc');
 
 module.exports = (env = 'development') => (command, options) => {
   // set `NODE_ENV` value for Sequelize CLI
   // default value is `development`
   process.env.NODE_ENV = env;
 
-  let checkInfo = input => /help|version/.test(input);
+  const checkInfo = input => /help|version/.test(input);
+  const commandInfo = checkInfo(command);
+  const subCommandInfo = !commandInfo && options._[0] && checkInfo(options._[0]); // prettier-ignore
   let sequelize = `${syspath.root}/node_modules/.bin/sequelize`;
-  let commandInfo = checkInfo(command);
-  let subCommandInfo = !commandInfo && options._[0] && checkInfo(options._[0]);
 
   if (commandInfo) {
     // check command info
@@ -38,8 +39,10 @@ module.exports = (env = 'development') => (command, options) => {
       return print.error(`ERROR: ${err}`);
     }
 
+    // prettier formatting generated model file
     if (/model:generate/.test(command)) {
-      prettyFormat('models-path', options);
+      const filePath = `${sequelizeConfig['models-path']}/${options.name}.js`;
+      prettierFormat(filePath);
     }
 
     return print.success(stdout);

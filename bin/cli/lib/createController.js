@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp-promise');
 const slash = require('slash');
 const { syspath } = require('@config');
 const { print } = require('@utils');
+const { prettierFormat } = require('../utils');
 
 async function createController(controller, options) {
   try {
@@ -26,15 +27,17 @@ async function createController(controller, options) {
       );
     }
 
-    const fileData = fs.readFileSync(
+    const fileText = fs.readFileSync(
       `${syspath.bin}/cli/templates/controller.${
         options.bare ? 'bare' : 'resource'
       }.txt`,
       'utf8'
     );
 
-    fs.writeFileSync(controllerFile, fileData);
-    print.info(`Generated controller: ${controllerFile}`, 0);
+    prettierFormat(controllerFile, fileText, formattedText => {
+      fs.writeFileSync(controllerFile, formattedText, { encoding: 'utf8' });
+      print.info(`Generated controller: ${controllerFile}`, 0);
+    });
   } catch (err) {
     print.error(err);
   }
