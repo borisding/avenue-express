@@ -2,6 +2,7 @@ const slash = require('slash');
 const { exec } = require('child_process');
 const { print } = require('@utils');
 const { syspath } = require('@config');
+const { prettyFormat } = require('../utils');
 
 module.exports = (env = 'development') => (command, options) => {
   // set `NODE_ENV` value for Sequelize CLI
@@ -35,6 +36,10 @@ module.exports = (env = 'development') => (command, options) => {
 
     if (err) {
       return print.error(`ERROR: ${err}`);
+    }
+
+    if (/model:generate/.test(command)) {
+      prettyFormat('models-path', options);
     }
 
     return print.success(stdout);
