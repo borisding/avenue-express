@@ -28,8 +28,7 @@ server.on('error', err => {
 
 ['SIGINT', 'SIGTERM', 'SIGHUP'].forEach(signal => {
   process.on(signal, () => {
-    server.close(() => {
-      process.exit();
-    });
+    server.close();
+    process.exit();
   });
 });
