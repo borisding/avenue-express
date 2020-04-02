@@ -2,13 +2,14 @@ const slash = require('slash');
 const { exec } = require('child_process');
 const { print } = require('@utils');
 const { syspath } = require('@config');
-const { prettierFormat } = require('../utils');
+const { prettierFormat, CLI_ENV } = require('../utils');
 const sequelizeConfig = require('@root/.sequelizerc');
 
-module.exports = (env = 'development') => (command, options) => {
-  // set `NODE_ENV` value for Sequelize CLI
-  // default value is `development`
-  process.env.NODE_ENV = env;
+module.exports = env => (command, options) => {
+  // set `NODE_ENV` value for Sequelize CLI if targeted env does not exist
+  if (!Object.values(CLI_ENV).includes(process.env.NODE_ENV)) {
+    process.env.NODE_ENV = env;
+  }
 
   const checkInfo = input => /help|version/.test(input);
   const commandInfo = checkInfo(command);

@@ -1,6 +1,12 @@
 const fs = require('fs');
 const prettier = require('prettier');
 
+const CLI_ENV = {
+  DEV: 'development',
+  PROD: 'production',
+  TEST: 'test'
+};
+
 async function prettierFormat(filePath, fileText = null, callback = null) {
   if (!filePath) return;
   try {
@@ -22,5 +28,6 @@ async function prettierFormat(filePath, fileText = null, callback = null) {
 }
 
 module.exports = {
+  CLI_ENV,
   prettierFormat
 };

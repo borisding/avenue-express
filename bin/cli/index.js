@@ -3,6 +3,7 @@
 const sade = require('sade');
 const pkg = require('@root/package');
 const actions = require('./lib');
+const { CLI_ENV } = require('./utils');
 
 const program = sade('avenue').version(pkg.version);
 
@@ -35,17 +36,23 @@ program
 
 program
   .command('orm <command>')
-  .describe('Running `sequelize-cli` under the hood in `development` mode.')
-  .action(actions.sequelizeCli('development'));
+  .describe(
+    `Running sequelize-cli under the hood in ${CLI_ENV.DEV} environment.`
+  )
+  .action(actions.sequelizeCli(CLI_ENV.DEV));
 
 program
   .command('orm:prod <command>')
-  .describe('Running `sequelize-cli` under the hood in `production` mode.')
-  .action(actions.sequelizeCli('production'));
+  .describe(
+    `Running sequelize-cli under the hood in ${CLI_ENV.PROD} environment.`
+  )
+  .action(actions.sequelizeCli(CLI_ENV.PROD));
 
 program
   .command('orm:test <command>')
-  .describe('Running `sequelize-cli` under the hood in `test` mode.')
-  .action(actions.sequelizeCli('test'));
+  .describe(
+    `Running sequelize-cli under the hood in ${CLI_ENV.TEST} environment.`
+  )
+  .action(actions.sequelizeCli(CLI_ENV.TEST));
 
 program.parse(process.argv);
