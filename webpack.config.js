@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
@@ -96,7 +96,9 @@ const webpackConfig = {
     ...getModuleEntry()
   },
   optimization: {
-    minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin()],
+    // @see: https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+    // @see: https://github.com/NMFR/optimize-css-assets-webpack-plugin
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
       cacheGroups: {
         vendor: {
