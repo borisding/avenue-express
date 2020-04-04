@@ -85,10 +85,12 @@ const webpackConfig = {
   context: syspath.app,
   // for more about performance hints
   // @see: https://webpack.js.org/configuration/performance/#performance
-  performance: {
-    maxEntrypointSize: 400000,
-    maxAssetSize: 400000
-  },
+  performance: isDev
+    ? false
+    : {
+        maxEntrypointSize: 400000,
+        maxAssetSize: 400000
+      },
   entry: {
     main: `${syspath.assets}/scss/main.scss`,
     ...getModuleEntry()
