@@ -2,7 +2,6 @@
 
 const http = require('http');
 const app = require('@app');
-const { isDev } = require('@config');
 const { print } = require('@utils');
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
@@ -11,10 +10,6 @@ const server = http.createServer(app).listen(PORT, HOST);
 
 server.on('listening', () => {
   print.info(`App Server is up! Listening: ${PORT}`);
-  if (isDev) {
-    const url = `http://${HOST}:${PORT}`;
-    require('open')(url);
-  }
 });
 
 server.on('error', err => {
