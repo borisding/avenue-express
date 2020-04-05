@@ -3,8 +3,6 @@ const cors = require('cors');
 const cons = require('consolidate');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const sessionFileStore = require('session-file-store');
 const nunjucks = require('nunjucks');
 const helmet = require('helmet');
 const hpp = require('hpp');
@@ -46,17 +44,6 @@ njk.addFilter('style', name => {
   if (assets[name].css) return assets[name].css;
 });
 
-// session configuration for file storage
-const FileStore = sessionFileStore(session);
-const sessionFile = () =>
-  session({
-    store: new FileStore({ path: `${syspath.storage}/sessions` }),
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.SECRET_KEY,
-    cookie: { maxAge: parseInt(process.env.COOKIE_MAXAGE, 10) }
-  });
-
 app
   // assign the views engine for mapping template
   .engine(ext, engine)
@@ -69,7 +56,7 @@ app
   .use(helmet())
   .use(cors())
   .use(cookieParser())
-  .use(sessionFile())
+  .use(mid.sessionFileStore())
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
