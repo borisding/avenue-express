@@ -8,4 +8,4 @@ require('module-alias/register');
 require('./env.loader');
 
 // start app server
-require('./bin/server');
+require('./app/server');

@@ -1,8 +1,6 @@
-#!/usr/bin/env node
-
 const http = require('http');
-const app = require('@app');
 const { print } = require('@utils');
+const app = require('./index');
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || 'localhost';
