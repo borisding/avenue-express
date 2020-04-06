@@ -1,5 +1,5 @@
 const random = require('random-key');
-const { print } = require('@utils');
+const { green, yellow } = require('chalk');
 
 function generateKey(options) {
   const BASE_LEN = 16;
@@ -8,21 +8,23 @@ function generateKey(options) {
   const MAX_LEN = BASE_LEN * BASE_LEN;
 
   if (options.length < MIN_LEN) {
-    print.warn(
-      `Expected min. string length is (${MIN_LEN}). Fallback to default (${DEFAULT_LEN})`
+    console.warn(
+      yellow(
+        `Expected min. string length is (${MIN_LEN}). Fallback to default (${DEFAULT_LEN})`
+      )
     );
-
     options.length = DEFAULT_LEN;
   } else if (options.length > MAX_LEN) {
-    print.warn(
-      `Exceeded max. string length. Fallback to max. length (${MAX_LEN})`
+    console.warn(
+      yellow(
+        `Exceeded max. string length. Fallback to max. length (${MAX_LEN})`
+      )
     );
-
     options.length = MAX_LEN;
   }
 
-  print.info(`Generated new key (${options.length}):`);
-  print.success(random.generate(options.length));
+  console.log(green(`Generated new key (${options.length}):`));
+  console.log(random.generate(options.length));
 }
 
 module.exports = generateKey;

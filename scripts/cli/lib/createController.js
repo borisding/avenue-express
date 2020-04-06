@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp-promise');
 const slash = require('slash');
+const { green, red, yellow } = require('chalk');
 const { syspath } = require('@config');
-const { print } = require('@utils');
 const { prettierFormat } = require('../utils');
 
 async function createController(controller, options) {
@@ -19,10 +19,11 @@ async function createController(controller, options) {
     }
 
     await mkdirp(pathToControllers);
-
     if (fs.existsSync(controllerFile) && !options.force) {
-      return print.warn(
-        `([${controllerFile}] already exists. Use option --force to overwrite.)`
+      return console.warn(
+        yellow(
+          `(${controllerFile}) already exists. Use option --force to overwrite.`
+        )
       );
     }
 
@@ -35,10 +36,10 @@ async function createController(controller, options) {
 
     prettierFormat(controllerFile, fileText, formattedText => {
       fs.writeFileSync(controllerFile, formattedText, { encoding: 'utf8' });
-      print.info(`Generated controller: ${controllerFile}`, 0);
+      console.log(green(`Generated controller: ${controllerFile}`));
     });
   } catch (err) {
-    print.error(err);
+    console.error(red(err));
   }
 }
 

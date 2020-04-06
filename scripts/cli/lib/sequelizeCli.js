@@ -1,6 +1,6 @@
 const slash = require('slash');
+const { cyan, green, red } = require('chalk');
 const { exec } = require('child_process');
-const { print } = require('@utils');
 const { syspath } = require('@config');
 const { prettierFormat, CLI_ENV } = require('../utils');
 const sequelizeConfig = require('@root/.sequelizerc');
@@ -34,10 +34,10 @@ module.exports = env => (command, options) => {
     .join(' ');
 
   return exec(`${sequelize} ${opts}`, (err, stdout) => {
-    print.info(`\nSequelize command: ${slash(sequelize)}`);
+    console.info(cyan(`\nSequelize command: ${slash(sequelize)}`));
 
     if (err) {
-      return print.error(`ERROR: ${err}`);
+      return console.error(red(`ERROR: ${err}`));
     }
 
     // prettier formatting generated model file
@@ -46,6 +46,6 @@ module.exports = env => (command, options) => {
       prettierFormat(filePath);
     }
 
-    return print.success(stdout);
+    return console.log(green(stdout));
   });
 };
