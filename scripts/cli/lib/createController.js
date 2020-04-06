@@ -14,7 +14,6 @@ async function createController(controller, options) {
     );
 
     let controllerFile = `${pathToControllers}/${controller.toLowerCase()}${SUFFIX}.js`;
-
     if (!options.suffix) {
       controllerFile = controllerFile.replace(SUFFIX, '');
     }
@@ -28,7 +27,7 @@ async function createController(controller, options) {
     }
 
     const fileText = fs.readFileSync(
-      `${syspath.bin}/cli/templates/controller.${
+      `${syspath.scripts}/cli/templates/controller.${
         options.bare ? 'bare' : 'resource'
       }.txt`,
       'utf8'

@@ -4,10 +4,10 @@ module.exports = {
   root,
   app: `${root}/app`,
   assets: `${root}/assets`,
-  bin: `${root}/bin`,
   config: `${root}/config`,
   logger: `${root}/logger`,
   public: `${root}/public`,
+  scripts: `${root}/scripts`,
   storage: `${root}/storage`,
   tests: `${root}/tests`,
   utils: `${root}/utils`

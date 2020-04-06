@@ -138,11 +138,11 @@
     "@middlewares": "app/middlewares",
     "@models": "app/models",
     "@views": "app/views",
-    "@bin": "bin",
     "@config": "config",
     "@logger": "logger",
     "@public": "public",
     "@utils": "utils",
+    "@scripts": "scripts",
     "@storage": "storage",
     "@database": "storage/database",
     "@logs": "storage/logs"
