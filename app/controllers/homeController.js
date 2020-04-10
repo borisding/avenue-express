@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 // GET method for index action
 function index(req, res) {
-  res.render('home');
+  res.render('home', { title: 'Home' });
 }
 
 // simple route for bare controller

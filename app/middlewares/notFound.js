@@ -6,13 +6,12 @@ const notFound = () => (req, res, next) => {
   const code = 404;
 
   res.status(code);
-
   res.format({
     text: () => {
       res.send(message);
     },
     html: () => {
-      res.render('404', { code, message });
+      res.render('404', { title: 'Not Found', code, message });
     },
     json: () => {
       res.send({

@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 // GET method for index action
 function index(req, res) {
-  res.render('users', { username: 'Guest' });
+  res.render('users', { title: 'Users', username: 'Guest' });
 }
 
 // GET method for create action

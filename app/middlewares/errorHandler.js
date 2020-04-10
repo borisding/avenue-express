@@ -8,6 +8,7 @@ const errorHandler = () => (err, req, res, next) => {
   res.status(err.code);
 
   const errData = {
+    title: 'Error',
     errors: [
       {
         name: err.name,
