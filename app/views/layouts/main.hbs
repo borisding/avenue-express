@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{csrfToken}}">
   <title>Avenue Express App | {{title}}</title>
+  {{style "main"}}
+  {{style pageStyle}}
 </head>
 
 <body>
@@ -15,6 +17,11 @@
       {{{body}}}
     </div>
   </section>
+  {{script "vendor"}}
+  {{script pageScript}}
+  {{#if isProduction}}
+    {{script "offline"}}
+  {{/if}}
 </body>
 
 </html>

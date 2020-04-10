@@ -6,14 +6,31 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const hpp = require('hpp');
 
-const { syspath } = require('@config');
+const { isDev, syspath } = require('@config');
 const mid = require('@middlewares');
 const ctl = require('@controllers');
+const assets = require('@assets');
 
 const app = express();
 const hbs = handlebars.express4({
   defaultLayout: `${syspath.app}/views/layouts/main`
 });
+
+handlebars.registerHelper('style', function (name) {
+  if (!assets[name]) return;
+  const cssFile = assets[name]['css'];
+  const pathToStyle = `<link href="${cssFile}" rel="stylesheet">`;
+  return new handlebars.SafeString(pathToStyle);
+});
+
+handlebars.registerHelper('script', function (name) {
+  if (!assets[name]) return;
+  const jsFile = assets[name]['js'];
+  const pathToScript = `<script src="${jsFile}" defer></script>`;
+  return new handlebars.SafeString(pathToScript);
+});
+
+app.locals.isProduction = !isDev;
 
 app
   .engine('hbs', hbs)
