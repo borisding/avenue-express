@@ -4,5 +4,5 @@ module.exports = {
   errorHandler: require('./errorHandler'),
   notFound: require('./notFound'),
   sessionFileStore: require('./sessionFileStore'),
-  minifyHtml: require('./minifyHtml')
+  htmlMinifier: require('./htmlMinifier')
 };

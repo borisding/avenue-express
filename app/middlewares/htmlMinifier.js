@@ -1,6 +1,6 @@
 const minifyHTML = require('express-minify-html-2');
 
-const minfyHtml = ({ isDev }) => {
+const htmlMinifier = ({ isDev }) => {
   if (isDev) {
     return (req, res, next) => next();
   }
@@ -20,4 +20,4 @@ const minfyHtml = ({ isDev }) => {
   });
 };
 
-module.exports = minfyHtml;
+module.exports = htmlMinifier;
