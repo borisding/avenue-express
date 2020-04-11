@@ -5,7 +5,7 @@
   "main": "index.js",
   "bin": "avenue.js",
   "scripts": {
-    "clean": "rimraf public assets/index.js",
+    "clean": "rimraf public",
     "webpack": "npm run clean && webpack --progress --hide-modules",
     "build": "cross-env NODE_ENV=production npm run webpack",
     "build:analyze": "cross-env ANALYZE_MODE=enabled npm run build",

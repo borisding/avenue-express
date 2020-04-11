@@ -178,9 +178,9 @@ const webpackConfig = {
         : 'css/[name].chunk.[contenthash:8].css'
     }),
     new AssetsPlugin({
-      filename: 'index.js',
-      prettyPrint: true,
-      path: syspath.assets,
+      filename: 'assets.js',
+      prettyPrint: isDev,
+      path: syspath.public,
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(

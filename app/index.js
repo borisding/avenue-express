@@ -7,24 +7,24 @@ const helmet = require('helmet');
 const hpp = require('hpp');
 
 const { isDev, syspath } = require('@config');
+const builtAssets = require('@public/assets');
 const mid = require('@middlewares');
 const ctl = require('@controllers');
-const assets = require('@assets');
 
 const hbs = handlebars.express4({
   defaultLayout: `${syspath.app}/views/layouts/main`
 });
 
 handlebars.registerHelper('style', name => {
-  if (!assets[name]) return;
-  const cssFile = assets[name]['css'];
+  if (!builtAssets[name]) return;
+  const cssFile = builtAssets[name]['css'];
   const pathToStyle = `<link href="${cssFile}" rel="stylesheet">`;
   return new handlebars.SafeString(pathToStyle);
 });
 
 handlebars.registerHelper('script', name => {
-  if (!assets[name]) return;
-  const jsFile = assets[name]['js'];
+  if (!builtAssets[name]) return;
+  const jsFile = builtAssets[name]['js'];
   const pathToScript = `<script src="${jsFile}" defer></script>`;
   return new handlebars.SafeString(pathToScript);
 });
