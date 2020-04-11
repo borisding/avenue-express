@@ -41,7 +41,7 @@
     }
   },
   "dependencies": {
-    "bulma": "^0.8.1",
+    "bulma": "^0.8.2",
     "chalk": "^4.0.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -107,7 +107,7 @@
     "postcss-loader": "^3.0.0",
     "prettier": "^2.0.4",
     "sass-loader": "^8.0.2",
-    "stylelint": "^13.3.1",
+    "stylelint": "^13.3.2",
     "stylelint-config-sass-guidelines": "^7.0.0",
     "stylelint-scss": "^3.16.1",
     "terser-webpack-plugin": "^2.3.5",
