@@ -1,8 +1,8 @@
 const express = require('express');
 const handlebars = require('express-hbs');
-const cors = require('cors');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
 
@@ -11,25 +11,25 @@ const mid = require('@middlewares');
 const ctl = require('@controllers');
 const assets = require('@assets');
 
-const app = express();
 const hbs = handlebars.express4({
   defaultLayout: `${syspath.app}/views/layouts/main`
 });
 
-handlebars.registerHelper('style', function (name) {
+handlebars.registerHelper('style', name => {
   if (!assets[name]) return;
   const cssFile = assets[name]['css'];
   const pathToStyle = `<link href="${cssFile}" rel="stylesheet">`;
   return new handlebars.SafeString(pathToStyle);
 });
 
-handlebars.registerHelper('script', function (name) {
+handlebars.registerHelper('script', name => {
   if (!assets[name]) return;
   const jsFile = assets[name]['js'];
   const pathToScript = `<script src="${jsFile}" defer></script>`;
   return new handlebars.SafeString(pathToScript);
 });
 
+const app = express();
 app.locals.isProduction = !isDev;
 
 app

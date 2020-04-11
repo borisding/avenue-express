@@ -1,16 +1,14 @@
 const { Router } = require('express');
 
-const pageAssets = {
+const homeProps = {
+  title: 'Home',
   pageStyle: 'home',
   pageScript: 'home'
 };
 
 // GET method for index action
 function index(req, res) {
-  res.render('home', {
-    title: 'Home',
-    ...pageAssets
-  });
+  res.render('home', homeProps);
 }
 
 // simple route for bare controller

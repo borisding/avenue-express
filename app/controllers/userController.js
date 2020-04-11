@@ -1,8 +1,15 @@
 const { Router } = require('express');
 
+const userProps = {
+  title: 'Users'
+};
+
 // GET method for index action
 function index(req, res) {
-  res.render('users', { title: 'Users', username: 'Guest' });
+  res.render('users', {
+    ...userProps,
+    username: 'Guest'
+  });
 }
 
 // GET method for create action
