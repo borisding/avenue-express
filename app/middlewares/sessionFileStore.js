@@ -1,8 +1,7 @@
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const { syspath } = require('@config');
 
-const sessionFileStore = () =>
+const sessionFileStore = ({ syspath }) =>
   session({
     store: new FileStore({ path: `${syspath.storage}/sessions` }),
     resave: false,

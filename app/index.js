@@ -42,14 +42,14 @@ app
   ]);
 
 app
-  .use(mid.httpLogger())
-  .use(compression())
+  .use(mid.httpLogger({ isDev }))
   .use(helmet())
   .use(cors())
+  .use(compression())
   .use(cookieParser())
-  .use(mid.sessionFileStore())
+  .use(mid.sessionFileStore({ syspath }))
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
-  .use(mid.minifyHtml(isDev))
+  .use(mid.minifyHtml({ isDev }))
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
   .use(express.static(syspath.public))
