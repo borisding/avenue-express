@@ -1,4 +1,3 @@
-require('module-alias/register');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -12,7 +11,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const pkg = require('./package');
 const { getCustomEnv } = require('./env.loader');
-const { isDev, syspath } = require('@config');
+const { isDev, syspath } = require('./config');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const sourceMap = !!isDev;
