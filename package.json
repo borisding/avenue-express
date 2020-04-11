@@ -52,6 +52,7 @@
     "dotenv-expand": "^5.1.0",
     "express": "^4.17.1",
     "express-hbs": "^2.3.3",
+    "express-minify-html-2": "^1.0.1",
     "express-session": "^1.17.0",
     "helmet": "^3.22.0",
     "hpp": "^0.2.3",

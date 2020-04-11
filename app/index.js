@@ -49,6 +49,7 @@ app
   .use(cookieParser())
   .use(mid.sessionFileStore())
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
+  .use(mid.minifyHtml(isDev))
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
   .use(express.static(syspath.public))
