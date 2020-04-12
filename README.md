@@ -153,7 +153,7 @@ process.env.PORT; // this will give us PORT value
 - `isDev` and `syspath` are also exposed in `./config/index.js` for project usage:
 
 ```js
-import { isDev, syspath } from '@config';
+const { isDev, syspath } = require('@config');
 
 // checking for development environment
 if (isDev) {
@@ -215,7 +215,7 @@ node avenue controller:new <controller> --bare
 ```
 
 ```js
-import { Router } from 'express';
+const { Router } = require('express');
 
 // GET method for index action
 export function index(req, res) {
@@ -245,7 +245,7 @@ node avenue orm model:generate --name User --attributes firstName:string,lastNam
 - Once `user.js` is created in `./app/models` and migration performed, we can access `User` model with `db` object in `./app/models/index.js`:
 
 ```js
-import db from '@models';
+const db = require('@models');
 
 ...
 // eg: find all users
