@@ -8,7 +8,7 @@
 <a href="https://david-dm.org/borisding/avenue-express?type=dev"><img src="https://david-dm.org/borisding/avenue-express/dev-status.svg" alt="Dev Dependencies"></a>
 </p>
 
-This project starter aims to be productive and good fit for Node.js web development with MVC architectural pattern powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
+Opinionated project starter aims to be productive and good fit for Node.js web development with MVC architectural pattern powered by [Express](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [webpack](https://webpack.js.org/).
 
 > If you're looking for Server-Side Rendering (SSR) web starter kit, please also check out [universsr](https://github.com/borisding/universsr).
 
@@ -31,10 +31,10 @@ This project starter aims to be productive and good fit for Node.js web developm
 
 This project starter should be working as expected with the following minimal version of Node/NPM, respectively:
 
-| Dependency |  Version  |
-| ---------- | :-------: |
-| Node       | >= v8.3.0 |
-| NPM        | >= v5.0.0 |
+| Dependency |  Version   |
+| ---------- | :--------: |
+| Node       | >= v10.0.0 |
+| NPM        | >= v5.6.0  |
 
 **[Back to top](#table-of-contents)**
 
@@ -92,37 +92,38 @@ Below is a overview of project structure in tree-view:
 ├─.travis.yml                       # config file for Travis build workflow
 ├─avenue.js                         # CLI entry file for the app
 ├─babel.config.js                   # default babel configuration
-├─env.js                            # .env file loader with `dotenv` and `dotenv-expand`
-├─esm.js                            # ESM loader and module alias hook
+├─env.loader.js                     # .env file loader with `dotenv` and `dotenv-expand`
 ├─index.js                          # expose Express server file
+├─jest.config.js                    # config file for Jest testing framework
 ├─package-lock.json                 # NPM package lock file
 ├─package.json                      # NPM package file
+├─postcss.config.js                 # config file for PostCSS
+├─prettier.config.js                # config file for Prettier formatter
+├─stylelint.config.js               # config file for Stylelint
 ├─webpack.config.js                 # webpack bundler's configuration
 | ...
 ├─utils                             # contains all utility files
 ├─tests                             # contains all mocks and tests
 ├─storage                           # contains database, logs, sessions files, coverage reports
+├─scripts                           # contains CLI/internal operation scripts
 ├─public                            # contains production ready assets/files
 ├─node_modules                      # contains required node packages
 ├─logger                            # contains winston logger for the app
 ├─config                            # contains project .env files, jest and other configs
-├─bin                               # parent folder for server and CLI
-|  ├─server.js                      # Express server file
-|  ├─cli                            # folder for Avenue command-line interface
 ├─app                               # parent folder of all app source files
 |  ├─index.js                       # entry file for Express framework
-|  ├─views                          # contains respective view templates
-|  |   ├─layout.html                # default layout template for the app
+|  ├─server.js                      # Express HTTP web server
+|  ├─views                          # contains respective view layout templates
+|  |   ├─layouts                    # default layout template for the app
 |  |   ├─partials                   # contains respective partial view templates
-|  |   ├─macros                     # contains reusable helpers for views
+|  |   ├─components                 # contains all Vue's Single File Components (SFCs)
 |  ├─models                         # contains all model files, default is Sequelize models
 |  ├─middlewares                    # contains respective Express middlewares
 |  ├─controllers                    # contains respective Express routes (controllers)
-|  ├─assets                         # parent folder of all assets
-|  |   ├─scss                       # contains all SCSS source files
-|  |   ├─js                         # contains all JS module source files
-|  |   ├─img                        # contains all images
-|  |   ├─components                 # contains all Vue's Single File Components (SFCs)
+├─assets                            # parent folder of all assets
+|   ├─scss                          # contains all SCSS source files
+|   ├─js                            # contains all JS module source files
+|   ├─images                        # contains all images
 ```
 
 **[Back to top](#table-of-contents)**
@@ -131,7 +132,7 @@ Below is a overview of project structure in tree-view:
 
 **Environment Variables**
 
-- `dotenv` and `dotenv-expand` packages are used in conjunction with `webpack.DefinePlugin` plugin for managing environment variables. The entire logic can be found in `./env.js` file. The .env is environment sepecific and is loaded based on the defined `process.env.NODE_ENV` value:
+- `dotenv` and `dotenv-expand` packages are used in conjunction with `webpack.DefinePlugin` plugin for managing environment variables. The entire logic can be found in `./env.loader.js` file. The .env is environment sepecific and is loaded based on the defined `process.env.NODE_ENV` value:
 
 | File name          | NODE_ENV    |    In Source Control    |
 | ------------------ | ----------- | :---------------------: |
@@ -164,8 +165,6 @@ console.log(syspath.app);
 ```
 
 - Feel free to add more configuration and used upon project needs.
-
-- `jest` testing framework setup and mocks reside in `./config/jest` folder.
 
 **[Back to top](#table-of-contents)**
 
@@ -209,6 +208,11 @@ node avenue controller:new --help
 | DELETE    | `/users/:id`      | `destroy` |
 
 - For generated bare controller, there is only one `index` action in controller file, eg:
+
+```bash
+# generate bare controller file
+node avenue controller:new <controller> --bare
+```
 
 ```js
 import { Router } from 'express';
@@ -276,41 +280,23 @@ node avenue orm help
 
 ## Views
 
-- All view templates can be found in `./app/views`. It uses [`nunjucks`](https://mozilla.github.io/nunjucks/) as default templating engine in conjunction with [`consolidate.js`](https://github.com/tj/consolidate.js/).
+- All view templates can be found in `./app/views`. It uses [`Express handlebars`](https://github.com/TryGhost/express-hbs) as default templating engine.
 
-- The default template file extension is `html`.
+- The default template file extension is `hbs`.
 
-```js
-// in `./app/index.js`
-
-...
-const ext = 'html';
-
-app
-  // assign the views engine for mapping template
-  .engine(ext, engine)
-  // set default extension for view files
-  .set('view engine', ext);
-...
-```
-
-- If you're going to use different templating engine, make sure all nunjucks' macros, filters, etc are migrated and applied for your preferred templating language. Also, read through [template engine settings](https://expressjs.com/en/guide/using-template-engines.html) for Express.
-
-- `layout.html` is the default page layout to be extended by partial views. Feel free to create new layout templates based on the needs.
-
-> You may install [vscode-nunjucks](https://github.com/ronnidc/vscode-nunjucks) extension for syntax definition in Visual Studio Code.
+- `main.hbs` is the default page layout to be extended by partial views. Feel free to create new layout templates based on the needs.
 
 **[Back to top](#table-of-contents)**
 
 ## Frontend Assets
 
-- All asset source files (js, css/scss, images, etc) are placed in `./app/assets`. The generated assets such as JS bundles and final CSS outputs will be kept in `./public` folder.
+- All asset source files (js, css/scss, images, etc) are placed in `./assets`. The generated assets such as JS bundles and final CSS outputs will be kept in `./public` folder.
 
-- After runnig webpack build process, `./app/assets/index.js` will be generated with `assets-webpack-plugin`, which consists a list of assets in key/value pairs with the paths included. This allows us to find it and include in respective module view templates by using nunjucks macro `./app/views/macros/assets.html`.
+- After runnig webpack build process, `./public/assets.js` will be generated with `assets-webpack-plugin`, which consists a list of assets in key/value pairs with the paths included. This allows us to include targeted asset files in respective module view templates by using defined handlebars helpers.
 
-- To keep project modular, it's recommended to use the same naming for `.js` and `.scss` source files. For instance, we have partial view called `user.html`, which having some JS code and style need to be applied. We can create `user.js` and `user.scss` respectively for webpack to look up and include it as part of entry files for bundling.
+- To keep project modular, it's recommended to use the same naming for `.js` and `.scss` source files. For instance, we have partial view called `user.hbs`, which having some JS code and style need to be applied. We can create `user.js` and `user.scss` respectively for webpack to look up and include it as part of entry files for bundling.
 
-- `.vue` components should be placed in `./app/assets/components` folder for Vue loaders to process during webpack build process. Please go through with the webpack config on rules section.
+- `.vue` components are placed in `./views/components` folder for Vue loaders to process during webpack build process. Please go through with the webpack config on rules section.
 
 - Vendor chunk will be created with the following config in webpack:
 
@@ -342,9 +328,9 @@ optimization: {
 - Feel free to use different storage for session management. For instance, storing sessions with Redis:
 
 ```js
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import Redis from 'ioredis'; // redis client we use for
+const session = require('express-session');
+const connectRedis = require('connect-redis');
+const Redis = require('ioredis'); // redis client we use for
 
 ...
 const RedisStore = connectRedis(session);
@@ -379,7 +365,7 @@ app.use(session({
 
 - [ESLint](https://eslint.org/) and [Styelint](https://stylelint.io/) are being used for JS and SCSS lint checks, respectively. [Prettier](https://prettier.io/) is also used in conjunction with ESLint plugins for code formatting.
 
-- There are several pre-defined lint rules in `package.json`. Feel free to add/remove any of them for project needs.
+- There are several pre-defined lint rules in respective individual configuration files. Feel free to add/remove any of them for project needs.
 
 - There is also `.eslintrc` config file in `./app/models` folder to overwrite the default rules in `package.json`. This to avoid lint check error in any model files that is generated via Sequelize CLI.
 
@@ -391,7 +377,7 @@ app.use(session({
 
 ```js
 // example of using winston logger
-import { logger } from '@logger';
+const { logger } = require('@logger');
 
 logger.info('This log message is for info level');
 ```
@@ -401,7 +387,7 @@ logger.info('This log message is for info level');
 ```js
 // example of using http logger middleware
 ...
-import { httpLogger } from '@middlewares';
+const { httpLogger } = require('@middlewares');
 
 app.use(httpLogger());
 ...
@@ -413,7 +399,7 @@ app.use(httpLogger());
 
 ## Unit Testing
 
-- All test files should reside in `./tests` folder. [Jest](https://jestjs.io/) framework is used for running tests. All Jest related config can be seen under `jest` property in `package.json`.
+- All test files should reside in `./tests` folder. [Jest](https://jestjs.io/) framework is used for running tests. All Jest related config can be seen under `jest.config.js` file.
 
 - Besides, `vue-jest` and `jest-serializer-vue` are also included for testing `.vue` components.
 
