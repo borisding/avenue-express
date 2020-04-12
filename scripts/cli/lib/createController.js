@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const mkdirp = require('mkdirp-promise');
+const mkdirp = require('mkdirp');
 const slash = require('slash');
 const { green, red, yellow } = require('chalk');
 const { syspath } = require('@config');
