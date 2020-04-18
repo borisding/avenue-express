@@ -15,8 +15,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
-    operatorsAliases: Sequelize.Op
+    dialect: process.env.DB_DIALECT
   }
 );
 
