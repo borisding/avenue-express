@@ -12,6 +12,7 @@ const mid = require('@middlewares');
 const ctl = require('@controllers');
 
 const hbs = handlebars.express4({
+  partialsDir: [`${syspath.app}/views/partials`],
   defaultLayout: `${syspath.app}/views/layouts/main`
 });
 
