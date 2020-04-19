@@ -1,6 +1,6 @@
 {
   "name": "avenue-express",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Express MVC application starter for getting shit done.",
   "main": "index.js",
   "bin": "avenue.js",
