@@ -54,6 +54,7 @@ app
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
   .use(express.static(syspath.public))
+  .use('/static/images', express.static(`${syspath.assets}/images`))
   .get('/favicon.ico', (req, res) => res.status(204));
 
 app
