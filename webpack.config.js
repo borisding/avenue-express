@@ -9,6 +9,7 @@ const NodemonPlugin = require('nodemon-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const WebpackBar = require('webpackbar');
 const pkg = require('./package');
 const { getCustomEnv } = require('./env.loader');
 const { isDev, syspath } = require('./config');
@@ -52,7 +53,8 @@ const getStyleLoaders = () => {
       options: { importLoaders: 2, sourceMap }
     },
     {
-      loader: 'postcss-loader'
+      loader: 'postcss-loader',
+      options: { sourceMap }
     },
     {
       loader: 'sass-loader',
@@ -169,6 +171,7 @@ const webpackConfig = {
   },
   plugins: [
     new webpack.DefinePlugin(getCustomEnv().stringified),
+    new WebpackBar(),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: isDev ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
