@@ -48,7 +48,6 @@ app
   .use(cors())
   .use(compression())
   .use(cookieParser())
-  .use(mid.sessionFileStore({ syspath }))
   .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
   .use(mid.htmlMinifier({ isDev }))
   .use(express.json({ limit: '1mb' }))

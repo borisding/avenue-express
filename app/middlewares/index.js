@@ -3,6 +3,5 @@ module.exports = {
   httpLogger: require('./httpLogger'),
   errorHandler: require('./errorHandler'),
   notFound: require('./notFound'),
-  sessionFileStore: require('./sessionFileStore'),
   htmlMinifier: require('./htmlMinifier')
 };
