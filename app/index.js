@@ -1,5 +1,6 @@
 const express = require('express');
 const eta = require('eta');
+const { cyan } = require('chalk');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -46,9 +47,10 @@ app
 app
   .use('/', ctl.home)
   .use('/users', ctl.user)
-  // when none is matched
   .use(mid.notFound())
-  // mount error handler last
   .use(mid.errorHandler());
 
-module.exports = app;
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+app.listen(PORT, () => {
+  console.info(cyan(`App Server is up! Listening: ${PORT}`));
+});
