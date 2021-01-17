@@ -1,5 +1,5 @@
 const express = require('express');
-const handlebars = require('express-hbs');
+const eta = require('eta');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -7,35 +7,22 @@ const helmet = require('helmet');
 const hpp = require('hpp');
 
 const { isDev, syspath } = require('@config');
-const builtAssets = require('@public/assets');
+const assets = require('@public/assets');
 const mid = require('@middlewares');
 const ctl = require('@controllers');
 
-const hbs = handlebars.express4({
-  partialsDir: [`${syspath.app}/views/partials`],
-  defaultLayout: `${syspath.app}/views/layouts/main`
-});
-
-handlebars.registerHelper('style', name => {
-  if (!builtAssets[name]) return;
-  const cssFile = builtAssets[name]['css'];
-  const pathToStyle = `<link href="${cssFile}" rel="stylesheet">`;
-  return new handlebars.SafeString(pathToStyle);
-});
-
-handlebars.registerHelper('script', name => {
-  if (!builtAssets[name]) return;
-  const jsFile = builtAssets[name]['js'];
-  const pathToScript = `<script src="${jsFile}" defer></script>`;
-  return new handlebars.SafeString(pathToScript);
+eta.configure({
+  cache: !isDev
 });
 
 const app = express();
-app.locals.isProduction = !isDev;
+app.locals.isProd = !isDev;
+app.locals.assets = assets;
 
+// app view engine and directories config
 app
-  .engine('hbs', hbs)
-  .set('view engine', 'hbs')
+  .engine('eta', eta.renderFile)
+  .set('view engine', 'eta')
   .set('views', [
     `${syspath.app}/views`,
     `${syspath.app}/views/layouts`,

@@ -1,0 +1,4 @@
+<% layout('../layouts/main') %>
+
+<h1 class="title">Hello <%=it.username%></h1>
+<a href="/">&laquo; Back</a>

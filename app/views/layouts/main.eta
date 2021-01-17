@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="csrf-token" content="{{csrfToken}}">
-  <title>Avenue Express App | {{title}}</title>
-  {{style "main"}}
-  {{style pageStyle}}
+  <meta name="csrf-token" content="<%=it.csrfToken%>">
+  <title>Avenue Express App | <%=it.title%></title>
+  <%~includeFile('../partials/styles', it)%>
 </head>
-
 <body>
   <section class="section">
     <div class="container">
-      {{{body}}}
+      <%~it.body%>
     </div>
   </section>
-  {{script "vendor"}}
-  {{script pageScript}}
-  {{#if isProduction}}
-    {{script "offline"}}
-  {{/if}}
+  <%~includeFile('../partials/javascript', it)%>
 </body>
-
 </html>

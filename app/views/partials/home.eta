@@ -1,3 +1,5 @@
+<% layout('../layouts/main') %>
+
 <h1 class="title">Avenue-Express</h1>
 <h2 class="subtitle">Thanks for checking out this Express MVC application starter kit!</h2>
 <div>

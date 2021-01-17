@@ -1,7 +1,8 @@
 const { Router } = require('express');
 
 const userProps = {
-  title: 'Users'
+  title: 'Users',
+  page: 'users'
 };
 
 // GET method for index action

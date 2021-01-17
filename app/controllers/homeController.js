@@ -2,8 +2,7 @@ const { Router } = require('express');
 
 const homeProps = {
   title: 'Home',
-  pageStyle: 'home',
-  pageScript: 'home'
+  page: 'home'
 };
 
 // GET method for index action
