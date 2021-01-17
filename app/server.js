@@ -1,6 +1,6 @@
 const express = require('express');
 const eta = require('eta');
-const { cyan } = require('chalk');
+const chalk = require('chalk');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -9,18 +9,18 @@ const hpp = require('hpp');
 
 const { isDev, syspath } = require('@config');
 const assets = require('@public/assets');
-const mid = require('@middlewares');
-const ctl = require('@controllers');
-
-eta.configure({
-  cache: !isDev
-});
+const middlewares = require('@middlewares');
+const controllers = require('@controllers');
 
 const app = express();
 app.locals.isProd = !isDev;
 app.locals.assets = assets;
 
 // app view engine and directories config
+eta.configure({
+  cache: !isDev
+});
+
 app
   .engine('eta', eta.renderFile)
   .set('view engine', 'eta')
@@ -31,26 +31,28 @@ app
   ]);
 
 app
-  .use(mid.httpLogger({ isDev }))
   .use(helmet())
   .use(cors())
   .use(compression())
   .use(cookieParser())
-  .use(mid.csrf({ cookie: true }), mid.csrf.toLocal())
-  .use(mid.htmlMinifier({ isDev }))
+  .use(middlewares.httpLogger({ isDev }))
+  .use(middlewares.csrf({ cookie: true }))
+  .use(middlewares.csrf.toLocal())
+  .use(middlewares.htmlMinifier({ isDev }))
   .use(express.json({ limit: '1mb' }))
-  .use(express.urlencoded({ extended: true, limit: '10mb' }), hpp())
+  .use(express.urlencoded({ extended: true, limit: '10mb' }))
+  .use(hpp())
   .use(express.static(syspath.public))
   .use('/static/images', express.static(`${syspath.assets}/images`))
   .get('/favicon.ico', (req, res) => res.status(204));
 
 app
-  .use('/', ctl.home)
-  .use('/users', ctl.user)
-  .use(mid.notFound())
-  .use(mid.errorHandler());
+  .use('/', controllers.home)
+  .use('/users', controllers.user)
+  .use(middlewares.notFound())
+  .use(middlewares.errorHandler());
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 app.listen(PORT, () => {
-  console.info(cyan(`App Server is up! Listening: ${PORT}`));
+  console.info(chalk.cyan(`App Server is up! Listening: ${PORT}`));
 });
