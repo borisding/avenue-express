@@ -7,7 +7,7 @@ const homeProps = {
 
 // GET method for index action
 function index(req, res) {
-  res.render('home', homeProps);
+  res.render('pages/home', homeProps);
 }
 
 // simple route for bare controller

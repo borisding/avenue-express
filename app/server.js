@@ -24,11 +24,7 @@ eta.configure({
 app
   .engine('eta', eta.renderFile)
   .set('view engine', 'eta')
-  .set('views', [
-    `${syspath.app}/views`,
-    `${syspath.app}/views/layouts`,
-    `${syspath.app}/views/partials`
-  ]);
+  .set('views', [`${syspath.app}/views`]);
 
 app
   .use(helmet())

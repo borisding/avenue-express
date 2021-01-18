@@ -14,6 +14,6 @@
       <%~it.body%>
     </div>
   </section>
-  <%~includeFile('../partials/javascript', it)%>
+  <%~includeFile('../partials/scripts', it)%>
 </body>
 </html>

@@ -7,7 +7,7 @@ const userProps = {
 
 // GET method for index action
 function index(req, res) {
-  res.render('users', {
+  res.render('pages/users', {
     ...userProps,
     username: 'Guest'
   });
