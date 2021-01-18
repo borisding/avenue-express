@@ -53,7 +53,7 @@
     "express": "^4.17.1",
     "express-minify-html-2": "^1.0.1",
     "express-session": "^1.17.1",
-    "helmet": "^3.23.3",
+    "helmet": "^4.4.0",
     "hpp": "^0.2.3",
     "http-errors": "^1.8.0",
     "isdev": "^1.0.1",

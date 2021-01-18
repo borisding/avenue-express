@@ -27,7 +27,7 @@ app
   .set('views', [`${syspath.app}/views`]);
 
 app
-  .use(helmet())
+  .use(helmet({ contentSecurityPolicy: false }))
   .use(cors())
   .use(compression())
   .use(cookieParser())
