@@ -3,7 +3,6 @@ const eta = require('eta');
 const chalk = require('chalk');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 const helmet = require('helmet');
 const hpp = require('hpp');
 
@@ -28,7 +27,6 @@ app
 
 app
   .use(helmet({ contentSecurityPolicy: false }))
-  .use(cors())
   .use(compression())
   .use(cookieParser())
   .use(middlewares.httpLogger({ isDev }))
