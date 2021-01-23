@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const hpp = require('hpp');
 
-const { isDev, syspath } = require('@config');
+const { isDev, syspath, connectMongoDB } = require('@config');
 const assets = require('@public/assets');
 const middlewares = require('@middlewares');
 const controllers = require('@controllers');
@@ -47,6 +47,15 @@ app
   .use(middlewares.errorHandler());
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
-app.listen(PORT, () => {
-  console.info(chalk.cyan(`App Server is up! Listening: ${PORT}`));
-});
+
+connectMongoDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.info(chalk.cyan(`App Server is up! Listening: ${PORT}`));
+    });
+  })
+  .catch(error => {
+    console.error(chalk.red('Could start app server.'));
+    console.error(chalk.red(error));
+    process.exit(1);
+  });

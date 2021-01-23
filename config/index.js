@@ -4,5 +4,8 @@ module.exports = {
   syspath: require('./syspath'),
 
   // is development environment
-  isDev: require('isdev')
+  isDev: require('isdev'),
+
+  // mongodb configuration
+  connectMongoDB: require('./mongodb')
 };
