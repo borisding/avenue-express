@@ -3,7 +3,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const slash = require('slash');
 const { green, red, yellow } = require('chalk');
-const { syspath } = require('@config');
+const { syspath } = require('@utils');
 const { prettierFormat } = require('../utils');
 
 async function createController(controller, options) {

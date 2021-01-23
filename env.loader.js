@@ -1,7 +1,7 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
-const { syspath } = require('./config');
+const { syspath } = require('./utils');
 
 const NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {

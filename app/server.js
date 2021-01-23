@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const hpp = require('hpp');
 
-const { isDev, syspath, connectMongoDB } = require('@config');
+const { isDev, syspath, connectMongoDB } = require('@utils');
 const assets = require('@public/assets');
 const middlewares = require('@middlewares');
 const controllers = require('@controllers');

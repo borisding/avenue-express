@@ -1,5 +1,5 @@
 const { format, transports, createLogger } = require('winston');
-const { isDev, syspath } = require('@config');
+const { isDev, syspath } = require('@utils');
 
 const { combine, json, timestamp, label } = format;
 const logger = createLogger({

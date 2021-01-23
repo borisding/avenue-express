@@ -9,9 +9,10 @@ const NodemonPlugin = require('nodemon-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBar = require('webpackbar');
+
 const pkg = require('./package');
 const { getCustomEnv } = require('./env.loader');
-const { isDev, syspath } = require('./config');
+const { isDev, syspath } = require('./utils');
 
 const isAnalyze = process.env.ANALYZE_MODE === 'enabled';
 const sourceMap = !!isDev;
