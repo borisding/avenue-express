@@ -7,7 +7,6 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBar = require('webpackbar');
 const pkg = require('./package');
@@ -120,22 +119,13 @@ const webpackConfig = {
       : 'js/[name].chunk.[contenthash:8].js'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.vue'],
+    extensions: ['.js', '.jsx', '.json', '.css', '.scss'],
     alias: {
-      ...pkg._moduleAliases,
-      // vue specific
-      vue$: 'vue/dist/vue.esm.js',
-      '@components': `${syspath.app}/views/components`
+      ...pkg._moduleAliases
     }
   },
   module: {
     rules: [
-      // rule for Vue's Single File Components (SFCs)
-      {
-        test: /\.vue$/,
-        exclude: /node_modules/,
-        loader: 'vue-loader'
-      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -147,16 +137,9 @@ const webpackConfig = {
           }
         }
       },
-      // Vue specific style config for SFCs
       {
         test: /\.(sass|scss|css)$/,
-        exclude: [/node_modules/, `${syspath.assets}/scss`],
-        use: [{ loader: 'vue-style-loader' }, ...getStyleLoaders()]
-      },
-      // general styles config (except .vue single file components)
-      {
-        test: /\.(sass|scss|css)$/,
-        exclude: ['/node_modules/', `${syspath.assets}/components`],
+        exclude: ['/node_modules/'],
         use: [MiniCssExtractPlugin.loader, ...getStyleLoaders()]
       },
       {
@@ -172,7 +155,6 @@ const webpackConfig = {
   plugins: [
     new webpack.DefinePlugin(getCustomEnv().stringified),
     new WebpackBar(),
-    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: isDev ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
       chunkFilename: isDev
