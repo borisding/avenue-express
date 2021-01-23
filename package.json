@@ -76,7 +76,7 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
     "@vue/test-utils": "^1.1.2",
-    "assets-webpack-plugin": "^5.1.2",
+    "assets-webpack-plugin": "^6.1.2",
     "autoprefixer": "^10.2.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
