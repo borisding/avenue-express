@@ -4,7 +4,7 @@ const mkdirp = require('mkdirp');
 const slash = require('slash');
 const { green, red, yellow } = require('chalk');
 const { syspath } = require('@utils');
-const { prettierFormat } = require('../utils');
+const { prettierFormat } = require('./helper');
 
 async function createController(controller, options) {
   try {
