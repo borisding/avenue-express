@@ -1,5 +1,5 @@
 module.exports = {
-  setupFilesAfterEnv: ['<rootDir>/config/jest/setupTest.js'],
+  setupFiles: ['<rootDir>/env.loader.js'],
   coverageDirectory: '<rootDir>/storage/coverage',
   collectCoverageFrom: [
     'app/**/*.js',
@@ -10,8 +10,8 @@ module.exports = {
   moduleFileExtensions: ['js'],
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-      '<rootDir>/config/jest/fileMock.js',
-    '\\.(css|scss)$': '<rootDir>/config/jest/styleMock.js'
+      '<rootDir>/assets/mocks/fileMock.js',
+    '\\.(css|scss|sass)$': 'identity-obj-proxy'
   },
   transform: {
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest'

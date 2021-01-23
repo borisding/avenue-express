@@ -16,7 +16,7 @@
     "lint": "npm-run-all lint:scss lint:js",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests",
     "test:watch": "npm test -- --watch",
-    "test:coverage": "rimraf storage/coverage && npm test -- --coverage --runInBand",
+    "test:coverage": "rimraf storage/coverage && npm test -- --coverage",
     "heroku-postbuild": "npm run build"
   },
   "keywords": [
