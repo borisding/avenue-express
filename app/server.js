@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const hpp = require('hpp');
 
 const { isDev, syspath, connectMongoDB } = require('@utils');
-const assets = require('@public/assets');
+const assets = require('@build/assets');
 const middlewares = require('@middlewares');
 const controllers = require('@controllers');
 
@@ -36,7 +36,7 @@ app
   .use(express.json({ limit: '1mb' }))
   .use(express.urlencoded({ extended: true, limit: '10mb' }))
   .use(hpp())
-  .use(express.static(syspath.public))
+  .use(express.static(syspath.build))
   .use('/static/images', express.static(`${syspath.assets}/images`))
   .get('/favicon.ico', (req, res) => res.status(204));
 

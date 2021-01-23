@@ -113,7 +113,7 @@ const webpackConfig = {
   },
   output: {
     publicPath: process.env.PUBLIC_PATH,
-    path: syspath.public,
+    path: syspath.build,
     filename: isDev ? 'js/[name].js' : 'js/[name].[contenthash:8].js',
     chunkFilename: isDev
       ? 'js/[name].chunk.js'
@@ -165,7 +165,7 @@ const webpackConfig = {
     new AssetsPlugin({
       filename: 'assets.js',
       prettyPrint: isDev,
-      path: syspath.public,
+      path: syspath.build,
       processOutput: assets => `module.exports = ${JSON.stringify(assets)}`
     })
   ].concat(
