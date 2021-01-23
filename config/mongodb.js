@@ -13,7 +13,9 @@ async function connectMongoDB() {
       chalk.green(`MongoDB Connected: ${mongoConnection.connection.host}`)
     );
   } catch (error) {
-    throw new Error('Failed to connect MongoDB.');
+    throw new Error(
+      'Failed to connect MongoDB. Please make sure MongoDB setup is done correctly.'
+    );
   }
 }
 
