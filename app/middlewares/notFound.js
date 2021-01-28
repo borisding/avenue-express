@@ -11,7 +11,11 @@ const notFound = () => (req, res, next) => {
       res.send(message);
     },
     html: () => {
-      res.render('404', { title: 'Not Found', code, message });
+      res.render('pages/404', {
+        title: 'Not Found',
+        code,
+        message
+      });
     },
     json: () => {
       res.send({
